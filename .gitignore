@@ -1,4 +1,4 @@
-/lib/dist/
-/lib/node_modules/
+/api/dist/
+/api/node_modules/
 /lib/dist/
 /lib/node_modules/
