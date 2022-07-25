@@ -4,20 +4,34 @@ export function createDictionary<T>(source: { [key: string]: T }): IReadonlyDict
 
     return {
         map: <NT>(callback: (entry: T, key: string) => NT) => {
-            const imp: { [key: string]: NT} = {}
+            const imp: { [key: string]: NT } = {}
             Object.keys(source).sort().forEach((key) => {
                 imp[key] = callback(source[key], key)
             })
             return createDictionary(imp)
         },
-        toArray: () => {
-            return Object.keys(source).sort().map((key) => {
-                return {
-                    key: key,
-                    value: source[key],
+        forEach: <NT>(
+            sort: (a: string, b: string) => boolean,
+            callback: (entry: T, key: string) => NT
+        ) => {
+            const imp: { [key: string]: NT } = {}
+            Object.keys(source).sort(
+                (a, b) => {
+                    const res = sort(a, b)
                 }
+            ).forEach((key) => {
+                imp[key] = callback(source[key], key)
             })
+            return createDictionary(imp)
         },
+        // toArray: () => {
+        //     return Object.keys(source).sort().map((key) => {
+        //         return {
+        //             key: key,
+        //             value: source[key],
+        //         }
+        //     })
+        // },
         getLookup: () => {
             return {
                 getUnsafe: (key: string): T => {

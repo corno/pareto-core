@@ -4,7 +4,7 @@ export type TKeyValueTuple<T> = { key: string, value: T }
 
 export type IReadonlyDictionary<T> = {
     readonly "forEach": (
-        sortAlgorithm: (a: T, b: T) => boolean,
+        sortAlgorithm: (a: string, b: string) => boolean,
         callback: (entry: T, key: string) => void,
     ) => void
     readonly "getLookup": () => IReadonlyLookup<T>
