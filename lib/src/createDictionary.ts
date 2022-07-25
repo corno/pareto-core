@@ -17,7 +17,8 @@ export function createDictionary<T>(source: { [key: string]: T }): IReadonlyDict
             const imp: { [key: string]: NT } = {}
             Object.keys(source).sort(
                 (a, b) => {
-                    const res = sort(a, b)
+                    const after = sort(a, b)
+                    return after ? 1 : -1
                 }
             ).forEach((key) => {
                 imp[key] = callback(source[key], key)
