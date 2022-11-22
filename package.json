@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "pareto-core-exe": "^0.13.0",
-    "pareto-core-lib": "^0.13.0",
-    "pareto-core-raw": "^0.5.1",
-    "pareto-core-state": "^0.10.0"
+    "pareto-core-exe": "^0.15.0",
+    "pareto-core-lib": "^0.14.0",
+    "pareto-core-raw": "^0.6.0",
+    "pareto-core-state": "^0.11.0"
   },
   "name": "pareto-core",
   "version": "0.0.4"
