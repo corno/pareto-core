@@ -1,0 +1,29 @@
+{
+  "name": "pareto-core-types",
+  "version": "0.16.3",
+  "license": "ISC",
+  "author": "Corno",
+  "description": "core types for Pareto",
+  "keywords": [
+    "pareto",
+    "type system",
+    "Dictionary",
+    "Array",
+    "AsyncValue",
+    "OptionalValue",
+    "Nested",
+    "ComputedValue"
+  ],
+  "homepage": "https://github.com/corno/pareto-core#readme",
+  "bugs": {
+    "url": "https://github.com/corno/pareto-core/issues"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corno/pareto-core.git"
+  }
+}

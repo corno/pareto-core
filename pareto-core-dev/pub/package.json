@@ -1,0 +1,29 @@
+{
+  "name": "pareto-core-dev",
+  "version": "0.9.1",
+  "license": "ISC",
+  "description": "a pareto package that contains functions that are useful during development",
+  "author": "Corno",
+  "keywords": [
+    "pareto",
+    "development",
+    "logDebugMessage",
+    "implementMe"
+  ],
+  "homepage": "https://github.com/corno/pareto-core#readme",
+  "bugs": {
+    "url": "https://github.com/corno/pareto-core/issues"
+  },
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "pareto-core-internals": "^0.22.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corno/pareto-core-dev.git"
+  }
+}

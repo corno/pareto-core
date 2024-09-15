@@ -1,0 +1,27 @@
+{
+  "name": "pareto-core-async",
+  "version": "0.14.2",
+  "license": "ISC",
+  "description": "this is one of the core packages of Pareto. It provides functionality for handling asynchronous data",
+  "author": "Corno",
+  "keywords": [
+    "pareto",
+    "async"
+  ],
+  "homepage": "https://github.com/corno/pareto-core#readme",
+  "bugs": {
+    "url": "https://github.com/corno/pareto-core/issues"
+  },
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "pareto-core-internals": "^0.22.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corno/pareto-core-async.git"
+  }
+}
