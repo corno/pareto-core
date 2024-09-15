@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-cp -r ./buildtemplate ./pareto-core-async
-cp -r ./buildtemplate ./pareto-core-data
-cp -r ./buildtemplate ./pareto-core-dev
-cp -r ./buildtemplate ./pareto-core-exe
-cp -r ./buildtemplate ./pareto-core-internals
-cp -r ./buildtemplate ./pareto-core-lib
-cp -r ./buildtemplate ./pareto-core-map
-cp -r ./buildtemplate ./pareto-core-state
-cp -r ./buildtemplate ./pareto-core-types
+cp -r ./build_template/. ./packages/pareto-core-async/build
+cp -r ./build_template/. ./packages/pareto-core-data/build
+cp -r ./build_template/. ./packages/pareto-core-dev/build
+cp -r ./build_template/. ./packages/pareto-core-exe/build
+cp -r ./build_template/. ./packages/pareto-core-internals/build
+cp -r ./build_template/. ./packages/pareto-core-lib/build
+cp -r ./build_template/. ./packages/pareto-core-map/build
+cp -r ./build_template/. ./packages/pareto-core-state/build
+cp -r ./build_template/. ./packages/pareto-core-types/build
