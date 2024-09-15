@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+npm install --prefix ./build_template
+
 cp -r ./build_template/. ./packages/pareto-core-async/build
 cp -r ./build_template/. ./packages/pareto-core-data/build
 cp -r ./build_template/. ./packages/pareto-core-dev/build
