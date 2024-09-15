@@ -1,0 +1,1 @@
+to create the build directory for each package, run copybuildtemplate.sh
