@@ -32,7 +32,7 @@ git add --all && \
 git commit -m "version bumped to $newVersion" && \
 
 #create a tag
-git tag -a "$newVersion" -m "$newVersion" && \
+## NEEDS package name in it: git tag -a "$newVersion" -m "$newVersion" && \
 
 git push && \
 npm publish
