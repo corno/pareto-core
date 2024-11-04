@@ -1,6 +1,6 @@
 {
   "name": "pareto-core-lib",
-  "version": "0.26.1",
+  "version": "0.26.2",
   "license": "ISC",
   "description": "the pareto core package for developing library code",
   "author": "Corno",
