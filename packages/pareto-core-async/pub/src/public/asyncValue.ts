@@ -4,9 +4,8 @@ import * as pi from "pareto-core-internals"
 import { AsyncValue } from "pareto-core-types"
 
 /**
- * converts a regular value in a {@link AsyncValue}
+ * converts a regular value in a pseudo {@link AsyncValue}
  * @param $ the value
- * @returns 
  */
 export function asyncValue<T>(
     $: T
