@@ -9,10 +9,10 @@ export namespace text {
     ) => {
         let out = ""
         $c({
-            'add snippet': ($) => {
+            add_snippet: ($) => {
                 out += $
             },
-            'add character': ($) => {
+            add_character: ($) => {
                 out += String.fromCodePoint($)
             }
         })

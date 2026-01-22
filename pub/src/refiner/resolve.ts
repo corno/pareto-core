@@ -328,7 +328,7 @@ export const resolve_dictionary = <Source, TUnresolved, TResolved>(
     $: unresolved$.Dictionary<Source, TUnresolved>,
     $p: {
         'map': ($: Key_Value_Location_Triplet<Source, TUnresolved>, $l: {
-            'possibly circular dependent siblings': Cyclic_Lookup<TResolved>
+            possibly_circular_dependent_siblings: Cyclic_Lookup<TResolved>
         }) => TResolved,
         'location 2 string': ($: Source) => string
     }
@@ -342,7 +342,7 @@ export const resolve_dense_dictionary = <Source, TUnresolved, TResolved, TBenchm
     $p: {
         'denseness benchmark': _pi.Dictionary<TBenchmark>
         'map': ($: Key_Value_Location_Triplet<Source, TUnresolved>, $l: {
-            'possibly circular dependent siblings': Cyclic_Lookup<TResolved>
+            possibly_circular_dependent_siblings: Cyclic_Lookup<TResolved>
         }) => TResolved,
         'location 2 string': ($: Source) => string
     }
@@ -355,8 +355,8 @@ export const resolve_dense_ordered_dictionary = <Source, TUnresolved, TResolved,
     $p: {
         'denseness benchmark': _pi.Dictionary<TBenchmark>
         'map': ($: Key_Value_Location_Triplet<Source, TUnresolved>, $l: {
-            'possibly circular dependent siblings': Cyclic_Lookup<TResolved>
-            'not circular dependent siblings': Acyclic_Lookup<TResolved>
+            possibly_circular_dependent_siblings: Cyclic_Lookup<TResolved>
+            not_circular_dependent_siblings: Acyclic_Lookup<TResolved>
         }) => TResolved,
         'location 2 string': ($: Source) => string
     }
@@ -397,8 +397,8 @@ export const resolve_ordered_dictionary = <Source, TUnresolved, TResolved>(
     $: unresolved$.Dictionary<Source, TUnresolved>,
     $p: {
         'map': ($: Key_Value_Location_Triplet<Source, TUnresolved>, $l: {
-            'possibly circular dependent siblings': Cyclic_Lookup<TResolved>
-            'not circular dependent siblings': Acyclic_Lookup<TResolved>
+            possibly_circular_dependent_siblings: Cyclic_Lookup<TResolved>
+            not_circular_dependent_siblings: Acyclic_Lookup<TResolved>
         }) => TResolved,
         'location 2 string': ($: Source) => string
     }
@@ -438,7 +438,7 @@ export const resolve_ordered_dictionary = <Source, TUnresolved, TResolved>(
                 'value': $,
                 'location': location,
             }, {
-                'possibly circular dependent siblings': initialize.optional.set({
+                possibly_circular_dependent_siblings: initialize.optional.set({
                     __get_possible_entry(key) {
                         //does the entry exist?
                         return source_dictionary.dictionary.__get_possible_entry(key).__o_map(($) => {
@@ -448,7 +448,7 @@ export const resolve_ordered_dictionary = <Source, TUnresolved, TResolved>(
                             }
                             const subscr = all_siblings_subscribed_entries[key]
                             return {
-                                'get circular dependent': () => {
+                                get_circular_dependent: () => {
                                     if (subscr.entry === null) {
                                         return panic(`entry not set: ${key}`)
                                     }
@@ -460,7 +460,7 @@ export const resolve_ordered_dictionary = <Source, TUnresolved, TResolved>(
                     },
 
                 }),
-                'not circular dependent siblings': initialize.optional.set({
+                not_circular_dependent_siblings: initialize.optional.set({
                     __get_possible_entry(key): _pi.Optional_Value<Non_Circular_Result<TResolved>> {
                         const status = status_dictionary[key]
                         if (status === undefined) {

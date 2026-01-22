@@ -61,13 +61,13 @@ export const iterate = <Element, Return_Type>(
     let position = 0
 
     return handler({
-        'look': () => {
+        look: () => {
             return $.__get_element_at_raw(position)
         },
-        'look ahead': (offset: number) => {
+        look_ahead: (offset: number) => {
             return $.__get_element_at_raw(position + offset)
         },
-        'consume': (
+        consume: (
             callback,
             abort
         ) => {
@@ -76,16 +76,16 @@ export const iterate = <Element, Return_Type>(
             const result = callback(current, position)
             return result
         },
-        'discard': <T>(
+        discard: <T>(
             callback: () => T
         ) => {
             position += 1
             return callback()
         },
-        'get position': () => {
+        get_position: () => {
             return position
         },
-        'assert finished': (
+        assert_finished: (
             callback,
             abort
         ) => {

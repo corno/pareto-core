@@ -122,8 +122,8 @@ export namespace dictionary {
             'key': string,
             'value': undefined | Resolved,
             'abort': {
-                'no such entry': _pi.Abort<string>,
-                'accessing cyclic before resolved': _pi.Abort<null>,
+                no_such_entry: _pi.Abort<string>,
+                accessing_cyclic_before_resolved: _pi.Abort<null>,
             }
         }
 
@@ -139,7 +139,7 @@ export namespace dictionary {
                 $,
                 key,
                 {
-                    'get entry': (
+                    get_entry: (
                         key,
                         abort,
                     ) => {
@@ -150,7 +150,7 @@ export namespace dictionary {
                                 inner_resolve(
                                     source.__get_entry(
                                         key,
-                                        () => abort['no such entry'](key)
+                                        () => abort.no_such_entry(key)
                                     ),
                                     key,
                                     stack.concat([key])
@@ -160,12 +160,12 @@ export namespace dictionary {
                             return out[key]
                         }
                     },
-                    'get possible entry': (
+                   __get_entry_raw: (
                         key,
                         abort,
                     ) => {
                         if (entries_started[key] !== undefined) {
-                            return abort['cyclic'](stack.concat([key]))
+                            return abort.cyclic(stack.concat([key]))
                         } else {
                             const x = source.__get_entry_raw(key)
                             if (x === null) {
@@ -186,7 +186,7 @@ export namespace dictionary {
                     }
                 },
                 {
-                    'get entry': (
+                    get_entry: (
                         key,
                         abort,
                     ) => {
@@ -197,9 +197,9 @@ export namespace dictionary {
                         }
                         cyclic_references.push(temp_reference)
                         return {
-                            'get circular dependent': () => {
+                            get_circular_dependent: () => {
                                 if (temp_reference.value === undefined) {
-                                    return abort['accessing cyclic before resolved'](null)
+                                    return abort.accessing_cyclic_before_resolved(null)
                                 } else {
                                     return temp_reference.value
                                 }
@@ -217,7 +217,7 @@ export namespace dictionary {
         cyclic_references.forEach(($) => {
             const value = out[$.key]
             if (value === undefined) {
-                $.abort['no such entry']($.key)
+                $.abort.no_such_entry($.key)
             } else {
                 $.value = value
             }

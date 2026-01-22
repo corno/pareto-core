@@ -5,46 +5,46 @@ import { Circular_Dependency } from "./data/Circular_Dependency"
 export type Abort<Error> = (error: Error) => never
 
 export type Acyclic_Lookup<Type> = {
-    'get entry': (
+    get_entry: (
         key: string,
         abort: {
-            'no context lookup': Abort<null>,
-            'no such entry': Abort<string>,
-            'cyclic': Abort<string[]>,
+            no_context_lookup: Abort<null>,
+            no_such_entry: Abort<string>,
+            cyclic: Abort<string[]>,
         }
     ) => Type
-    'get possible entry': (
+    __get_entry_raw: (
         key: string,
         abort: {
-            'no context lookup': Abort<null>,
-            'cyclic': Abort<string[]>,
+            no_context_lookup: Abort<null>,
+            cyclic: Abort<string[]>,
         }
     ) => Raw_Optional_Value<Type>
 }
 
 export type Cyclic_Lookup<Type> = {
-    'get entry': (
+    get_entry: (
         key: string,
         abort: {
-            'no context lookup': Abort<null>,
-            'no such entry': Abort<string>,
-            'accessing cyclic before resolved': Abort<null>,
+            no_context_lookup: Abort<null>,
+            no_such_entry: Abort<string>,
+            accessing_cyclic_before_resolved: Abort<null>,
         }
     ) => Circular_Dependency<Type>
 }
 
 export type Iterator<Element> = {
-    'look': () => Raw_Optional_Value<Element>,
-    'look ahead': (offset: number) => Raw_Optional_Value<Element>
-    'consume': <T>(
+    look: () => Raw_Optional_Value<Element>,
+    look_ahead: (offset: number) => Raw_Optional_Value<Element>
+    consume: <T>(
         callback: (value: Element, position: number) => T,
         abort: Abort<number>
     ) => T,
-    'discard': <T>(
+    discard: <T>(
         callback: () => T
     ) => T,
-    'get position': () => number,
-    'assert finished': <T>(
+    get_position: () => number,
+    assert_finished: <T>(
         callback: () => T,
         abort: Abort<null>
     ) => T
@@ -87,17 +87,20 @@ export interface Query_Result<Output, Error> {
 }
 
 export type Stack_Lookup<Type> = {
-    'get entry': (
+    get_entry: (
         key: string,
         abort: {
-            'no context lookup': Abort<null>,
-            'no such entry': Abort<string>,
-            'cyclic': Abort<string[]>,
+            no_context_lookup: Abort<null>,
+            no_such_entry: Abort<string>,
+            cyclic: Abort<string[]>,
         }
     ) => Type
+    get_entry_depth: (
+        key: string,
+    ) => number
 }
 
 export type Text_Builder = {
-    'add snippet': ($: string) => void
-    'add character': ($: number) => void
+    add_snippet: ($: string) => void
+    add_character: ($: number) => void
 }

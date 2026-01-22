@@ -4,5 +4,5 @@
  * useful for lazy evaluation
  */
 export type Circular_Dependency<T> = {
-    'get circular dependent': () => T
+    get_circular_dependent: () => T
 }
