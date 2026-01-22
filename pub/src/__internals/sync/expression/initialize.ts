@@ -143,10 +143,10 @@ export namespace dictionary {
                         key,
                         abort,
                     ) => {
-                        if (entries_started[key] !== undefined) {
-                            return abort['cyclic'](stack.concat([key]))
-                        } else {
-                            if (out[key] === undefined) {
+                        if (out[key] === undefined) {
+                            if (entries_started[key] !== undefined) {
+                                return abort['cyclic'](stack.concat([key]))
+                            } else {
                                 inner_resolve(
                                     source.__get_entry(
                                         key,
@@ -156,32 +156,33 @@ export namespace dictionary {
                                     stack.concat([key])
                                 )
                             }
-                            // now it must be resolved, otherwise we would have aborted
-                            return out[key]
+
                         }
+                        // now it must be resolved, otherwise we would have aborted
+                        return out[key]
                     },
-                   __get_entry_raw: (
+                    __get_entry_raw: (
                         key,
                         abort,
                     ) => {
-                        if (entries_started[key] !== undefined) {
-                            return abort.cyclic(stack.concat([key]))
+                        const x = source.__get_entry_raw(key)
+                        if (x === null) {
+                            return null
                         } else {
-                            const x = source.__get_entry_raw(key)
-                            if (x === null) {
-                                return null
-                            } else {
-                                if (out[key] === undefined) {
+                            if (out[key] === undefined) {
+                                if (entries_started[key] !== undefined) {
+                                    return abort.cyclic(stack.concat([key]))
+                                } else {
                                     inner_resolve(
                                         x[0],
                                         key,
                                         stack.concat([key])
                                     )
                                 }
-                                // now it must be resolved, otherwise we would have aborted
-                                return [out[key]]
-
                             }
+                            // now it must be resolved, otherwise we would have aborted
+                            return [out[key]]
+
                         }
                     }
                 },
