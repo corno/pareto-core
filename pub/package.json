@@ -1,18 +1,17 @@
 {
-  "name": "pareto-core-internals",
-  "version": "0.25.4",
+  "name": "pareto-core",
+  "version": "0.0.1",
   "license": "ISC",
-  "description": "",
+  "description": "the core language constructs for the Pareto programming language (in TypeScript)",
   "author": "Corno",
   "keywords": [
     "pareto",
-    "internals",
-    "list_literal",
-    "dictionary_literal"
+    "core",
+    "language-constructs"
   ],
-  "homepage": "https://github.com/corno/pareto-core-internals#readme",
+  "homepage": "https://github.com/corno/pareto-core#readme",
   "bugs": {
-    "url": "https://github.com/corno/pareto-core-internals/issues"
+    "url": "https://github.com/corno/pareto-core/issues"
   },
   "dependencies": {},
   "main": "./dist/index.js",
@@ -22,6 +21,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/corno/pareto-core-internals.git"
+    "url": "git+https://github.com/corno/pareto-core.git"
   }
 }
