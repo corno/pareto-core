@@ -97,6 +97,11 @@ export type Stack_Lookup<Type> = {
     ) => Type
     get_entry_depth: (
         key: string,
+        abort: {
+            no_context_lookup: Abort<null>,
+            no_such_entry: Abort<string>,
+            cyclic: Abort<string[]>,
+        }
     ) => number
 }
 
