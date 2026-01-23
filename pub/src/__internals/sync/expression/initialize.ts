@@ -452,6 +452,17 @@ export namespace optional {
 
     export const not_set = optional_not_set
 
+    export const from_boolean = <T>(
+        condition: boolean,
+        value_if_set: T,
+    ): _pi.Optional_Value<T> => {
+        if (condition) {
+            return optional_set(value_if_set)
+        } else {
+            return optional_not_set()
+        }
+    }
+
 }
 
 export namespace state_group {
