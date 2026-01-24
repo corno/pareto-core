@@ -1,4 +1,4 @@
-import * as _pi from  "../interface"
+import * as _pi from  "../../interface"
 import { __command_promise } from './command_promise'
 
 export const __command = <Error, Parameters, Query_Resources, Command_Resources>(

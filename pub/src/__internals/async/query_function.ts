@@ -1,4 +1,4 @@
-import * as _pi from "../interface"
+import * as _pi from "../../interface"
 
 import { __query } from "./query"
 import { __query_result } from './query_result'

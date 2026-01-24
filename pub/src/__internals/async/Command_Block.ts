@@ -1,4 +1,4 @@
-import * as _pi from  "../interface"
+import * as _pi from  "../../interface"
 
 export type Command_Block<Error> = _pi.Command_Promise<Error>[]
 
