@@ -58,9 +58,10 @@ export namespace decide {
             $: _pi.Dictionary<T>,
             if_true: ($: _pi.Dictionary<T>) => RT,
             if_not_true: () => RT
-        ): RT => $.__get_number_of_entries() === 0
+        ): RT => $.__get_number_of_entries() !== 0
                 ? if_true($)
                 : if_not_true()
+
     }
 
     export namespace list {
@@ -87,7 +88,7 @@ export namespace decide {
             list: _pi.List<T>,
             if_true: ($: _pi.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__get_number_of_elements() === 0
+        ): RT => list.__get_number_of_elements() !== 0
                 ? if_true(list)
                 : if_not_true()
 
