@@ -54,11 +54,11 @@ export namespace decide {
 
     export namespace dictionary {
 
-        export const has_entries = <T>(
+        export const has_entries = <T, RT>(
             $: _pi.Dictionary<T>,
-            if_true: ($: _pi.Dictionary<T>) => T,
-            if_not_true: () => T
-        ): T => $.__get_number_of_entries() === 0
+            if_true: ($: _pi.Dictionary<T>) => RT,
+            if_not_true: () => RT
+        ): RT => $.__get_number_of_entries() === 0
                 ? if_true($)
                 : if_not_true()
     }
@@ -83,11 +83,11 @@ export namespace decide {
             () => if_not_true(),
         )
 
-        export const has_elements = <T>(
+        export const has_elements = <T, RT>(
             list: _pi.List<T>,
-            if_true: ($: _pi.List<T>) => T,
-            if_not_true: () => T
-        ): T => list.__get_number_of_elements() === 0
+            if_true: ($: _pi.List<T>) => RT,
+            if_not_true: () => RT
+        ): RT => list.__get_number_of_elements() === 0
                 ? if_true(list)
                 : if_not_true()
 
