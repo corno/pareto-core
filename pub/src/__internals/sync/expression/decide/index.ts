@@ -100,7 +100,7 @@ export namespace decide {
         if_not_set: () => RT
     ): RT => $.__decide(if_set, if_not_set)
 
-    export const state_group = <T extends readonly [string, any], RT>(input: T, callback: (output: T) => RT): RT => {
+    export const state = <T extends readonly [string, any], RT>(input: T, callback: (output: T) => RT): RT => {
         return callback(input)
     }
 

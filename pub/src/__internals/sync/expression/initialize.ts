@@ -465,7 +465,7 @@ export namespace optional {
 
 }
 
-export namespace state_group {
+export namespace state {
 
     export function block<RT extends readonly [string, any]>(callback: () => RT): RT {
         return callback()
