@@ -6,7 +6,7 @@ export type Abort<Error> = (error: Error) => never
 
 export type Acyclic_Lookup<Type> = {
     get_entry: (
-        key: string,
+        id: string,
         abort: {
             no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
@@ -14,7 +14,7 @@ export type Acyclic_Lookup<Type> = {
         }
     ) => Type
     __get_entry_raw: (
-        key: string,
+        id: string,
         abort: {
             no_context_lookup: Abort<null>,
             cyclic: Abort<string[]>,
@@ -24,7 +24,7 @@ export type Acyclic_Lookup<Type> = {
 
 export type Cyclic_Lookup<Type> = {
     get_entry: (
-        key: string,
+        id: string,
         abort: {
             no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
@@ -33,11 +33,11 @@ export type Cyclic_Lookup<Type> = {
     ) => Circular_Dependency<Type>
 }
 
-export type Iterator<Element> = {
-    look: () => Raw_Optional_Value<Element>,
-    look_ahead: (offset: number) => Raw_Optional_Value<Element>
+export type Iterator<Item> = {
+    look: () => Raw_Optional_Value<Item>,
+    look_ahead: (offset: number) => Raw_Optional_Value<Item>
     consume: <T>(
-        callback: (value: Element, position: number) => T,
+        callback: (value: Item, position: number) => T,
         abort: Abort<number>
     ) => T,
     discard: <T>(
@@ -88,7 +88,7 @@ export interface Query_Result<Output, Error> {
 
 export type Stack_Lookup<Type> = {
     get_entry: (
-        key: string,
+        id: string,
         abort: {
             no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
@@ -96,7 +96,7 @@ export type Stack_Lookup<Type> = {
         }
     ) => Type
     get_entry_depth: (
-        key: string,
+        id: string,
         abort: {
             no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,

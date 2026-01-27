@@ -11,14 +11,14 @@ import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
  * @param source An object literal
  * @returns 
  */
-export function $$<T>(source: { readonly [key: string]: T }): _pi.Dictionary<T> {
+export function $$<T>(source: { readonly [id: string]: T }): _pi.Dictionary<T> {
 
-    type Key_Value_Pair<T> = {
-        readonly 'key': string
+    type ID_Value_Pair<T> = {
+        readonly 'id': string
         readonly 'value': T
     }
 
-    type Dictionary_As_Array<T> = readonly Key_Value_Pair<T>[]
+    type Dictionary_As_Array<T> = readonly ID_Value_Pair<T>[]
 
     /**
      * this is an implementation, not public by design
@@ -29,55 +29,55 @@ export function $$<T>(source: { readonly [key: string]: T }): _pi.Dictionary<T> 
             this.source = source
         }
         public __d_map<NT>(
-            $v: (entry: T, key: string) => NT
+            $v: (entry: T, id: string) => NT
         ) {
             return new Dictionary<NT>(this.source.map(($) => {
                 return {
-                    key: $.key,
-                    value: $v($.value, $.key)
+                    id: $.id,
+                    value: $v($.value, $.id)
                 }
             }))
         }
         __to_list<New_Type>(
-            handle_value: (value: T, key: string) => New_Type
+            handle_value: (value: T, id: string) => New_Type
         ): _pi.List<New_Type> {
             return list_literal(this.source.map(($) => {
-                return handle_value($.value, $.key)
+                return handle_value($.value, $.id)
             }))
         }
 
         __get_possible_entry(
-            key: string,
+            id: string,
         ): _pi.Optional_Value<T> {
             for (let i = 0; i !== this.source.length; i += 1) {
-                const element = this.source[i]
-                if (element.key === key) {
-                    return optional.set(element.value)
+                const entry = this.source[i]
+                if (entry.id === id) {
+                    return optional.set(entry.value)
                 }
             }
             return optional.not_set()
         }
 
         __get_entry_raw(
-            key: string,
+            id: string,
         ): Raw_Optional_Value<T> {
             for (let i = 0; i !== this.source.length; i += 1) {
-                const element = this.source[i]
-                if (element.key === key) {
-                    return [element.value]
+                const entry = this.source[i]
+                if (entry.id === id) {
+                    return [entry.value]
                 }
             }
             return null
         }
 
         __get_entry(
-            key: string,
+            id: string,
             abort: _pi.Abort<null>,
         ): T {
             for (let i = 0; i !== this.source.length; i += 1) {
-                const element = this.source[i]
-                if (element.key === key) {
-                    return element.value
+                const entry = this.source[i]
+                if (entry.id === id) {
+                    return entry.value
                 }
             }
             return abort(null)
@@ -92,10 +92,10 @@ export function $$<T>(source: { readonly [key: string]: T }): _pi.Dictionary<T> 
     //first we clone the source data so that changes to that source will have no impact on this implementation.
     //only works if the set does not become extremely large
 
-    function create_dictionary_as_array<X>(source: { readonly [key: string]: X }): Dictionary_As_Array<X> {
-        const imp: Key_Value_Pair<X>[] = []
-        Object.keys(source).forEach((key) => {
-            imp.push({ key: key, value: source[key] })
+    function create_dictionary_as_array<X>(source: { readonly [id: string]: X }): Dictionary_As_Array<X> {
+        const imp: ID_Value_Pair<X>[] = []
+        Object.keys(source).forEach((id) => {
+            imp.push({ id: id, value: source[id] })
         })
         return imp
     }

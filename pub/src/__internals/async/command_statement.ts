@@ -12,47 +12,6 @@ import { create_asynchronous_processes_monitor } from "./create_asynchronous_pro
 
 export namespace listx {
 
-    // export const deprecated_parallel = <Error, Element_Error>(
-    //     the_array: _pi.List<_pi.Command_Promise<Element_Error>>,
-    //     errors_aggregator: _pi.Transformer<_pi.List<Element_Error>, Error>,
-    // ): _pi.Command_Promise<Error> => {
-    //     return __command_promise({
-    //         'execute': (
-    //             on_success,
-    //             on_error,
-    //         ) => {
-
-    //             const errors_builder = _pinternals.create_asynchronous_list_builder<Element_Error>()
-
-    //             _pinternals.create_asynchronous_processes_monitor(
-    //                 (monitor) => {
-    //                     the_array.__d_map(($) => {
-    //                         monitor['report process started']()
-
-    //                         $.__start(
-    //                             () => {
-    //                                 monitor['report process finished']()
-    //                             },
-    //                             (e) => {
-    //                                 errors_builder['add item'](e)
-    //                                 monitor['report process finished']()
-    //                             }
-    //                         )
-    //                     })
-    //                 },
-    //                 () => {
-    //                     const errors = errors_builder['get list']()
-    //                     if (errors.is_empty()) {
-    //                         on_success()
-    //                     } else {
-    //                         on_error(errors_aggregator(errors))
-    //                     }
-    //                 }
-    //             )
-    //         }
-    //     })
-    // }
-
     export const serie = <Error>(
         array: _pi.List<_pi.Command_Promise<Error>>,
     ): _pi.Command_Promise<Error> => {
@@ -89,7 +48,7 @@ export namespace dictionaryx {
 
     export const parallel = <T, Error, Entry_Error>(
         dictionary: _pi.Dictionary<T>,
-        parametrized_command_block: (value: T, key: string) => Command_Block<Entry_Error>,
+        parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
         aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
     ): _pi.Command_Promise<Error> => {
         return __command_promise({
@@ -102,15 +61,15 @@ export namespace dictionaryx {
 
                 create_asynchronous_processes_monitor(
                     (monitor) => {
-                        dictionary.__d_map(($, key) => {
+                        dictionary.__d_map(($, id) => {
                             monitor['report process started']()
 
-                            __handle_command_block(parametrized_command_block($, key)).__start(
+                            __handle_command_block(parametrized_command_block($, id)).__start(
                                 () => {
                                     monitor['report process finished']()
                                 },
                                 (e) => {
-                                    errors_builder['add entry'](key, e)
+                                    errors_builder['add entry'](id, e)
                                     monitor['report process finished']()
                                 }
                             )
@@ -133,7 +92,7 @@ export namespace dictionaryx {
 
         export const query = <T, Error, Entry_Error>(
             query_result: _pi.Query_Result<_pi.Dictionary<T>, Error>,
-            parametrized_command_block: (value: T, key: string) => Command_Block<Entry_Error>,
+            parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
             aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
         ): _pi.Command_Promise<Error> => {
             return __command_promise({
@@ -148,15 +107,15 @@ export namespace dictionaryx {
                         (dictionary) => {
                             create_asynchronous_processes_monitor(
                                 (monitor) => {
-                                    dictionary.__d_map(($, key) => {
+                                    dictionary.__d_map(($, id) => {
                                         monitor['report process started']()
 
-                                        __handle_command_block(parametrized_command_block($, key)).__start(
+                                        __handle_command_block(parametrized_command_block($, id)).__start(
                                             () => {
                                                 monitor['report process finished']()
                                             },
                                             (e) => {
-                                                errors_builder['add entry'](key, e)
+                                                errors_builder['add entry'](id, e)
                                                 monitor['report process finished']()
                                             }
                                         )

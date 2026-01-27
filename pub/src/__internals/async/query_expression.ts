@@ -18,16 +18,16 @@ export namespace dictionaryx {
 
             create_asynchronous_processes_monitor(
                 (monitor) => {
-                    dictionary.__d_map(($, key) => {
+                    dictionary.__d_map(($, id) => {
                         monitor['report process started']()
                         $.__extract_data(
                             ($) => {
-                                results_builder['add entry'](key, $)
+                                results_builder['add entry'](id, $)
                                 monitor['report process finished']()
                             },
                             ($) => {
                                 has_errors = true
-                                errors_builder['add entry'](key, $)
+                                errors_builder['add entry'](id, $)
                                 monitor['report process finished']()
                             },
                         )

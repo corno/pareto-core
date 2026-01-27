@@ -60,29 +60,29 @@ export namespace decide {
 
     export namespace list {
 
-        export const has_first_element = <T, RT>(
+        export const has_first_item = <T, RT>(
             list: _pi.List<T>,
             if_true: ($: T, rest: _pi.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__get_possible_element_at(0).__decide(
+        ): RT => list.__get_possible_item_at(0).__decide(
             ($) => if_true($, list_literal(list.__get_raw_copy().slice(1))),
             () => if_not_true(),
         )
 
-        export const has_last_element = <T, RT>(
+        export const has_last_item = <T, RT>(
             list: _pi.List<T>,
             if_true: ($: T, rest: _pi.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__get_possible_element_at(list.__get_number_of_elements() - 1).__decide(
+        ): RT => list.__get_possible_item_at(list.__get_number_of_items() - 1).__decide(
             ($) => if_true($, list_literal(list.__get_raw_copy().slice(0, -1))),
             () => if_not_true(),
         )
 
-        export const has_elements = <T, RT>(
+        export const has_items = <T, RT>(
             list: _pi.List<T>,
             if_true: ($: _pi.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__get_number_of_elements() !== 0
+        ): RT => list.__get_number_of_items() !== 0
                 ? if_true(list)
                 : if_not_true()
 

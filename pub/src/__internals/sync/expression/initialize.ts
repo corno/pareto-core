@@ -16,7 +16,7 @@ export namespace boolean {
     export const list_is_empty = <T>(
         $: _pi.List<T>,
     ): boolean => {
-        return $.__get_number_of_elements() === 0
+        return $.__get_number_of_items() === 0
     }
 
 }
@@ -45,13 +45,13 @@ export namespace dictionary {
 
     export const from_list = <T, NT>(
         list: _pi.List<T>,
-        get_key: (item: T) => string,
+        get_id: (item: T) => string,
         get_value: (item: T) => NT,
         abort: _pi.Abort<['duplicate id in list to dictionary', null]>,
     ): _pi.Dictionary<NT> => {
         const temp: { [id: string]: NT } = {}
         list.__for_each(($) => {
-            const id = get_key($)
+            const id = get_id($)
             if (temp[id] !== undefined) {
                 abort(['duplicate id in list to dictionary', null])
             }
@@ -62,29 +62,29 @@ export namespace dictionary {
 
     export const group_dictionary = <T>(
         dictionary: _pi.Dictionary<T>,
-        get_key: (item: T, id: string) => string,
+        get_id: (item: T, id: string) => string,
     ): _pi.Dictionary<_pi.Dictionary<T>> => {
         const temp: { [id: string]: { [id: string]: T } } = {}
         dictionary.__to_list(($, id) => ({
             id: id,
             value: $,
         })).__for_each(($) => {
-            const groupKey = get_key($.value, $.id)
-            if (temp[groupKey] === undefined) {
-                temp[groupKey] = {}
+            const group_id = get_id($.value, $.id)
+            if (temp[group_id] === undefined) {
+                temp[group_id] = {}
             }
-            temp[groupKey][$.id] = $.value
+            temp[group_id][$.id] = $.value
         })
         return dictionary_literal(temp).__d_map(($) => dictionary_literal($))
     }
 
     export const group_list = <T>(
         list: _pi.List<T>,
-        get_key: (item: T) => string,
+        get_id: (item: T) => string,
     ): _pi.Dictionary<_pi.List<T>> => {
         const temp: { [id: string]: T[] } = {}
         list.__for_each(($) => {
-            const id = get_key($)
+            const id = get_id($)
             if (temp[id] === undefined) {
                 temp[id] = []
             }
@@ -109,17 +109,17 @@ export namespace dictionary {
         source: _pi.Dictionary<Unresolved>,
         handle_entry: (
             $: Unresolved,
-            key: string,
+            id: string,
             acyclic_lookup: _pi.Acyclic_Lookup<Resolved>,
             cyclic_lookup: _pi.Cyclic_Lookup<Resolved>,
         ) => Resolved,
     ): _pi.Dictionary<Resolved> => {
-        const out: { [key: string]: Resolved } = {}
+        const out: { [id: string]: Resolved } = {}
 
-        const entries_started: { [key: string]: null } = {}
+        const entries_started: { [id: string]: null } = {}
 
         type Cyclic_Reference = {
-            'key': string,
+            'id': string,
             'value': undefined | Resolved,
             'abort': {
                 no_such_entry: _pi.Abort<string>,
@@ -129,70 +129,70 @@ export namespace dictionary {
 
         const cyclic_references: Cyclic_Reference[] = []
 
-        const inner_resolve = ($: Unresolved, key: string, stack: string[]): void => {
-            if (out[key] !== undefined) {
+        const inner_resolve = ($: Unresolved, id: string, stack: string[]): void => {
+            if (out[id] !== undefined) {
                 // already resolved
                 return
             }
-            entries_started[key] = null
-            out[key] = handle_entry(
+            entries_started[id] = null
+            out[id] = handle_entry(
                 $,
-                key,
+                id,
                 {
                     get_entry: (
-                        key,
+                        id,
                         abort,
                     ) => {
-                        if (out[key] === undefined) {
-                            if (entries_started[key] !== undefined) {
-                                return abort['cyclic'](stack.concat([key]))
+                        if (out[id] === undefined) {
+                            if (entries_started[id] !== undefined) {
+                                return abort['cyclic'](stack.concat([id]))
                             } else {
                                 inner_resolve(
                                     source.__get_entry(
-                                        key,
-                                        () => abort.no_such_entry(key)
+                                        id,
+                                        () => abort.no_such_entry(id)
                                     ),
-                                    key,
-                                    stack.concat([key])
+                                    id,
+                                    stack.concat([id])
                                 )
                             }
 
                         }
                         // now it must be resolved, otherwise we would have aborted
-                        return out[key]
+                        return out[id]
                     },
                     __get_entry_raw: (
-                        key,
+                        id,
                         abort,
                     ) => {
-                        const x = source.__get_entry_raw(key)
+                        const x = source.__get_entry_raw(id)
                         if (x === null) {
                             return null
                         } else {
-                            if (out[key] === undefined) {
-                                if (entries_started[key] !== undefined) {
-                                    return abort.cyclic(stack.concat([key]))
+                            if (out[id] === undefined) {
+                                if (entries_started[id] !== undefined) {
+                                    return abort.cyclic(stack.concat([id]))
                                 } else {
                                     inner_resolve(
                                         x[0],
-                                        key,
-                                        stack.concat([key])
+                                        id,
+                                        stack.concat([id])
                                     )
                                 }
                             }
                             // now it must be resolved, otherwise we would have aborted
-                            return [out[key]]
+                            return [out[id]]
 
                         }
                     }
                 },
                 {
                     get_entry: (
-                        key,
+                        id,
                         abort,
                     ) => {
                         const temp_reference: Cyclic_Reference = {
-                            'key': key,
+                            'id': id,
                             'value': undefined,
                             'abort': abort,
                         }
@@ -211,14 +211,14 @@ export namespace dictionary {
             )
         }
 
-        source.__d_map(($, key) => {
-            inner_resolve($, key, [key])
+        source.__d_map(($, id) => {
+            inner_resolve($, id, [id])
         })
 
         cyclic_references.forEach(($) => {
-            const value = out[$.key]
+            const value = out[$.id]
             if (value === undefined) {
-                $.abort.no_such_entry($.key)
+                $.abort.no_such_entry($.id)
             } else {
                 $.value = value
             }
@@ -268,13 +268,13 @@ export namespace integer {
 export namespace list {
 
     type List_Builder<T> = {
-        'add element': ($: T) => void
+        'add item': ($: T) => void
         'add list': ($: _pi.List<T>) => void
     }
     export const deprecated_build = <T>($: ($c: List_Builder<T>) => void): _pi.List<T> => {
         const temp: T[] = []
         $({
-            'add element': ($) => {
+            'add item': ($) => {
                 temp.push($)
             },
             'add list': ($) => {
@@ -424,10 +424,10 @@ export namespace natural {
         return dictionary.__get_number_of_entries()
     }
 
-    export const amount_of_list_elements = <T>(
+    export const amount_of_list_items = <T>(
         list: _pi.List<T>,
     ): number => {
-        return list.__get_number_of_elements()
+        return list.__get_number_of_items()
     }
 
     export const source_column = (depth: number): number => {

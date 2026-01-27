@@ -17,25 +17,25 @@ export * from "./__internals/sync/expression/initialize"
 
 
 type Dictionary_Builder<T> = {
-    'add entry': (key: string, value: T) => void
+    'add entry': (id: string, value: T) => void
 }
 
 import { $$ as _p_dictionary_literal } from "./__internals/sync/expression/literals/dictionary"
 export const deprecated_build_dictionary = <T>(
     $: ($c: Dictionary_Builder<T>) => void,
-    abort?: _pi.Abort<['duplicate key in dictionary literal', null]>,
+    abort?: _pi.Abort<['duplicate id in dictionary literal', null]>,
 ): _pi.Dictionary<T> => {
-    const temp: { [key: string]: T } = {}
+    const temp: { [id: string]: T } = {}
     $({
-        'add entry': (key, $) => {
-            if (key in temp) {
+        'add entry': (id, $) => {
+            if (id in temp) {
                 if (abort !== undefined) {
-                    return abort(['duplicate key in dictionary literal', null])
+                    return abort(['duplicate id in dictionary literal', null])
                 } else {
-                    throw new Error(`duplicate key in dictionary literal: ${key}`)
+                    throw new Error(`duplicate id in dictionary literal: ${id}`)
                 }
             }
-            temp[key] = $
+            temp[id] = $
         }
     })
     return _p_dictionary_literal(temp)

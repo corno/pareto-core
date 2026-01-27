@@ -27,7 +27,7 @@ export function $$<T>(source: readonly T[]): _pi.List<T> {
             }))
         }
 
-        __get_number_of_elements() {
+        __get_number_of_items() {
             return this.data.length
         }
 
@@ -38,14 +38,14 @@ export function $$<T>(source: readonly T[]): _pi.List<T> {
             })
         }
 
-        __get_possible_element_at(index: number) {
+        __get_possible_item_at(index: number) {
             if (index < 0 || index >= this.data.length) {
                 return optional.not_set<T>()
             }
             return optional.set(this.data[index])
         }
 
-        __get_element_at(
+        __get_item_at(
             index: number,
             abort: _pi.Abort<null>,
         ) {
@@ -55,7 +55,7 @@ export function $$<T>(source: readonly T[]): _pi.List<T> {
             return this.data[index]
         }
 
-        __get_element_at_raw(
+        __get_item_at_raw(
             index: number,
         ): Raw_Optional_Value<T> {
             if (index < 0 || index >= this.data.length) {

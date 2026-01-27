@@ -51,27 +51,27 @@ export function deprecated_cc<T, RT>(input: T, callback: (output: T) => RT): RT 
     return callback(input)
 }
 
-export const iterate = <Element, Return_Type>(
-    $: _pi.List<Element>,
-    handler: ($iter: _pi.Iterator<Element>) => Return_Type,
+export const iterate = <Item, Return_Type>(
+    $: _pi.List<Item>,
+    handler: ($iter: _pi.Iterator<Item>) => Return_Type,
 ): Return_Type => {
 
-    const length = $.__get_number_of_elements()
+    const length = $.__get_number_of_items()
 
     let position = 0
 
     return handler({
         look: () => {
-            return $.__get_element_at_raw(position)
+            return $.__get_item_at_raw(position)
         },
         look_ahead: (offset: number) => {
-            return $.__get_element_at_raw(position + offset)
+            return $.__get_item_at_raw(position + offset)
         },
         consume: (
             callback,
             abort
         ) => {
-            const current = $.__get_element_at(position, () => abort(position))
+            const current = $.__get_item_at(position, () => abort(position))
             position += 1            
             const result = callback(current, position)
             return result
