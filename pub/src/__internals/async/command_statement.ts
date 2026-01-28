@@ -379,6 +379,35 @@ export namespace if_ {
         })
     }
 
+
+
+    export const executed_successfully = <Target_Error, Block_Error>(
+        command_block: Command_Block<Block_Error>,
+        on_result: ($: boolean) => Command_Block<Target_Error>,
+    ): _pi.Command_Promise<Target_Error> => {
+        return __command_promise({
+            'execute': (
+                on_success,
+                on_error,
+            ) => {
+                __handle_command_block(command_block).__start(
+                    () => {
+                        __handle_command_block(on_result(true)).__start(
+                            on_success,
+                            on_error,
+                        )
+                    },
+                    (e) => {
+                        __handle_command_block(on_result(false)).__start(
+                            on_success,
+                            on_error,
+                        )
+                    }
+                )
+            }
+        })
+    }
+
 }
 
 
