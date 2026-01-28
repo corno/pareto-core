@@ -139,7 +139,7 @@ export namespace dictionaryx {
     }
 }
 
-export const create_error_handling_context = <Target_Error, Block_Error>(
+export const handle_error = <Target_Error, Block_Error>(
     command_block: Command_Block<Block_Error>,
     parametrized_command_block: ($v: Block_Error) => Command_Block<Target_Error>,
     new_error: Target_Error,
@@ -289,6 +289,9 @@ export const refine_stacked = <Error, Staging_Output, Parent_Data>(
 
 
 export namespace if_ {
+
+
+
     export const direct = <Error>(
         precondition: boolean,
         command_block: Command_Block<Error>,
@@ -341,6 +344,36 @@ export namespace if_ {
                         }
                     },
                     on_error
+                )
+            }
+        })
+    }
+
+
+
+    export const on_successfully_executed = <Target_Error, Block_Error>(
+        command_block: Command_Block<Block_Error>,
+        if_true: () => Command_Block<Target_Error>,
+        if_false: ($v: Block_Error) => Command_Block<Target_Error>,
+    ): _pi.Command_Promise<Target_Error> => {
+        return __command_promise({
+            'execute': (
+                on_success,
+                on_error,
+            ) => {
+                __handle_command_block(command_block).__start(
+                    () => {
+                        __handle_command_block(if_true()).__start(
+                            on_success,
+                            on_error,
+                        )
+                    },
+                    (e) => {
+                        __handle_command_block(if_false(e)).__start(
+                            on_success,
+                            on_error,
+                        )
+                    }
                 )
             }
         })
