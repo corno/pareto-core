@@ -230,6 +230,17 @@ export namespace dictionary {
 
 }
 
+export namespace group {
+
+    export const resolve = <Unresolved, Resolved>(
+        source: Unresolved,
+        callback: (
+            $: Unresolved,
+        ) => Resolved,
+    ): Resolved => callback(source)
+    
+}
+
 export namespace integer {
 
     /**
