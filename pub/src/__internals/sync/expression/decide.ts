@@ -1,5 +1,5 @@
-import * as _pi from "../../../../interface"
-import { $$ as list_literal } from "../literals/list"
+import * as _pi from "../../../interface"
+import { $$ as list_literal } from "./literals/list"
 
 export type State<T> = readonly [string, T]
 
@@ -95,6 +95,10 @@ export namespace decide {
     ): RT => $.__decide(if_set, if_not_set)
 
     export const state = <T extends readonly [string, any], RT>(input: T, callback: (output: T) => RT): RT => {
+        return callback(input)
+    }
+
+    export const text = <RT>(input: string, callback: (output: string) => RT): RT => {
         return callback(input)
     }
 
