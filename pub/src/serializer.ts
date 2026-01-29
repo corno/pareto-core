@@ -1,7 +1,5 @@
 import * as _pi from "./interface"
 
-import { $$ as deprecated_get_location_info } from "./__internals/sync/get_location_info"
-
 export namespace text {
 
     export const deprecated_build = (
@@ -32,10 +30,6 @@ export namespace text {
             out += String.fromCharCode(...chunk);
         }
         return out
-    }
-
-    export const source_file = (depth: number): string => {
-        return deprecated_get_location_info(depth).file
     }
 
 }

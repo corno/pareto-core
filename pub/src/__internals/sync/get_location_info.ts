@@ -45,7 +45,7 @@ export function $$(depth: number): _pi.Deprecated_Source_Location {
         throw new Error(`UNEXPECTED LOCATION FORMAT (CHECK THE DEPTH PARAMETER): ${line} (Expected 'file:line:column')`)
     }
     return {
-        'file': split[0],
+        'document resource identifier': split[0],
         'line': Number(split[1]),
         'column': Number(split[2]),
     }
