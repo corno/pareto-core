@@ -17,16 +17,12 @@ export interface List<T> {
 
     __get_number_of_items(): number
 
-    __get_possible_item_at(index: number): Optional_Value<T>
+    __deprecated_get_possible_item_at(index: number): Optional_Value<T>
     
-    __get_item_at(
+    __deprecated_get_item_at(
         index: number,
         abort: Abort<null>
     ): T
- 
-    __get_item_at_raw(
-        index: number,
-    ): Raw_Optional_Value<T>
 
     /**
      * This method is only to be used by resources

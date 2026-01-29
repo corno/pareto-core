@@ -271,6 +271,7 @@ export namespace list {
         'add item': ($: T) => void
         'add list': ($: _pi.List<T>) => void
     }
+    
     export const deprecated_build = <T>($: ($c: List_Builder<T>) => void): _pi.List<T> => {
         const temp: T[] = []
         $({
@@ -325,12 +326,6 @@ export namespace list {
         return $.__to_list(handle_entry)
     }
 
-    export const from_single = <T>(
-        $: T
-    ): _pi.List<T> => {
-        return list_literal([$])
-    }
-
     export const literal = list_literal
 
     export type NonUndefined = null | {}
@@ -381,31 +376,53 @@ export namespace list {
 
     export const map = <T, New_Type>(
         $: _pi.List<T>,
-        handle_value: (
+        handle_item: (
             value: T,
         ) => New_Type,
     ): _pi.List<New_Type> => {
-        return $.__l_map(handle_value)
+        return $.__l_map(handle_item)
     }
 
-    export const map_with_state = <T, New_Type, State>(
-        $: _pi.List<T>,
+    export const map_with_state = <Source_Item, Target_Item, State, Result_Type>(
+        $: _pi.List<Source_Item>,
         initial_state: State,
-        handle_value: (
-            value: T,
+        handle_item: (
+            value: Source_Item,
             state: State
-        ) => New_Type,
+        ) => Target_Item,
         update_state: (
-            value: T,
+            value: Target_Item,
             state: State
-        ) => State
-    ): _pi.List<New_Type> => {
+        ) => State,
+        wrapup: (
+            final_list: _pi.List<Target_Item>,
+            final_state: State
+        ) => Result_Type,
+    ): Result_Type => {
         let current_state = initial_state
-        return $.__l_map(($) => {
-            const result = handle_value($, current_state)
+        return wrapup(
+            $.__l_map(($) => {
+                const result = handle_item($, current_state)
+                current_state = update_state(result, current_state)
+                return result
+            }),
+            current_state
+        )
+    }
+
+    export const reduce = <Item, Result_Type>(
+        $: _pi.List<Item>,
+        initial_state: Result_Type,
+        update_state: (
+            value: Item,
+            current: Result_Type
+        ) => Result_Type,
+    ): Result_Type => {
+        let current_state = initial_state
+        $.__for_each(($) => {
             current_state = update_state($, current_state)
-            return result
         })
+        return current_state
     }
 
     export const reverse = <T>(
@@ -468,6 +485,7 @@ export namespace optional {
 export namespace state {
 
     export function block<RT extends readonly [string, any]>(callback: () => RT): RT {
+        //this seems to be only used for switching on strings
         return callback()
     }
 
