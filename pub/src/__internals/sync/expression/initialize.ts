@@ -232,13 +232,11 @@ export namespace dictionary {
 
 export namespace group {
 
-    export const resolve = <Unresolved, Resolved>(
-        source: Unresolved,
+    export const resolve = <Resolved>(
         callback: (
-            $: Unresolved,
         ) => Resolved,
-    ): Resolved => callback(source)
-    
+    ): Resolved => callback()
+
 }
 
 export namespace integer {
