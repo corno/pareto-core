@@ -13,15 +13,6 @@ export function not_set<T>(): _pi.Optional_Value<T> {
             return not_set()
         }
 
-        public __o_map<NT>(
-        ) {
-            return not_set<NT>()
-        }
-
-        public __is_set(): boolean {
-            return false
-        }
-
         public __extract_data(
             set: ($: T) => void,
             not_set: () => void,
@@ -48,16 +39,6 @@ export function set<T>($: T): _pi.Optional_Value<T> {
         ) {
             return set(this.value)
 
-        }
-
-        public __o_map<NT>(
-            if_set: ($: T) => NT,
-        ) {
-            return set(if_set(this.value))
-        }
-
-        public __is_set(): boolean {
-            return true
         }
 
         public __extract_data(

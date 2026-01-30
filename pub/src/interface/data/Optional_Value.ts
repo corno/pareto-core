@@ -16,12 +16,6 @@ export interface Optional_Value<T> {
         not_set: () => NT,
     ): NT
 
-    __o_map<NT>(
-        set: ($: T) => NT,
-    ): Optional_Value<NT>
-
-    __is_set(): boolean
-
     __extract_data(
         set: ($: T) => void,
         not_set: () => void,

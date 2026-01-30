@@ -19,6 +19,15 @@ export namespace boolean {
         return $.__get_number_of_items() === 0
     }
 
+    export const optional_is_set = <T>(
+        $: _pi.Optional_Value<T>,
+    ): boolean => {
+        return $.__decide(
+            () => true,
+            () => false
+        )
+    }
+
 }
 
 export namespace dictionary {
@@ -487,6 +496,16 @@ export namespace optional {
         } else {
             return optional_not_set()
         }
+    }
+
+    export const map = <T, New_Type>(
+        $: _pi.Optional_Value<T>,
+        handle_value: (value: T) => New_Type,
+    ): _pi.Optional_Value<New_Type> => {
+        return $.__decide(
+            (value) => optional_set(handle_value(value)),
+            () => optional_not_set()
+        )
     }
 
 }
