@@ -46,6 +46,12 @@ export function au<RT>(_x: never): RT {
 
 export namespace decide {
 
+    export const boolean = <RT>(
+        $: boolean,
+        if_true: () => RT,
+        if_false: () => RT
+    ): RT => $ ? if_true() : if_false()
+
     export namespace dictionary {
 
         export const has_entries = <T, RT>(
