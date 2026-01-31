@@ -8,7 +8,7 @@ export namespace acyclic {
         __get_entry_raw: (id, abort) => abort.no_context_lookup(null),
     })
 
-    export const select_from_dictionary = <T>(
+    export const from_resolved_dictionary = <T>(
         dict: _pi.Dictionary<T>,
     ): _pi.Acyclic_Lookup<T> => ({
         get_entry: (id, abort) => dict.__get_entry(
@@ -44,11 +44,11 @@ export namespace stack {
 
     export const push = <T>(
         stack: _pi.Stack_Lookup<T>,
-        acyclic: _pi.Acyclic_Lookup<T>,
+        item: _pi.Acyclic_Lookup<T>,
     ): _pi.Stack_Lookup<T> => {
         return ({
             get_entry: (id, abort) => {
-                const temp = acyclic.__get_entry_raw(
+                const temp = item.__get_entry_raw(
                     id,
                     abort,
                 )
@@ -62,7 +62,7 @@ export namespace stack {
             },
             get_entry_depth: (id, abort) => {
 
-                const temp = acyclic.__get_entry_raw(
+                const temp = item.__get_entry_raw(
                     id,
                     abort,
                 )
