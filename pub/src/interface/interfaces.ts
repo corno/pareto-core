@@ -8,16 +8,16 @@ export type Acyclic_Lookup<Type> = {
     get_entry: (
         id: string,
         abort: {
-            no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
-            cyclic: Abort<string[]>,
+            no_context_lookup: Abort<null>,
+            cycle_detected: Abort<string[]>,
         }
     ) => Type
     __get_entry_raw: (
         id: string,
         abort: {
             no_context_lookup: Abort<null>,
-            cyclic: Abort<string[]>,
+            cycle_detected: Abort<string[]>,
         }
     ) => Raw_Optional_Value<Type>
 }
@@ -26,8 +26,8 @@ export type Cyclic_Lookup<Type> = {
     get_entry: (
         id: string,
         abort: {
-            no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
+            no_context_lookup: Abort<null>,
             accessing_cyclic_before_resolved: Abort<null>,
         }
     ) => Circular_Dependency<Type>
@@ -92,7 +92,7 @@ export type Stack_Lookup<Type> = {
         abort: {
             no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
-            cyclic: Abort<string[]>,
+            cycle_detected: Abort<string[]>,
         }
     ) => Type
     get_entry_depth: (
@@ -100,7 +100,7 @@ export type Stack_Lookup<Type> = {
         abort: {
             no_context_lookup: Abort<null>,
             no_such_entry: Abort<string>,
-            cyclic: Abort<string[]>,
+            cycle_detected: Abort<string[]>,
         }
     ) => number
 }

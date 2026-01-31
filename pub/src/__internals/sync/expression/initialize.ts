@@ -154,7 +154,7 @@ export namespace dictionary {
                     ) => {
                         if (out[id] === undefined) {
                             if (entries_started[id] !== undefined) {
-                                return abort['cyclic'](stack.concat([id]))
+                                return abort['cycle_detected'](stack.concat([id]))
                             } else {
                                 inner_resolve(
                                     source.__get_entry(
@@ -180,7 +180,7 @@ export namespace dictionary {
                         } else {
                             if (out[id] === undefined) {
                                 if (entries_started[id] !== undefined) {
-                                    return abort.cyclic(stack.concat([id]))
+                                    return abort.cycle_detected(stack.concat([id]))
                                 } else {
                                     inner_resolve(
                                         x[0],
