@@ -1,4 +1,4 @@
 
 export * from "./__internals/sync/expression/decide"
 
-export * from "./__internals/sync/expression/initialize"
+export * from "./__internals/sync/expression/assign"

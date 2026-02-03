@@ -1,6 +1,6 @@
 import * as _pi from  "../../interface"
-import { $$ as dictionary_literal } from '../sync/expression/literals/dictionary'
-import { $$ as list_literal } from '../sync/expression/literals/list'
+import { $$ as dictionary_literal } from '../sync/expression/literals/Dictionary'
+import { $$ as list_literal } from '../sync/expression/literals/List'
 
 export type Asynchronous_Dictionary_Builder<Entry> = {
     'add entry': (id: string, entry: Entry) => void,
@@ -35,9 +35,7 @@ export const create_asynchronous_list_builder = <Item>(): Asynchronous_List_Buil
             items.push(item)
         },
         'add list': (list: _pi.List<Item>) => {
-            list.__for_each(($) => {
-                items.push($)
-            })
+            items.push(...list.__get_raw_copy())
         },
 
         'get list': () => {

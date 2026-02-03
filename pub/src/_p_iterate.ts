@@ -1,9 +1,9 @@
 import * as _pi from "./interface"
 
-export const _p_iterate = <Item, Return_Type>(
+export default function _p_iterate <Item, Return_Type>(
     $: _pi.List<Item>,
     handler: ($iter: _pi.Iterator<Item>) => Return_Type,
-): Return_Type => {
+): Return_Type {
 
     const raw = $.__get_raw_copy()
 

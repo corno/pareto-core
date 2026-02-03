@@ -1,5 +1,5 @@
 import * as _pi from "../../../interface"
-import { $$ as list_literal } from "./literals/list"
+import { $$ as list_literal } from "./literals/List"
 
 export type State<T> = readonly [string, T]
 

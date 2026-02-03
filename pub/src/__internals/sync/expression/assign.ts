@@ -1,9 +1,9 @@
 import * as _pi from "../../../interface"
 
-import { $$ as deprecated_get_location_info } from "../get_location_info"
-import { $$ as dictionary_literal } from "./literals/dictionary"
-import { $$ as list_literal } from "./literals/list"
-import { set as optional_set, not_set as optional_not_set } from "./literals/optional"
+import { $$ as deprecated_get_location_info } from "../../get_location_info"
+import { $$ as dictionary_literal } from "./literals/Dictionary"
+import { $$ as list_literal } from "./literals/List"
+import { Set_Optional_Value, Not_Set_Optional_Value } from "./literals/Optional"
 
 export namespace boolean {
 
@@ -59,7 +59,7 @@ export namespace dictionary {
         abort: _pi.Abort<['duplicate id in list to dictionary', null]>,
     ): _pi.Dictionary<NT> => {
         const temp: { [id: string]: NT } = {}
-        list.__for_each(($) => {
+        list.__get_raw_copy().forEach(($) => {
             const id = get_id($)
             if (temp[id] !== undefined) {
                 abort(['duplicate id in list to dictionary', null])
@@ -77,7 +77,7 @@ export namespace dictionary {
         dictionary.__to_list(($, id) => ({
             id: id,
             value: $,
-        })).__for_each(($) => {
+        })).__get_raw_copy().forEach(($) => {
             const group_id = get_id($.value, $.id)
             if (temp[group_id] === undefined) {
                 temp[group_id] = {}
@@ -92,7 +92,7 @@ export namespace dictionary {
         get_id: (item: T) => string,
     ): _pi.Dictionary<_pi.List<T>> => {
         const temp: { [id: string]: T[] } = {}
-        list.__for_each(($) => {
+        list.__get_raw_copy().forEach(($) => {
             const id = get_id($)
             if (temp[id] === undefined) {
                 temp[id] = []
@@ -289,7 +289,7 @@ export namespace list {
         'add item': ($: T) => void
         'add list': ($: _pi.List<T>) => void
     }
-    
+
     export const deprecated_build = <T>($: ($c: List_Builder<T>) => void): _pi.List<T> => {
         const temp: T[] = []
         $({
@@ -310,7 +310,7 @@ export namespace list {
         ) => _pi.Optional_Value<New_Type>
     ): _pi.List<New_Type> => {
         const out: New_Type[] = []
-        $.__for_each(($) => {
+        $.__get_raw_copy().forEach(($) => {
             const result = handle_value($)
             result.__extract_data(
                 ($) => {
@@ -327,9 +327,9 @@ export namespace list {
         callback: ($: T) => _pi.List<NT>,
     ): _pi.List<NT> => {
         const out: NT[] = []
-        lists.__for_each(($) => {
+        lists.__get_raw_copy().forEach(($) => {
             const innerList = callback($)
-            innerList.__for_each(($) => {
+            innerList.__get_raw_copy().forEach(($) => {
                 out.push($)
             })
 
@@ -360,9 +360,7 @@ export namespace list {
                     out.push($)
                 })
             } else {
-                $.__for_each(($) => {
-                    out.push($)
-                })
+                out.push(...$.__get_raw_copy())
             }
 
         })
@@ -383,9 +381,7 @@ export namespace list {
                     flatten($)
                 })
             } else {
-                n.__for_each(($) => {
-                    out.push($)
-                })
+                out.push(...n.__get_raw_copy())
             }
         }
         flatten(nested)
@@ -437,7 +433,7 @@ export namespace list {
         ) => Result_Type,
     ): Result_Type => {
         let current_state = initial_state
-        $.__for_each(($) => {
+        $.__get_raw_copy().forEach(($) => {
             current_state = update_state($, current_state)
         })
         return current_state
@@ -483,18 +479,22 @@ export namespace optional {
         return callback()
     }
 
-    export const set = optional_set
+    export const set = <T>(value: T): _pi.Optional_Value<T> => {
+        return new Set_Optional_Value(value)
+    }
 
-    export const not_set = optional_not_set
+    export const not_set = <T>(): _pi.Optional_Value<T> => {
+        return new Not_Set_Optional_Value<T>()
+    }
 
     export const from_boolean = <T>(
         condition: boolean,
         value_if_set: T,
     ): _pi.Optional_Value<T> => {
         if (condition) {
-            return optional_set(value_if_set)
+            return optional.set(value_if_set)
         } else {
-            return optional_not_set()
+            return optional.not_set()
         }
     }
 
@@ -503,8 +503,8 @@ export namespace optional {
         handle_value: (value: T) => New_Type,
     ): _pi.Optional_Value<New_Type> => {
         return $.__decide(
-            (value) => optional_set(handle_value(value)),
-            () => optional_not_set()
+            (value) => optional.set(handle_value(value)),
+            () => optional.not_set()
         )
     }
 

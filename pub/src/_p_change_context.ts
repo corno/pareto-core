@@ -13,6 +13,6 @@
  * @param callback 
  * @returns 
  */
-export function _p_cc<T, RT>(input: T, callback: (output: T) => RT): RT {
+export default function _p_cc<T, RT>(input: T, callback: (output: T) => RT): RT {
     return callback(input)
 }

@@ -1,7 +1,7 @@
 
-import { $$ as dictionary_literal } from "../expression/literals/dictionary"
-import { $$ as list_literal } from "../expression/literals/list"
-import * as initialize from "../expression/initialize"
+import { $$ as dictionary_literal } from "./expression/literals/Dictionary"
+import { $$ as list_literal } from "./expression/literals/List"
+import * as initialize from "./expression/assign"
 
 export namespace dictionary {
 

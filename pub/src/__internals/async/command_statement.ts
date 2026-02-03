@@ -1,6 +1,6 @@
 import * as _pi from "../../interface"
 
-import { _p_iterate } from "../../iterate"
+import _p_iterate from "../../_p_iterate"
 
 import { __command_promise } from "./command_promise"
 import { __handle_command_block } from "./handle_command_block"
@@ -8,6 +8,7 @@ import { Command_Block } from "./Command_Block"
 import { create_refinement_context } from "./create_refinement_context"
 import { create_asynchronous_dictionary_builder } from "./asynchronous_collection_builder"
 import { create_asynchronous_processes_monitor } from "./create_asynchronous_processes_monitor"
+import { Query_Result } from "./Query_Result"
 
 
 export namespace listx {
@@ -22,15 +23,17 @@ export namespace listx {
                         const next = iterator.look()
                         if (next !== null) {
                             iterator.consume(
-                                ($) => $,
-                                () => {
-                                    throw new Error("not reachable")
+                                ($) => {
+                                    $.__start(
+                                        () => {
+                                            do_next()
+                                        },
+                                        on_error
+                                    )
                                 },
-                            ).__start(
                                 () => {
-                                    do_next()
+                                    throw new Error("not reachable, just did  a look()")
                                 },
-                                on_error
                             )
                         } else {
                             on_success()
@@ -91,7 +94,7 @@ export namespace dictionaryx {
     export namespace deprecated_parallel {
 
         export const query = <T, Error, Entry_Error>(
-            query_result: _pi.Query_Result<_pi.Dictionary<T>, Error>,
+            query_result: Query_Result<_pi.Dictionary<T>, Error>,
             parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
             aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
         ): _pi.Command_Promise<Error> => {
@@ -186,7 +189,7 @@ export const fail = <Error>(
 }
 
 export const query = <Error, Query_Output, Refine_Output>(
-    query_result: _pi.Query_Result<Query_Output, Error>,
+    query_result: Query_Result<Query_Output, Error>,
     refine: _pi.Refiner<Refine_Output, Error, Query_Output>,
     parametrized_command_block: ($v: Refine_Output) => Command_Block<Error>,
 ): _pi.Command_Promise<Error> => {
@@ -216,7 +219,7 @@ export const query = <Error, Query_Output, Refine_Output>(
 }
 
 export const query_stacked = <Error, Staging_Output, Parent_Data>(
-    query_result: _pi.Query_Result<Staging_Output, Error>,
+    query_result: Query_Result<Staging_Output, Error>,
     parent_data: Parent_Data,
     parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
 ): _pi.Command_Promise<Error> => {
@@ -319,7 +322,7 @@ export namespace if_ {
     }
 
     export const query = <Error>(
-        precondition: _pi.Query_Result<boolean, Error>,
+        precondition: Query_Result<boolean, Error>,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
     ): _pi.Command_Promise<Error> => {
@@ -429,7 +432,7 @@ export namespace assert {
     }
 
     export const query = <Error>(
-        assertion: _pi.Query_Result<boolean, Error>,
+        assertion: Query_Result<boolean, Error>,
         error_if_failed: Error,
     ): _pi.Command_Promise<Error> => {
         return __command_promise({

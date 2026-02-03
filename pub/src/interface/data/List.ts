@@ -1,4 +1,4 @@
-import { Abort } from "../interfaces"
+import { Abort } from "../specials"
 import { Raw_Optional_Value } from "../Raw_Optional_Value"
 import { Optional_Value } from "./Optional_Value"
 
@@ -23,16 +23,6 @@ export interface List<T> {
         index: number,
         abort: Abort<null>
     ): T
-
-    /**
-     * This method is only to be used by resources
-     * iterates over all entries
-     * 
-     * @param $handle_value callback to process the entry
-     */
-    __for_each(
-        handle_item: ($: T) => void
-    ): void
 
     __get_raw_copy(): readonly T[]
 

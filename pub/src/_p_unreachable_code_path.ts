@@ -7,6 +7,6 @@
  * 
  * @param message message to be printed on stderr
  */
-export function _p_unreachable_code_path(): never {
+export default function _p_unreachable_code_path(): never {
     throw new Error(`PANIC; this should have been an unreachable code path`)
 }

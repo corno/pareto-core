@@ -1,5 +1,5 @@
-import { Abort } from "../interfaces"
-import { Iterator } from "../interfaces"
+import { Abort } from "../specials"
+import { Iterator } from "../specials"
 
 export type Production<Result, Error, Iterator_Item> = (
     iterator: Iterator<Iterator_Item>,

@@ -1,5 +1,6 @@
 import * as _pi from "../../interface"
-import { __query_result } from './query_result'
+import { __query_result } from "./__query_result"
+import { Query_Result } from "./Query_Result"
 import { create_asynchronous_dictionary_builder } from "./asynchronous_collection_builder"
 import { create_asynchronous_processes_monitor } from "./create_asynchronous_processes_monitor"
 
@@ -7,10 +8,10 @@ import { create_asynchronous_processes_monitor } from "./create_asynchronous_pro
 export namespace dictionaryx {
 
     export const parallel = <Result, Error, Entry_Error>(
-        dictionary: _pi.Dictionary<_pi.Query_Result<Result, Entry_Error>>,
+        dictionary: _pi.Dictionary<Query_Result<Result, Entry_Error>>,
         aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
 
-    ): _pi.Query_Result<_pi.Dictionary<Result>, Error> => {
+    ): Query_Result<_pi.Dictionary<Result>, Error> => {
         return __query_result((on_success, on_error) => {
             let has_errors = false
             const errors_builder = create_asynchronous_dictionary_builder<Entry_Error>()
@@ -47,7 +48,7 @@ export namespace dictionaryx {
 
 export const direct_result = <Result, Error>(
     result: Result,
-): _pi.Query_Result<Result, Error> => {
+): Query_Result<Result, Error> => {
     return __query_result((on_success, on_error) => {
         on_success(result)
     })
@@ -55,7 +56,7 @@ export const direct_result = <Result, Error>(
 
 export const direct_error = <T, E>(
     $: E
-): _pi.Query_Result<T, E> => {
+): Query_Result<T, E> => {
     return __query_result((on_value, on_error) => {
         on_error($)
     })

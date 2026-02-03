@@ -10,6 +10,6 @@
  *     return intermediate_variable
  * })
  */
-export function _p_deprecated_block<RT>(callback: () => RT): RT {
+export default function _p_block_deprecated<RT>(callback: () => RT): RT {
     return callback()
 }

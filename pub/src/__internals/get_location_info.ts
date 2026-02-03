@@ -1,4 +1,4 @@
-import * as _pi from "../../interface"
+import * as _pi from "../interface"
 
 /**
  * provides the source location (filepath and line number) of the source code file where this function is called,
