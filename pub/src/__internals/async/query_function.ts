@@ -2,7 +2,7 @@ import * as _pi from "../../interface"
 
 import { __query } from "./query"
 import { __query_result } from "./__query_result"
-import { Query_Result } from "../../Query_Result"
+import { Query_Result } from "./Query_Result"
 
 export const query_function = <Result, Error, Parameters, Query_Resources>(
     handler: (
