@@ -285,24 +285,6 @@ export namespace integer {
 
 export namespace list {
 
-    type List_Builder<T> = {
-        'add item': ($: T) => void
-        'add list': ($: _pi.List<T>) => void
-    }
-
-    export const deprecated_build = <T>($: ($c: List_Builder<T>) => void): _pi.List<T> => {
-        const temp: T[] = []
-        $({
-            'add item': ($) => {
-                temp.push($)
-            },
-            'add list': ($) => {
-                temp.push(...$.__get_raw_copy())
-            }
-        })
-        return list_literal(temp)
-    }
-
     export const filter = <T, New_Type>(
         $: _pi.List<T>,
         handle_value: (
