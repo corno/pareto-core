@@ -1,26 +1,18 @@
 import * as _pi from "../../../../interface"
 import * as optional from "./Optional"
 
-import { $$ as list_literal } from "./List"
 import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
+import { List_Class } from "./List"
 
 
-type ID_Value_Pair<T> = {
+export type ID_Value_Pair<T> = {
     readonly 'id': string
     readonly 'value': T
 }
 
-function create_dictionary_as_array<X>(source: { readonly [id: string]: X }): Dictionary_As_Array<X> {
-    const imp: ID_Value_Pair<X>[] = []
-    Object.keys(source).forEach((id) => {
-        imp.push({ id: id, value: source[id] })
-    })
-    return imp
-}
+export type Dictionary_As_Array<T> = readonly ID_Value_Pair<T>[]
 
-type Dictionary_As_Array<T> = readonly ID_Value_Pair<T>[]
-
-class Dictionary<T> implements _pi.Dictionary<T> {
+export class Dictionary_Class<T> implements _pi.Dictionary<T> {
     private source: Dictionary_As_Array<T>
     constructor(source: Dictionary_As_Array<T>) {
         this.source = source
@@ -28,7 +20,7 @@ class Dictionary<T> implements _pi.Dictionary<T> {
     public __d_map<NT>(
         $v: (entry: T, id: string) => NT
     ) {
-        return new Dictionary<NT>(this.source.map(($) => {
+        return new Dictionary_Class<NT>(this.source.map(($) => {
             return {
                 id: $.id,
                 value: $v($.value, $.id)
@@ -38,7 +30,7 @@ class Dictionary<T> implements _pi.Dictionary<T> {
     __to_list<New_Type>(
         handle_value: (value: T, id: string) => New_Type
     ): _pi.List<New_Type> {
-        return list_literal(this.source.map(($) => {
+        return new List_Class(this.source.map(($) => {
             return handle_value($.value, $.id)
         }))
     }
@@ -86,12 +78,3 @@ class Dictionary<T> implements _pi.Dictionary<T> {
 
 }
 
-
-
-/**
- * creates a Pareto dictionary
- */
-export function $$<T>(source: { readonly [id: string]: T }): _pi.Dictionary<T> {
-
-    return new Dictionary(create_dictionary_as_array(source))
-}

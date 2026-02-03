@@ -44,17 +44,3 @@ export class List_Class<T> implements _pi.List<T> {
 
 
 }
-
-export function $$<T>(source: readonly T[]): _pi.List<T> {
-    if (!(source instanceof Array)) {
-        throw new Error("invalid input in 'list_literal'")
-    }
-    const data = source.slice() //create a copy
-    /**
-     * this is an implementation, not public by design
-     * If you feel the need to rename this class, don't rename it to 'Array',
-     * it will break the 'instanceOf Array' test
-     */
-
-    return new List_Class(data)
-}

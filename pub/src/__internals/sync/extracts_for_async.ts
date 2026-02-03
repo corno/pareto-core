@@ -1,12 +1,9 @@
 
-import { $$ as dictionary_literal } from "./expression/literals/Dictionary"
-import { $$ as list_literal } from "./expression/literals/List"
 import * as initialize from "./expression/assign"
 
 export namespace dictionary {
 
-    export const literal = dictionary_literal
-
+    export const literal = initialize.dictionary.literal
 }
 
 export namespace integer {
@@ -15,7 +12,7 @@ export namespace integer {
 
 export namespace list {
     
-    export const literal = list_literal
+    export const literal = initialize.list.literal
     export const nested_literal = initialize.list.nested_literal_old
 
 }

@@ -1,6 +1,6 @@
 import * as _pi from  "../../interface"
-import { $$ as dictionary_literal } from '../sync/expression/literals/Dictionary'
-import { $$ as list_literal } from '../sync/expression/literals/List'
+import { List_Class } from "../sync/expression/literals/List"
+import * as _p from "../../expression"
 
 export type Asynchronous_Dictionary_Builder<Entry> = {
     'add entry': (id: string, entry: Entry) => void,
@@ -16,7 +16,7 @@ export const create_asynchronous_dictionary_builder = <Entry>(): Asynchronous_Di
         },
 
         'get dictionary': () => {
-            return dictionary_literal(entries)
+            return _p.dictionary.literal(entries)
         },
     }
 }
@@ -39,7 +39,7 @@ export const create_asynchronous_list_builder = <Item>(): Asynchronous_List_Buil
         },
 
         'get list': () => {
-            return list_literal(items)
+            return new List_Class(items)
         },
     }
 }

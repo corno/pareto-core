@@ -1,5 +1,5 @@
 import * as _pi from "../../../interface"
-import { $$ as list_literal } from "./literals/List"
+import { List_Class } from "./literals/List"
 
 export type State<T> = readonly [string, T]
 
@@ -71,7 +71,7 @@ export namespace decide {
             if_true: ($: T, rest: _pi.List<T>) => RT,
             if_not_true: () => RT
         ): RT => list.__deprecated_get_possible_item_at(0).__decide(
-            ($) => if_true($, list_literal(list.__get_raw_copy().slice(1))),
+            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(1))),
             () => if_not_true(),
         )
 
@@ -80,7 +80,7 @@ export namespace decide {
             if_true: ($: T, rest: _pi.List<T>) => RT,
             if_not_true: () => RT
         ): RT => list.__deprecated_get_possible_item_at(list.__get_number_of_items() - 1).__decide(
-            ($) => if_true($, list_literal(list.__get_raw_copy().slice(0, -1))),
+            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
             () => if_not_true(),
         )
 

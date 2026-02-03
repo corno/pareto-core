@@ -1,8 +1,8 @@
 import * as _pi from "../../../interface"
 
 import { $$ as deprecated_get_location_info } from "../../get_location_info"
-import { $$ as dictionary_literal } from "./literals/Dictionary"
-import { $$ as list_literal } from "./literals/List"
+import { Dictionary_As_Array, Dictionary_Class, ID_Value_Pair } from "./literals/Dictionary"
+import { List_Class } from "./literals/List"
 import { Set_Optional_Value, Not_Set_Optional_Value } from "./literals/Optional"
 
 export namespace boolean {
@@ -49,7 +49,7 @@ export namespace dictionary {
                 () => { }
             )
         })
-        return dictionary_literal(out)
+        return dictionary.literal(out)
     }
 
     export const from_list = <T, NT>(
@@ -66,15 +66,15 @@ export namespace dictionary {
             }
             temp[id] = get_value($)
         })
-        return dictionary_literal(temp)
+        return dictionary.literal(temp)
     }
 
     export const group_dictionary = <T>(
-        dictionary: _pi.Dictionary<T>,
+        $: _pi.Dictionary<T>,
         get_id: (item: T, id: string) => string,
     ): _pi.Dictionary<_pi.Dictionary<T>> => {
         const temp: { [id: string]: { [id: string]: T } } = {}
-        dictionary.__to_list(($, id) => ({
+        $.__to_list(($, id) => ({
             id: id,
             value: $,
         })).__get_raw_copy().forEach(($) => {
@@ -84,7 +84,7 @@ export namespace dictionary {
             }
             temp[group_id][$.id] = $.value
         })
-        return dictionary_literal(temp).__d_map(($) => dictionary_literal($))
+        return dictionary.literal(temp).__d_map(($) => dictionary.literal($))
     }
 
     export const group_list = <T>(
@@ -99,10 +99,21 @@ export namespace dictionary {
             }
             temp[id].push($)
         })
-        return dictionary_literal(temp).__d_map(($) => list_literal($))
+        return dictionary.literal(temp).__d_map(($) => new List_Class($))
     }
 
-    export const literal = dictionary_literal
+    export function literal<T>(source: { readonly [id: string]: T }): _pi.Dictionary<T> {
+
+
+        function create_dictionary_as_array<X>(source: { readonly [id: string]: X }): Dictionary_As_Array<X> {
+            const imp: ID_Value_Pair<X>[] = []
+            Object.keys(source).forEach((id) => {
+                imp.push({ id: id, value: source[id] })
+            })
+            return imp
+        }
+        return new Dictionary_Class(create_dictionary_as_array(source))
+    }
 
     export const map = <T, New_Type>(
         $: _pi.Dictionary<T>,
@@ -234,7 +245,7 @@ export namespace dictionary {
 
         })
 
-        return dictionary_literal(out)
+        return dictionary.literal(out)
     }
 
 }
@@ -301,7 +312,7 @@ export namespace list {
                 () => { }
             )
         })
-        return list_literal(out)
+        return new List_Class(out)
     }
 
     export const flatten = <T, NT>(
@@ -316,7 +327,7 @@ export namespace list {
             })
 
         })
-        return list_literal(out)
+        return new List_Class(out)
     }
 
     export const from_dictionary = <T, New_Type>(
@@ -326,7 +337,19 @@ export namespace list {
         return $.__to_list(handle_entry)
     }
 
-    export const literal = list_literal
+    export function literal<T>(source: readonly T[]): _pi.List<T> {
+        if (!(source instanceof Array)) {
+            throw new Error("invalid input in 'list_literal'")
+        }
+        const data = source.slice() //create a copy
+        /**
+         * this is an implementation, not public by design
+         * If you feel the need to rename this class, don't rename it to 'Array',
+         * it will break the 'instanceOf Array' test
+         */
+
+        return new List_Class(data)
+    }
 
     export type NonUndefined = null | {}
 
@@ -346,7 +369,7 @@ export namespace list {
             }
 
         })
-        return list_literal(out)
+        return new List_Class(out)
     }
 
     export type Nested<T> = undefined | Nested<T>[] | _pi.List<T>
@@ -367,7 +390,7 @@ export namespace list {
             }
         }
         flatten(nested)
-        return list_literal(out)
+        return new List_Class(out)
     }
 
     export const map = <T, New_Type>(
@@ -421,10 +444,21 @@ export namespace list {
         return current_state
     }
 
+    export const repeat = <T>(
+        item: T,
+        times: number,
+    ): _pi.List<T> => {
+        const out: T[] = []
+        for (let i = 0; i < times; i++) {
+            out.push(item)
+        }
+        return new List_Class(out)
+    }
+
     export const reverse = <T>(
         $: _pi.List<T>
     ): _pi.List<T> => {
-        return list_literal($.__get_raw_copy().slice().reverse())
+        return new List_Class($.__get_raw_copy().slice().reverse())
     }
 
 }
