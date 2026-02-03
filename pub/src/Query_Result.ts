@@ -1,4 +1,4 @@
-import * as _pi from "../../interface"
+import * as _pi from "./interface"
 
 export type Queryer<Output, Error, Input> = (
     $: Input,

@@ -8,7 +8,7 @@ import { Command_Block } from "./Command_Block"
 import { create_refinement_context } from "./create_refinement_context"
 import { create_asynchronous_dictionary_builder } from "./asynchronous_collection_builder"
 import { create_asynchronous_processes_monitor } from "./create_asynchronous_processes_monitor"
-import { Query_Result } from "./Query_Result"
+import { Query_Result } from "../../Query_Result"
 
 
 export namespace listx {

@@ -1,4 +1,4 @@
-import { Query_Result } from "../../__internals/async/Query_Result"
+import { Query_Result } from "../../Query_Result"
 import { Transformer } from "./Transformer"
 
 export type Query<Output, Error, Input> = <Target_Error>(
