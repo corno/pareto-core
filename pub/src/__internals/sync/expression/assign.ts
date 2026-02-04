@@ -1,6 +1,5 @@
 import * as _pi from "../../../interface"
 
-import { $$ as deprecated_get_location_info } from "../../get_location_info"
 import { Dictionary_As_Array, Dictionary_Class, ID_Value_Pair } from "./literals/Dictionary"
 import { List_Class } from "./literals/List"
 import { Set_Optional_Value, Not_Set_Optional_Value } from "./literals/Optional"
@@ -130,8 +129,8 @@ export namespace dictionary {
         handle_entry: (
             $: Unresolved,
             id: string,
-            acyclic_lookup: _pi.Acyclic_Lookup<Resolved>,
-            cyclic_lookup: _pi.Cyclic_Lookup<Resolved>,
+            acyclic_lookup: _pi.lookup.Acyclic<Resolved>,
+            cyclic_lookup: _pi.lookup.Cyclic<Resolved>,
         ) => Resolved,
     ): _pi.Dictionary<Resolved> => {
         const out: { [id: string]: Resolved } = {}
@@ -476,16 +475,6 @@ export namespace natural {
     ): number => {
         return list.__get_number_of_items()
     }
-
-    export const source_column = (depth: number): number => {
-        return deprecated_get_location_info(depth).column
-    }
-
-    export const source_line = (depth: number): number => {
-        return deprecated_get_location_info(depth).line
-    }
-
-    export const text_length = ($: string): number => $.length
 
 }
 
