@@ -5,6 +5,7 @@ import { List_Class } from "./literals/List"
 import { Set_Optional_Value, Not_Set_Optional_Value } from "./literals/Optional"
 
 export namespace boolean {
+    
 
     export const dictionary_is_empty = <T>(
         $: _pi.Dictionary<T>,
@@ -25,6 +26,21 @@ export namespace boolean {
             () => true,
             () => false
         )
+    }
+
+    export const reduce_list = <Item>(
+        $: _pi.List<Item>,
+        initial_state: boolean,
+        update_state: (
+            value: Item,
+            current: boolean
+        ) => boolean,
+    ): boolean => {
+        let current_state = initial_state
+        $.__get_raw_copy().forEach(($) => {
+            current_state = update_state($, current_state)
+        })
+        return current_state
     }
 
 }
@@ -256,6 +272,35 @@ export namespace group {
         ) => Resolved,
     ): Resolved => callback()
 
+
+    export const map_list_with_state = <Source_Item, Target_Item, State, Result_Type extends {[id:string]: any}>(
+        $: _pi.List<Source_Item>,
+        initial_state: State,
+        handle_item: (
+            value: Source_Item,
+            state: State
+        ) => Target_Item,
+        update_state: (
+            value: Target_Item,
+            state: State
+        ) => State,
+        wrapup: (
+            final_list: _pi.List<Target_Item>,
+            final_state: State
+        ) => Result_Type,
+    ): Result_Type => {
+        let current_state = initial_state
+        return wrapup(
+            $.__l_map(($) => {
+                const result = handle_item($, current_state)
+                current_state = update_state(result, current_state)
+                return result
+            }),
+            current_state
+        )
+    }
+
+
 }
 
 export namespace integer {
@@ -401,48 +446,6 @@ export namespace list {
         return $.__l_map(handle_item)
     }
 
-    export const map_with_state = <Source_Item, Target_Item, State, Result_Type>(
-        $: _pi.List<Source_Item>,
-        initial_state: State,
-        handle_item: (
-            value: Source_Item,
-            state: State
-        ) => Target_Item,
-        update_state: (
-            value: Target_Item,
-            state: State
-        ) => State,
-        wrapup: (
-            final_list: _pi.List<Target_Item>,
-            final_state: State
-        ) => Result_Type,
-    ): Result_Type => {
-        let current_state = initial_state
-        return wrapup(
-            $.__l_map(($) => {
-                const result = handle_item($, current_state)
-                current_state = update_state(result, current_state)
-                return result
-            }),
-            current_state
-        )
-    }
-
-    export const reduce = <Item, Result_Type>(
-        $: _pi.List<Item>,
-        initial_state: Result_Type,
-        update_state: (
-            value: Item,
-            current: Result_Type
-        ) => Result_Type,
-    ): Result_Type => {
-        let current_state = initial_state
-        $.__get_raw_copy().forEach(($) => {
-            current_state = update_state($, current_state)
-        })
-        return current_state
-    }
-
     export const repeat = <T>(
         item: T,
         times: number,
@@ -474,6 +477,21 @@ export namespace natural {
         list: _pi.List<T>,
     ): number => {
         return list.__get_number_of_items()
+    }
+
+    export const reduce_list = <Item>(
+        $: _pi.List<Item>,
+        initial_state: number,
+        update_state: (
+            value: Item,
+            current: number
+        ) => number,
+    ): number => {
+        let current_state = initial_state
+        $.__get_raw_copy().forEach(($) => {
+            current_state = update_state($, current_state)
+        })
+        return current_state
     }
 
 }

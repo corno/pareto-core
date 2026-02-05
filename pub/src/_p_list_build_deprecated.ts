@@ -6,7 +6,7 @@ type List_Builder<T> = {
     'add list': ($: _pi.List<T>) => void
 }
 
-export default function _list_build_deprecated <T>($: ($c: List_Builder<T>) => void): _pi.List<T> {
+export default function _p_list_build_deprecated <T>($: ($c: List_Builder<T>) => void): _pi.List<T> {
     const temp: T[] = []
     $({
         'add item': ($) => {

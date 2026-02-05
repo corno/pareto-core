@@ -1,6 +1,6 @@
 import * as _pi from "./interface"
 
-export default function text_from_list <T>(
+export default function _p_text_from_list <T>(
     list: _pi.List<T>,
     get_character: (item: T) => number,
 ) {

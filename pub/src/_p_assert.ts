@@ -1,7 +1,7 @@
 import * as _pi from "./interface"
 
 
-export default function assert<Return_Type, Error>(
+export default function _p_assert<Return_Type, Error>(
     abort_callback: _pi.Abort<Error>,
     tester: () => _pi.Optional_Value<Error>,
     normal_flow: () => Return_Type
