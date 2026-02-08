@@ -1,10 +1,10 @@
 import { Abort } from "../specials"
 
 
-export type Refiner_With_Parameters<Result, Error, Input, Parameters> = (
+export type Refiner_With_Parameter<Result, Error, Input, Parameter> = (
     $: Input,
     abort: Abort<Error>,
-    $p: Parameters,
+    $p: Parameter,
 ) => Result
 
 
@@ -17,7 +17,7 @@ export type Refiner_Without_Error<Result, Input> = (
     $: Input,
 ) => Result
 
-export type Refiner_Without_Error_With_Parameters<Result, Input, Parameters> = (
+export type Refiner_Without_Error_With_Parameter<Result, Input, Parameter> = (
     $: Input,
-    $p: Parameters,
+    $p: Parameter,
 ) => Result

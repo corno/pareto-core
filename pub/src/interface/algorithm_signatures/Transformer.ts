@@ -1,7 +1,7 @@
 
-export type Transformer_With_Parameters<Input, Result, Parameters> = (
+export type Transformer_With_Parameter<Input, Result, Parameter> = (
     $: Input,
-    $p: Parameters,
+    $p: Parameter,
 ) => Result
 
 export type Transformer<Input, Result> = (

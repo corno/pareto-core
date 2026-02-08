@@ -35,7 +35,7 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
         }))
     }
 
-    __get_possible_entry(
+    __get_possible_entry_deprecated(
         id: string,
     ): _pi.Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
@@ -59,7 +59,7 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
         return null
     }
 
-    __get_entry(
+    __get_entry_deprecated(
         id: string,
         abort: _pi.Abort<null>,
     ): T {

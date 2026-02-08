@@ -11,7 +11,7 @@ export namespace acyclic {
     export const from_resolved_dictionary = <T>(
         dict: _pi.Dictionary<T>,
     ): _pi.lookup.Acyclic<T> => ({
-        get_entry: (id, abort) => dict.__get_entry(
+        get_entry: (id, abort) => dict.__get_entry_deprecated(
             id,
             () => abort.no_such_entry(id),
         ),

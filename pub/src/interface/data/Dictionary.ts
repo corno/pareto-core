@@ -13,7 +13,6 @@ export interface Dictionary<T> {
         handle_entry: (value: T, id: string) => NT,
     ): Dictionary<NT>
 
-
     /**
      * the ordering of the list will be the same as the insertion order in the dictionary
      */
@@ -21,17 +20,11 @@ export interface Dictionary<T> {
         handle_entry: (value: T, id: string) => New_Type
     ): List<New_Type>
 
-    /**
-     * This method is only to be used by resources
-     * returns an {@link Optional_Value } of type T reflecting wether the entry existed or not
-     * 
-     * @param id 
-     */
-    __get_possible_entry(
+    __get_possible_entry_deprecated(
         id: string
     ): Optional_Value<T>
 
-    __get_entry(
+    __get_entry_deprecated(
         id: string,
         abort: Abort<null>
     ): T

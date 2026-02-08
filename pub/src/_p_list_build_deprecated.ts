@@ -1,4 +1,4 @@
-import { List_Class } from "./__internals/sync/expression/literals/List"
+import { List_Class } from "./__internals/sync/assign/literals/List"
 import * as _pi from "./interface"
 
 type List_Builder<T> = {

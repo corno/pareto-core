@@ -1,6 +1,6 @@
 import * as _pi from  "../../interface"
-import { List_Class } from "../sync/expression/literals/List"
-import * as _p from "../../expression"
+import { List_Class } from "../sync/assign/literals/List"
+import * as _p from "../../assign"
 
 export type Asynchronous_Dictionary_Builder<Entry> = {
     'add entry': (id: string, entry: Entry) => void,

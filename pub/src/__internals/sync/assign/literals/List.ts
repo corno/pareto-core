@@ -1,9 +1,6 @@
 import * as _pi from "../../../../interface"
 import * as optional from "./Optional"
 
-import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
-
-
 export class List_Class<T> implements _pi.List<T> {
     private data: readonly T[]
     constructor(data: readonly T[]) {

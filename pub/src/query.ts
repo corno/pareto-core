@@ -1,4 +1,4 @@
-export * from "./__internals/sync/expression/decide"
+export * from "./__internals/sync/assign/decide"
 export * from "./__internals/sync/extracts_for_async"
 export * from "./__internals/async/query_expression"
 export * from "./__internals/async/query_function"
