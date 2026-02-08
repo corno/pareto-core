@@ -61,7 +61,9 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
 
     __get_entry_deprecated(
         id: string,
-        abort: _pi.Abort<null>,
+        abort: {
+            no_such_entry: _pi.Abort<null>,
+        }
     ): T {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
@@ -69,7 +71,7 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
                 return entry.value
             }
         }
-        return abort(null)
+        return abort.no_such_entry(null)
     }
 
     __get_number_of_entries(): number {

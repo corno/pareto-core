@@ -100,7 +100,9 @@ export namespace from {
                                         inner_resolve(
                                             source.__get_entry_deprecated(
                                                 id,
-                                                () => abort.no_such_entry(id)
+                                                {
+                                                    no_such_entry: () => abort.no_such_entry(null)
+                                                }
                                             ),
                                             id,
                                             stack.concat([id])
@@ -190,13 +192,15 @@ export namespace from {
             convert: <NT>(
                 get_id: (item: T) => string,
                 get_value: (item: T) => NT,
-                abort: _pi.Abort<['duplicate id in list to dictionary', null]>,
+                abort: {
+                    duplicate_id: _pi.Abort<null>
+                }
             ): _pi.Dictionary<NT> => {
                 const temp: { [id: string]: NT } = {}
                 $.__get_raw_copy().forEach(($) => {
                     const id = get_id($)
                     if (temp[id] !== undefined) {
-                        abort(['duplicate id in list to dictionary', null])
+                        abort.duplicate_id(null)
                     }
                     temp[id] = get_value($)
                 })

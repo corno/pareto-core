@@ -28,7 +28,12 @@ export default function _p_iterate <Item, Return_Type>(
             callback,
             abort
         ) => {
-            const current = $.__deprecated_get_item_at(position, () => abort(position))
+            const current = $.__deprecated_get_item_at(
+                position, 
+                {
+                    out_of_bounds: abort.no_more_tokens
+                }
+            )
             position += 1            
             const result = callback(current, position)
             return result
@@ -48,7 +53,7 @@ export default function _p_iterate <Item, Return_Type>(
         ) => {
             const result = callback()
             if (position < length) {
-                return abort(null)
+                return abort.not_finished(null)
             }
             return result
         }

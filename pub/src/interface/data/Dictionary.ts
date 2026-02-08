@@ -26,7 +26,9 @@ export interface Dictionary<T> {
 
     __get_entry_deprecated(
         id: string,
-        abort: Abort<null>
+        abort: {
+            no_such_entry: Abort<null>,
+        }
     ): T
 
     __get_entry_raw(

@@ -31,8 +31,10 @@ export namespace listx {
                                         on_error
                                     )
                                 },
-                                () => {
-                                    throw new Error("not reachable, just did  a look()")
+                                {
+                                    no_more_tokens: () => {
+                                        throw new Error("not reachable, just did a look()")
+                                    }
                                 },
                             )
                         } else {

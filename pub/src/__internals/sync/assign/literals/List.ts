@@ -27,10 +27,12 @@ export class List_Class<T> implements _pi.List<T> {
 
     __deprecated_get_item_at(
         index: number,
-        abort: _pi.Abort<null>,
+        abort: {
+            out_of_bounds: _pi.Abort<null>
+        },
     ) {
         if (index < 0 || index >= this.data.length) {
-            return abort(null)
+            return abort.out_of_bounds(null)
         }
         return this.data[index]
     }

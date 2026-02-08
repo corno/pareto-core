@@ -40,19 +40,6 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
         })
     }
 
-    // deprecated_transform_error<New_Error>(
-    //     error_transformer: _pi._pi.Transformer<Error, New_Error>,
-    // ): Query_Result<Output, New_Error> {
-    //     return new Query_Result_Class<Output, New_Error>((on_result, on_error) => {
-    //         this.executer(
-    //             on_result,
-    //             ($) => {
-    //                 on_error(error_transformer($))
-    //             },
-    //         )
-    //     })
-    // }
-
     query_without_error_transformation<New_Output>(
         queryer: Queryer<New_Output, Error, Output>
     ): Query_Result<New_Output, Error> {
@@ -104,25 +91,6 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
             )
         })
     }
-
-    // refine<New_Output, Refiner_Error>(
-    //     callback: ($: Output, abort: _pi.Abort<Refiner_Error>) => New_Output,
-    //     error_transformer: _pi._pi.Transformer<Refiner_Error, Error>,
-    // ): Query_Result<New_Output, Error> {
-    //     return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
-    //         this.executer(
-    //             ($) => {
-    //                 _pinternals.deprecated_create_refinement_context<New_Output, Refiner_Error>((abort) => callback($, abort)).__extract_data(
-    //                     on_result,
-    //                     (stager_error) => {
-    //                         on_error(error_transformer(stager_error))
-    //                     },
-    //                 )
-    //             },
-    //             on_error,
-    //         )
-    //     })
-    // }
 
     rework_error_temp<New_Error, Rework_Error>(
         error_reworker: Queryer<New_Error, Rework_Error, Error>,

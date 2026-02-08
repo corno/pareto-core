@@ -17,10 +17,12 @@ export namespace integer {
     export const divide = (
         dividend: number,
         divisor: number,
-        abort: _pi.Abort<['divide by zero', null]>,
+        abort: {
+            'divided_by_zero': _pi.Abort<null>
+        },
     ): number => {
         if (divisor === 0) {
-            abort(['divide by zero', null])
+            abort.divided_by_zero(null)
         }
         const quotient = dividend / divisor
         // when dividend and divisor have different signs, the quotient is negative

@@ -9,7 +9,9 @@ export type Iterator<Item> = {
     look_ahead: (offset: number) => Raw_Optional_Value<Item>
     consume: <T>(
         callback: (value: Item, position: number) => T,
-        abort: Abort<number>
+        abort: {
+            no_more_tokens: Abort<null>
+        }
     ) => T,
     discard: <T>(
         callback: () => T
@@ -17,7 +19,9 @@ export type Iterator<Item> = {
     get_position: () => number,
     assert_finished: <T>(
         callback: () => T,
-        abort: Abort<null>
+        abort: {
+            not_finished: Abort<null>
+        }
     ) => T
 }
 
@@ -27,7 +31,7 @@ export namespace lookup {
         get_entry: (
             id: string,
             abort: {
-                no_such_entry: Abort<string>,
+                no_such_entry: Abort<null>,
                 no_context_lookup: Abort<null>,
                 cycle_detected: Abort<string[]>,
             }

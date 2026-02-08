@@ -21,7 +21,9 @@ export interface List<T> {
     
     __deprecated_get_item_at(
         index: number,
-        abort: Abort<null>
+        abort: {
+            out_of_bounds: Abort<null>
+        }
     ): T
 
     __get_raw_copy(): readonly T[]
