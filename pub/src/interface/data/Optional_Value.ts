@@ -7,6 +7,7 @@
  * this 'Optional_Value' type makes it possible to have recursive optional types like this: Optional_Value<Optional_Value<number>>
  */
 export interface Optional_Value<T> {
+    
     /**
      * @param set what to do when the value was set, returns the new type
      * @param not_set  what to do when the value was not set, returns the new type

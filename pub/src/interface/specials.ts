@@ -8,17 +8,17 @@ export type Iterator<Item> = {
     look: () => Raw_Optional_Value<Item>,
     look_ahead: (offset: number) => Raw_Optional_Value<Item>
     consume: <T>(
-        callback: (value: Item, position: number) => T,
+        assign: (value: Item, position: number) => T,
         abort: {
             no_more_tokens: Abort<null>
         }
     ) => T,
     discard: <T>(
-        callback: () => T
+        assign: () => T
     ) => T,
     get_position: () => number,
     assert_finished: <T>(
-        callback: () => T,
+        assign: () => T,
         abort: {
             not_finished: Abort<null>
         }

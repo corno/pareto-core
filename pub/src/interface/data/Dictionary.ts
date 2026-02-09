@@ -10,14 +10,14 @@ import { Optional_Value } from "./Optional_Value"
  */
 export interface Dictionary<T> {
     __d_map<NT>(
-        handle_entry: (value: T, id: string) => NT,
+        assign_entry: (value: T, id: string) => NT,
     ): Dictionary<NT>
 
     /**
      * the ordering of the list will be the same as the insertion order in the dictionary
      */
     __to_list<New_Type>(
-        handle_entry: (value: T, id: string) => New_Type
+        assign_item: (value: T, id: string) => New_Type
     ): List<New_Type>
 
     __get_possible_entry_deprecated(

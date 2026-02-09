@@ -3,27 +3,27 @@ import * as _pi from "../../../../interface"
 export namespace literal {
 
     export const resolve = <Resolved>(
-        callback: (
+        assign: (
         ) => Resolved,
-    ): Resolved => callback()
+    ): Resolved => assign()
 
 }
 
 export namespace from {
 
     export const list = <T>(
-        $: _pi.List<T>,
+        list: _pi.List<T>,
     ) => {
         return {
 
             map_with_state: <Target_Item, State, Result_Type extends { [id: string]: any }>(
                 initial_state: State,
                 assign_item: (
-                    value: T,
+                    item: T,
                     state: State
                 ) => Target_Item,
                 update_state: (
-                    value: Target_Item,
+                    item: Target_Item,
                     state: State
                 ) => State,
                 wrapup: (
@@ -33,7 +33,7 @@ export namespace from {
             ): Result_Type => {
                 let current_state = initial_state
                 return wrapup(
-                    $.__l_map(($) => {
+                    list.__l_map(($) => {
                         const result = assign_item($, current_state)
                         current_state = update_state(result, current_state)
                         return result

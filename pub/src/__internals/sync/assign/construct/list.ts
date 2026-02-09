@@ -5,22 +5,27 @@ import { List_Class } from "../literals/List"
 export namespace from {
 
     export const dictionary = <T>(
-        $: _pi.Dictionary<T>,
+        dictionary: _pi.Dictionary<T>,
     ) => {
         return {
 
             convert: <New_Type>(
-                handle_entry: ($: T, id: string) => New_Type
-
+                assign_item: (
+                    value: T,
+                    id: string
+                ) => New_Type
             ): _pi.List<New_Type> => {
-                return $.__to_list(handle_entry)
+                return dictionary.__to_list(assign_item)
             },
 
             flatten: <NT>(
-                callback: ($: T, id: string) => _pi.List<NT>,
+                assign_item: (
+                    value: T,
+                    id: string
+                ) => _pi.List<NT>,
             ): _pi.List<NT> => {
                 const out: NT[] = []
-                $.__to_list(callback).__get_raw_copy().forEach(($) => {
+                dictionary.__to_list(assign_item).__get_raw_copy().forEach(($) => {
                     const innerList = $
                     innerList.__get_raw_copy().forEach(($) => {
                         out.push($)
@@ -34,18 +39,18 @@ export namespace from {
     }
 
     export const list = <T>(
-        $: _pi.List<T>,
+        list: _pi.List<T>,
     ) => {
         return {
 
             filter: <New_Type>(
-                handle_value: (
-                    value: T,
+                assign_optional_item: (
+                    item: T,
                 ) => _pi.Optional_Value<New_Type>
             ): _pi.List<New_Type> => {
                 const out: New_Type[] = []
-                $.__get_raw_copy().forEach(($) => {
-                    const result = handle_value($)
+                list.__get_raw_copy().forEach(($) => {
+                    const result = assign_optional_item($)
                     result.__extract_data(
                         ($) => {
                             out.push($)
@@ -57,11 +62,13 @@ export namespace from {
             },
 
             flatten: <NT>(
-                callback: ($: T) => _pi.List<NT>,
+                assign_list: (
+                    $: T
+                ) => _pi.List<NT>,
             ): _pi.List<NT> => {
                 const out: NT[] = []
-                $.__get_raw_copy().forEach(($) => {
-                    const innerList = callback($)
+                list.__get_raw_copy().forEach(($) => {
+                    const innerList = assign_list($)
                     innerList.__get_raw_copy().forEach(($) => {
                         out.push($)
                     })
@@ -71,16 +78,16 @@ export namespace from {
             },
 
             map: <New_Type>(
-                handle_item: (
-                    value: T,
+                assign_item: (
+                    item: T,
                 ) => New_Type,
             ): _pi.List<New_Type> => {
-                return $.__l_map(handle_item)
+                return list.__l_map(assign_item)
             },
 
             reverse: (
             ): _pi.List<T> => {
-                return new List_Class($.__get_raw_copy().slice().reverse())
+                return new List_Class(list.__get_raw_copy().slice().reverse())
             }
 
         }
@@ -89,7 +96,9 @@ export namespace from {
 
 }
 
-export function literal<T>(source: readonly T[]): _pi.List<T> {
+export function literal<T>(
+    source: readonly T[]
+): _pi.List<T> {
     if (!(source instanceof Array)) {
         throw new Error("invalid input in 'list_literal'")
     }

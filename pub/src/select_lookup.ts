@@ -3,7 +3,8 @@ import * as _pi from "./interface"
 
 export namespace acyclic {
 
-    export const not_set = <T>(): _pi.lookup.Acyclic<T> => ({
+    export const not_set = <T>(
+    ): _pi.lookup.Acyclic<T> => ({
         get_entry: (id, abort) => abort.no_context_lookup(null),
         __get_entry_raw: (id, abort) => abort.no_context_lookup(null),
     })
@@ -24,7 +25,8 @@ export namespace acyclic {
 
 export namespace cyclic {
 
-    export const not_set = <T>(): _pi.lookup.Cyclic<T> => ({
+    export const not_set = <T>(
+    ): _pi.lookup.Cyclic<T> => ({
         get_entry: (id, abort) => {
             //return abort['no context lookup']()
             return {
@@ -37,7 +39,8 @@ export namespace cyclic {
 
 export namespace stack {
 
-    export const empty = <T>(): _pi.lookup.Stack<T> => ({
+    export const empty = <T>(
+    ): _pi.lookup.Stack<T> => ({
         get_entry: (id, abort) => abort.no_context_lookup(null),
         get_entry_depth(id) {
             return -1

@@ -2,7 +2,7 @@ import * as _pi from "./interface"
 
 export default function _p_iterate <Item, Return_Type>(
     $: _pi.List<Item>,
-    handler: ($iter: _pi.Iterator<Item>) => Return_Type,
+    assign: ($iter: _pi.Iterator<Item>) => Return_Type,
 ): Return_Type {
 
     const raw = $.__get_raw_copy()
@@ -11,7 +11,7 @@ export default function _p_iterate <Item, Return_Type>(
 
     let position = 0
 
-    return handler({
+    return assign({
         look: () => {
             if (position < 0 || position >= raw.length) {
                 return null
@@ -25,7 +25,7 @@ export default function _p_iterate <Item, Return_Type>(
             return [raw[position + offset]]
         },
         consume: (
-            callback,
+            assign,
             abort
         ) => {
             const current = $.__deprecated_get_item_at(
@@ -35,23 +35,22 @@ export default function _p_iterate <Item, Return_Type>(
                 }
             )
             position += 1            
-            const result = callback(current, position)
-            return result
+            return assign(current, position)
         },
         discard: <T>(
-            callback: () => T
+            assign: () => T
         ) => {
             position += 1
-            return callback()
+            return assign()
         },
         get_position: () => {
             return position
         },
         assert_finished: (
-            callback,
+            assign,
             abort
         ) => {
-            const result = callback()
+            const result = assign()
             if (position < length) {
                 return abort.not_finished(null)
             }

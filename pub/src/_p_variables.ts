@@ -1,4 +1,6 @@
 
-export default function _p_variables<RT>(callback: () => RT): RT {
-    return callback()
+export default function _p_variables<RT>(
+    assign: () => RT
+): RT {
+    return assign()
 }

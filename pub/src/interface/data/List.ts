@@ -7,12 +7,9 @@ import { Optional_Value } from "./Optional_Value"
  * unmutable and minimal by design
  */
 export interface List<T> {
-    /**
-     * 
-     * @param handle_item callback to transform an individual entry.
-     */
+    
     __l_map<NT>(
-        handle_item: ($: T) => NT,
+        assign_item: ($: T) => NT,
     ): List<NT>
 
     __get_number_of_items(): number

@@ -6,7 +6,7 @@ import { List_Class } from "../literals/List"
 export namespace from {
 
     export const dictionary = <T>(
-        $: _pi.Dictionary<T>,
+        dictionary: _pi.Dictionary<T>,
     ) => {
         return {
 
@@ -17,7 +17,7 @@ export namespace from {
                 ) => _pi.Optional_Value<New_Type>
             ): _pi.Dictionary<New_Type> => {
                 const out: { [id: string]: New_Type } = {}
-                $.__d_map(($, id) => {
+                dictionary.__d_map(($, id) => {
                     const result = handle_value($, id)
                     result.__extract_data(
                         (new_value) => {
@@ -30,10 +30,13 @@ export namespace from {
             },
 
             group: (
-                get_id: (item: T, id: string) => string,
+                get_id: (
+                    value: T,
+                    id: string
+                ) => string,
             ): _pi.Dictionary<_pi.Dictionary<T>> => {
                 const temp: { [id: string]: { [id: string]: T } } = {}
-                $.__to_list(($, id) => ({
+                dictionary.__to_list(($, id) => ({
                     id: id,
                     value: $,
                 })).__get_raw_copy().forEach(($) => {
@@ -47,23 +50,23 @@ export namespace from {
             },
 
             map: <New_Type>(
-                handle_value: (
+                assign_entry: (
                     value: T,
                     id: string
                 ) => New_Type,
             ): _pi.Dictionary<New_Type> => {
-                return $.__d_map(handle_value)
+                return dictionary.__d_map(assign_entry)
             },
 
             resolve: <Resolved>(
-                handle_entry: (
-                    $: T,
+                assign_entry: (
+                    value: T,
                     id: string,
                     acyclic_lookup: _pi.lookup.Acyclic<Resolved>,
                     cyclic_lookup: _pi.lookup.Cyclic<Resolved>,
                 ) => Resolved,
             ): _pi.Dictionary<Resolved> => {
-                const source = $
+                const source = dictionary
                 const out: { [id: string]: Resolved } = {}
 
                 const entries_started: { [id: string]: null } = {}
@@ -79,14 +82,18 @@ export namespace from {
 
                 const cyclic_references: Cyclic_Reference[] = []
 
-                const inner_resolve = ($: T, id: string, stack: string[]): void => {
+                const inner_resolve = (
+                    value: T,
+                    id: string,
+                    stack: string[]
+                ): void => {
                     if (out[id] !== undefined) {
                         // already resolved
                         return
                     }
                     entries_started[id] = null
-                    out[id] = handle_entry(
-                        $,
+                    out[id] = assign_entry(
+                        value,
                         id,
                         {
                             get_entry: (
@@ -185,19 +192,23 @@ export namespace from {
     }
 
     export const list = <T>(
-        $: _pi.List<T>,
+        list: _pi.List<T>,
     ) => {
         return {
 
             convert: <NT>(
-                get_id: (item: T) => string,
-                get_value: (item: T) => NT,
+                get_id: (
+                    item: T
+                ) => string,
+                get_value: (
+                    item: T
+                ) => NT,
                 abort: {
                     duplicate_id: _pi.Abort<null>
                 }
             ): _pi.Dictionary<NT> => {
                 const temp: { [id: string]: NT } = {}
-                $.__get_raw_copy().forEach(($) => {
+                list.__get_raw_copy().forEach(($) => {
                     const id = get_id($)
                     if (temp[id] !== undefined) {
                         abort.duplicate_id(null)
@@ -208,10 +219,12 @@ export namespace from {
             },
 
             group: (
-                get_id: (item: T) => string,
+                get_id: (
+                    item: T
+                ) => string,
             ): _pi.Dictionary<_pi.List<T>> => {
                 const temp: { [id: string]: T[] } = {}
-                $.__get_raw_copy().forEach(($) => {
+                list.__get_raw_copy().forEach(($) => {
                     const id = get_id($)
                     if (temp[id] === undefined) {
                         temp[id] = []
@@ -226,14 +239,21 @@ export namespace from {
 
 }
 
-export function literal<T>(source: { readonly [id: string]: T }): _pi.Dictionary<T> {
+export function literal<T>(
+    source: { readonly [id: string]: T }
+): _pi.Dictionary<T> {
 
-    function create_dictionary_as_array<X>(source: { readonly [id: string]: X }): Dictionary_As_Array<X> {
+    function create_dictionary_as_array<X>(
+        source: { readonly [id: string]: X }
+    ): Dictionary_As_Array<X> {
         const imp: ID_Value_Pair<X>[] = []
         Object.keys(source).forEach((id) => {
             imp.push({ id: id, value: source[id] })
         })
         return imp
     }
-    return new Dictionary_Class(create_dictionary_as_array(source))
+    
+    return new Dictionary_Class(
+        create_dictionary_as_array(source)
+    )
 }

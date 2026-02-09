@@ -9,10 +9,13 @@
  *     //here $[1] has become $
  * })
  * 
- * @param input 
- * @param callback 
+ * @param context 
+ * @param assign 
  * @returns 
  */
-export default function _p_cc<T, RT>(input: T, callback: (output: T) => RT): RT {
-    return callback(input)
+export default function _p_cc<T, Value>(
+    context: T,
+    assign: (context: T) => Value
+): Value {
+    return assign(context)
 }

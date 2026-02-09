@@ -18,7 +18,7 @@ export namespace integer {
         dividend: number,
         divisor: number,
         abort: {
-            'divided_by_zero': _pi.Abort<null>
+            divided_by_zero: _pi.Abort<null>
         },
     ): number => {
         if (divisor === 0) {
@@ -40,28 +40,29 @@ export namespace integer {
 
 export namespace natural {
 
-
     export namespace from {
 
         export const dictionary = <T>(
-            $: _pi.Dictionary<T>,
+            dictionary: _pi.Dictionary<T>,
         ) => {
             return {
 
-                amount_of_entries: (): number => {
-                    return $.__get_number_of_entries()
+                amount_of_entries: (
+                ): number => {
+                    return dictionary.__get_number_of_entries()
                 }
 
             }
         }
 
         export const list = <T>(
-            $: _pi.List<T>,
+            list: _pi.List<T>,
         ) => {
             return {
 
-                amount_of_items: (): number => {
-                    return $.__get_number_of_items()
+                amount_of_items: (
+                ): number => {
+                    return list.__get_number_of_items()
                 },
 
                 reduce: (
@@ -72,7 +73,7 @@ export namespace natural {
                     ) => number,
                 ): number => {
                     let current_state = initial_state
-                    $.__get_raw_copy().forEach(($) => {
+                    list.__get_raw_copy().forEach(($) => {
                         current_state = update_state($, current_state)
                     })
                     return current_state

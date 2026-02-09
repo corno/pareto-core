@@ -1,29 +1,29 @@
 import * as _pi from "../../../interface"
 import { List_Class } from "./literals/List"
 
-export type State<T> = readonly [string, T]
+export type Option<T> = readonly [string, T]
 
 /**
  * ss means 'switch state'.
  * used to make the value T the context variable ('$')
- * given a tuple of a string (or boolean) and a value T,
+ * given a tuple of a string and a value T,
  * the function takes the value T and calls back the callback ($c)
  * notice that the string part is never used
  * 
  * example:
  * 
  * switch ($.state[0]) {
- *     case "on":
- *          return ss($.state, ($) => $.value
- *     case "off":
- *          return ss($.state, ($) => null
- *     default: au($.state[0])
+ *     case 'on':
+ *          return ss($.state, ($) => $.value)
+ *     case 'off':
+ *          return ss($.state, ($) => null)
+ *     default: return au($.state[0])
  * }
  */
 export function ss<T, RT>(
-    $: State<T>,
+    option: Option<T>,
     $c: ($: T) => RT): RT {
-    return $c($[1])
+    return $c(option[1])
 }
 
 /**
@@ -33,33 +33,37 @@ export function ss<T, RT>(
  * example: 
  * 
  * switch (x) {
- *     case "5":
- *         break
- *     default: au(x)
+ *     case '5':
+ *         return 5
+ *     default: return au(x)
  * }
  * 
  * @param _x 
  */
-export function au<RT>(_x: never): RT {
+export function au<RT>(
+    _x: never
+): RT {
     throw new Error("unreachable")
 }
 
 export namespace decide {
 
     export const boolean = <RT>(
-        $: boolean,
+        boolean_value: boolean,
         if_true: () => RT,
         if_false: () => RT
-    ): RT => $ ? if_true() : if_false()
+    ): RT => boolean_value
+            ? if_true()
+            : if_false()
 
     export namespace dictionary {
 
         export const has_entries = <T, RT>(
-            $: _pi.Dictionary<T>,
+            dictionary: _pi.Dictionary<T>,
             if_true: ($: _pi.Dictionary<T>) => RT,
             if_not_true: () => RT
-        ): RT => $.__get_number_of_entries() !== 0
-                ? if_true($)
+        ): RT => dictionary.__get_number_of_entries() !== 0
+                ? if_true(dictionary)
                 : if_not_true()
 
     }
@@ -95,17 +99,25 @@ export namespace decide {
     }
 
     export const optional = <T, RT>(
-        $: _pi.Optional_Value<T>,
+        optional: _pi.Optional_Value<T>,
         if_set: ($: T) => RT,
         if_not_set: () => RT
-    ): RT => $.__decide(if_set, if_not_set)
+    ): RT => optional.__decide(if_set, if_not_set)
 
-    export const state = <T extends readonly [string, any], RT>(input: T, callback: (output: T) => RT): RT => {
-        return callback(input)
+    export const state = <T extends readonly [string, any], RT>(
+        state: T,
+        assign: (output: T) => RT
+    ): RT => {
+        return assign(state)
     }
 
-    export const text = <RT>(input: string, callback: (output: string) => RT): RT => {
-        return callback(input)
+    export const text = <RT>(
+        text: string,
+        assign: (
+            output: string
+        ) => RT
+    ): RT => {
+        return assign(text)
     }
 
 }
