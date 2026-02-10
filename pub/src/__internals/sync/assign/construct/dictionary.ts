@@ -11,20 +11,42 @@ export namespace from {
         return {
 
             filter: <New_Type>(
-                handle_value: (
+                assign_optional_entry: (
                     value: T,
                     id: string
                 ) => _pi.Optional_Value<New_Type>
             ): _pi.Dictionary<New_Type> => {
                 const out: { [id: string]: New_Type } = {}
                 dictionary.__d_map(($, id) => {
-                    const result = handle_value($, id)
+                    const result = assign_optional_entry($, id)
                     result.__extract_data(
                         (new_value) => {
                             out[id] = new_value
                         },
                         () => { }
                     )
+                })
+                return literal(out)
+            },
+
+            flatten: <New_Type>(
+                get_child_dictionary: (
+                    value: T
+                ) => _pi.Dictionary<New_Type>,
+                abort: {
+                    duplicate_id: _pi.Abort<string>
+                }
+            ) => {
+                const out: { [id: string]: New_Type } = {}
+                dictionary.__d_map(($, id) => {
+                    const child_dictionary = get_child_dictionary($)
+                    child_dictionary.__d_map(($child, child_id) => {
+                        const combined_id = id + child_id
+                        if (out[combined_id] !== undefined) {
+                            abort.duplicate_id(combined_id)
+                        }
+                        out[combined_id] = $child
+                    })
                 })
                 return literal(out)
             },
