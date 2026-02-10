@@ -7,7 +7,7 @@ export type Queryer<Output, Error, Input> = (
 //Shoutout to Reinout for helping me with the naming here :)
 
 export interface Query_Result<Output, Error> {
-    query_result: null
+    __query_result: null // I think I added this to prevent accidental duck-type conversions from other types to Query Result
 
     transform_result<New_Output>(
         transformer: _pi.Transformer<Output, New_Output>

@@ -21,10 +21,10 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
     private executer: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
         this.executer = executer
-        this.query_result = null
+        this.__query_result = null
     }
 
-    public query_result: null
+    public __query_result: null
 
 
     transform_result<New_Output>(
