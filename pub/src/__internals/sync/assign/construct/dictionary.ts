@@ -226,14 +226,14 @@ export namespace from {
                     item: T
                 ) => NT,
                 abort: {
-                    duplicate_id: _pi.Abort<null>
+                    duplicate_id: _pi.Abort<string>
                 }
             ): _pi.Dictionary<NT> => {
                 const temp: { [id: string]: NT } = {}
                 list.__get_raw_copy().forEach(($) => {
                     const id = get_id($)
                     if (temp[id] !== undefined) {
-                        abort.duplicate_id(null)
+                        abort.duplicate_id(id)
                     }
                     temp[id] = get_value($)
                 })
