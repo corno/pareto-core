@@ -147,7 +147,7 @@ export namespace dictionaryx {
 export const handle_error = <Target_Error, Block_Error>(
     command_block: Command_Block<Block_Error>,
     parametrized_command_block: ($v: Block_Error) => Command_Block<Target_Error>,
-    new_error: Target_Error,
+    assign_target_error: () => Target_Error,
 ): _pi.Command_Promise<Target_Error> => {
     return __command_promise({
         'execute': (
@@ -159,7 +159,7 @@ export const handle_error = <Target_Error, Block_Error>(
                 (e) => {
                     __handle_command_block(parametrized_command_block(e)).__start(
                         () => {
-                            on_error(new_error)
+                            on_error(assign_target_error())
                         },
                         on_error,
                     )
