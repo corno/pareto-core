@@ -81,18 +81,18 @@ export namespace from {
             },
 
             re_id: (
-                get_id: () => string,
+                get_id: ($: T, key: string) => string,
                 abort: {
                     duplicate_id: _pi.Abort<string>
                 }
             ) => {
                 const temp: { [id: string]: T } = {}
-                dictionary.__d_map(($) => {
-                    const id = get_id()
-                    if (temp[id] !== undefined) {
-                        abort.duplicate_id(id)
+                dictionary.__d_map(($, id) => {
+                    const new_id = get_id($, id)
+                    if (temp[new_id] !== undefined) {
+                        abort.duplicate_id(new_id)
                     }
-                    temp[id] = $
+                    temp[new_id] = $
                 })
                 return literal(temp)
             },
