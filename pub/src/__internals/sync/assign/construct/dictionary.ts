@@ -71,6 +71,27 @@ export namespace from {
                 return literal(temp).__d_map(($) => literal($))
             },
 
+            join: <Other_Type, Result>(
+                other_dictionary: _pi.Dictionary<Other_Type>,
+                assign_entry: (
+                    value: T,
+                    other_value: _pi.Optional_Value<Other_Type>,
+                    id: string
+                ) => Result,
+            ) => {
+                const out: { [id: string]: Result } = {}
+                dictionary.__d_map(($, id) => {
+                    out[id] = assign_entry(
+                        $,
+                        other_dictionary.__get_possible_entry_deprecated(
+                            id,
+                        ),
+                        id
+                    )
+                })
+                return literal(out)
+            },
+
             map: <New_Type>(
                 assign_entry: (
                     value: T,
