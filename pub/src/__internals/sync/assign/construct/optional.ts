@@ -31,10 +31,10 @@ export namespace from {
         return {
 
             convert: <T>(
-                value_if_set: T,
+                assign_set: () => T,
             ): _pi.Optional_Value<T> => {
                 if (boolean_value) {
-                    return new Set_Optional_Value<T>(value_if_set)
+                    return new Set_Optional_Value<T>(assign_set())
                 } else {
                     return new Not_Set_Optional_Value<T>()
                 }
