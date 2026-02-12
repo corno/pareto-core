@@ -80,6 +80,23 @@ export namespace from {
                 return dictionary.__d_map(assign_entry)
             },
 
+            re_id: (
+                get_id: () => string,
+                abort: {
+                    duplicate_id: _pi.Abort<string>
+                }
+            ) => {
+                const temp: { [id: string]: T } = {}
+                dictionary.__d_map(($) => {
+                    const id = get_id()
+                    if (temp[id] !== undefined) {
+                        abort.duplicate_id(id)
+                    }
+                    temp[id] = $
+                })
+                return literal(temp)
+            },
+
             resolve: <Resolved>(
                 assign_entry: (
                     value: T,
@@ -274,7 +291,7 @@ export function literal<T>(
         })
         return imp
     }
-    
+
     return new Dictionary_Class(
         create_dictionary_as_array(source)
     )
