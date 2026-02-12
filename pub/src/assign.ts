@@ -8,3 +8,5 @@ export * as list from "./__internals/sync/assign/construct/list"
 export * as number from "./__internals/sync/assign/construct/number"
 export * as optional from "./__internals/sync/assign/construct/optional"
 export * as state from "./__internals/sync/assign/construct/state"
+
+export * as select from "./__internals/sync/select"
