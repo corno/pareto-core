@@ -51,7 +51,7 @@ export namespace lookup {
             abort: {
                 no_such_entry: Abort<string>,
                 no_context_lookup: Abort<null>,
-                accessing_cyclic_before_resolved: Abort<null>,
+                accessing_cyclic_sibling_before_it_is_resolved: Abort<null>,
             }
         ) => Circular_Dependency<Type>
     }

@@ -136,7 +136,7 @@ export namespace from {
                     'value': undefined | Resolved,
                     'abort': {
                         no_such_entry: _pi.Abort<string>,
-                        accessing_cyclic_before_resolved: _pi.Abort<null>,
+                        accessing_cyclic_sibling_before_it_is_resolved: _pi.Abort<null>,
                     }
                 }
 
@@ -219,7 +219,7 @@ export namespace from {
                                 return {
                                     get_circular_dependent: () => {
                                         if (temp_reference.value === undefined) {
-                                            return abort.accessing_cyclic_before_resolved(null)
+                                            return abort.accessing_cyclic_sibling_before_it_is_resolved(null)
                                         } else {
                                             return temp_reference.value
                                         }
