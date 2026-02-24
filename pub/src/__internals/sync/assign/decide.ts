@@ -79,6 +79,20 @@ export namespace decide {
             () => if_not_true(),
         )
 
+        export const has_single_item = <T, RT>(
+            list: _pi.List<T>,
+            if_true: ($: T) => RT,
+            if_multiple: () => RT,
+            if_none: () => RT,
+        ): RT => {
+            return list.__get_number_of_items() > 2
+                ? if_multiple()
+                : list.__deprecated_get_possible_item_at(0).__decide(
+                    ($) => if_true($),
+                    () => if_none(),
+                )
+        }
+
         export const has_last_item = <T, RT>(
             list: _pi.List<T>,
             if_true: ($: T, rest: _pi.List<T>) => RT,
