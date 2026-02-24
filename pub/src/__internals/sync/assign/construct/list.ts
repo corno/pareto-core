@@ -77,6 +77,25 @@ export namespace from {
                 return new List_Class(out)
             },
 
+            join: <Other_Type, Result>(
+                other_list: _pi.List<Other_Type>,
+                assign_item: (
+                    value: T,
+                    other_value: _pi.Optional_Value<Other_Type>,
+                ) => Result,
+            ) => {
+                const out: Result[] = []
+                let index = -1
+                list.__l_map(($) => {
+                    index++
+                    out.push(assign_item(
+                        $,
+                        other_list.__deprecated_get_possible_item_at(index),
+                    ))
+                })
+                return literal(out)
+            },
+
             map: <New_Type>(
                 assign_item: (
                     item: T,
