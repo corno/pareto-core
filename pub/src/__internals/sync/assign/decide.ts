@@ -82,11 +82,11 @@ export namespace decide {
         export const has_single_item = <T, RT>(
             list: _pi.List<T>,
             if_true: ($: T) => RT,
-            if_multiple: () => RT,
+            if_multiple: ($: _pi.List<T>) => RT,
             if_none: () => RT,
         ): RT => {
             return list.__get_number_of_items() > 2
-                ? if_multiple()
+                ? if_multiple(list)
                 : list.__deprecated_get_possible_item_at(0).__decide(
                     ($) => if_true($),
                     () => if_none(),
