@@ -69,63 +69,62 @@ export namespace decide {
 
     }
 
-    export namespace list {
+    export const list = <T>(
+        list: _pi.List<T>,
+    ) => {
+        return {
 
-        export const has_first_item = <T, RT>(
-            list: _pi.List<T>,
-            if_true: ($: T, rest: _pi.List<T>) => RT,
-            if_not_true: () => RT
-        ): RT => list.__deprecated_get_possible_item_at(0).__decide(
-            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(1))),
-            () => if_not_true(),
-        )
+            has_first_item: <RT>(
+                if_true: ($: T, rest: _pi.List<T>) => RT,
+                if_not_true: () => RT
+            ): RT => list.__deprecated_get_possible_item_at(0).__decide(
+                ($) => if_true($, new List_Class(list.__get_raw_copy().slice(1))),
+                () => if_not_true(),
+            ),
 
-        export const has_items = <T, RT>(
-            list: _pi.List<T>,
-            if_true: ($: _pi.List<T>) => RT,
-            if_not_true: () => RT
-        ): RT => list.__get_number_of_items() !== 0
-                ? if_true(list)
-                : if_not_true()
+            has_items: <RT>(
+                if_true: ($: _pi.List<T>) => RT,
+                if_not_true: () => RT
+            ): RT => list.__get_number_of_items() !== 0
+                    ? if_true(list)
+                    : if_not_true(),
 
-        export const has_last_item = <T, RT>(
-            list: _pi.List<T>,
-            if_true: ($: T, rest: _pi.List<T>) => RT,
-            if_not_true: () => RT
-        ): RT => list.__deprecated_get_possible_item_at(list.__get_number_of_items() - 1).__decide(
-            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
-            () => if_not_true(),
-        )
-        export const has_match = <T, RT>(
-            list: _pi.List<T>,
-            test: ($: T) => _pi.Optional_Value<RT>,
-        ): _pi.Optional_Value<RT> => {
-            const raw = list.__get_raw_copy()
-            for (let i = 0; i < raw.length; i++) {
-                const item = raw[i]
-                const result = test(item)
-                if (result.__get_raw() !== null) {
-                    return result
+            has_last_item: <RT>(
+                if_true: ($: T, rest: _pi.List<T>) => RT,
+                if_not_true: () => RT
+            ): RT => list.__deprecated_get_possible_item_at(list.__get_number_of_items() - 1).__decide(
+                ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
+                () => if_not_true(),
+            ),
+
+            has_match: <RT>(
+                test: ($: T) => _pi.Optional_Value<RT>,
+            ): _pi.Optional_Value<RT> => {
+                const raw = list.__get_raw_copy()
+                for (let i = 0; i < raw.length; i++) {
+                    const item = raw[i]
+                    const result = test(item)
+                    if (result.__get_raw() !== null) {
+                        return result
+                    }
                 }
+                return new Not_Set_Optional_Value<RT>()
+            },
+
+            has_single_item: <RT>(
+                if_true: ($: T) => RT,
+                if_multiple: ($: _pi.List<T>) => RT,
+                if_none: () => RT,
+            ): RT => {
+                return list.__get_number_of_items() > 2
+                    ? if_multiple(list)
+                    : list.__deprecated_get_possible_item_at(0).__decide(
+                        ($) => if_true($),
+                        () => if_none(),
+                    )
             }
-            return new Not_Set_Optional_Value<RT>()
-        }
-        
 
-        export const has_single_item = <T, RT>(
-            list: _pi.List<T>,
-            if_true: ($: T) => RT,
-            if_multiple: ($: _pi.List<T>) => RT,
-            if_none: () => RT,
-        ): RT => {
-            return list.__get_number_of_items() > 2
-                ? if_multiple(list)
-                : list.__deprecated_get_possible_item_at(0).__decide(
-                    ($) => if_true($),
-                    () => if_none(),
-                )
         }
-
     }
 
     export const optional = <T, RT>(
