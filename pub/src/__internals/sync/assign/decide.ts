@@ -1,5 +1,6 @@
 import * as _pi from "../../../interface"
 import { List_Class } from "./literals/List"
+import { Not_Set_Optional_Value } from "./literals/Optional"
 
 export type Option<T> = readonly [string, T]
 
@@ -79,6 +80,38 @@ export namespace decide {
             () => if_not_true(),
         )
 
+        export const has_items = <T, RT>(
+            list: _pi.List<T>,
+            if_true: ($: _pi.List<T>) => RT,
+            if_not_true: () => RT
+        ): RT => list.__get_number_of_items() !== 0
+                ? if_true(list)
+                : if_not_true()
+
+        export const has_last_item = <T, RT>(
+            list: _pi.List<T>,
+            if_true: ($: T, rest: _pi.List<T>) => RT,
+            if_not_true: () => RT
+        ): RT => list.__deprecated_get_possible_item_at(list.__get_number_of_items() - 1).__decide(
+            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
+            () => if_not_true(),
+        )
+        export const has_match = <T, RT>(
+            list: _pi.List<T>,
+            test: ($: T) => _pi.Optional_Value<RT>,
+        ): _pi.Optional_Value<RT> => {
+            const raw = list.__get_raw_copy()
+            for (let i = 0; i < raw.length; i++) {
+                const item = raw[i]
+                const result = test(item)
+                if (result.__get_raw() !== null) {
+                    return result
+                }
+            }
+            return new Not_Set_Optional_Value<RT>()
+        }
+        
+
         export const has_single_item = <T, RT>(
             list: _pi.List<T>,
             if_true: ($: T) => RT,
@@ -92,23 +125,6 @@ export namespace decide {
                     () => if_none(),
                 )
         }
-
-        export const has_last_item = <T, RT>(
-            list: _pi.List<T>,
-            if_true: ($: T, rest: _pi.List<T>) => RT,
-            if_not_true: () => RT
-        ): RT => list.__deprecated_get_possible_item_at(list.__get_number_of_items() - 1).__decide(
-            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
-            () => if_not_true(),
-        )
-
-        export const has_items = <T, RT>(
-            list: _pi.List<T>,
-            if_true: ($: _pi.List<T>) => RT,
-            if_not_true: () => RT
-        ): RT => list.__get_number_of_items() !== 0
-                ? if_true(list)
-                : if_not_true()
 
     }
 

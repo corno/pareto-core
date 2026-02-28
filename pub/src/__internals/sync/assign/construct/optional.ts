@@ -55,7 +55,7 @@ export namespace from {
                 ) => New_Type,
             ): _pi.Optional_Value<New_Type> => {
                 return optional_value.__decide(
-                    (value) => new Set_Optional_Value(assign_set_value(value)),
+                    (value): _pi.Optional_Value<New_Type> => new Set_Optional_Value(assign_set_value(value)),
                     () => new Not_Set_Optional_Value()
                 )
             }

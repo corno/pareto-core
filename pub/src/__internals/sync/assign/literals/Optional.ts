@@ -1,4 +1,5 @@
 import * as _pi from "../../../../interface"
+import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
 
 export class Not_Set_Optional_Value<T> implements _pi.Optional_Value<T> {
 
@@ -14,6 +15,10 @@ export class Not_Set_Optional_Value<T> implements _pi.Optional_Value<T> {
         not_set: () => void,
     ): void {
         not_set()
+    }
+
+    public __get_raw() {
+        return null
     }
 }
 
@@ -35,6 +40,10 @@ export class Set_Optional_Value<T> implements _pi.Optional_Value<T> {
         not_set: () => void,
     ): void {
         set(this.value)
+    }
+
+    public __get_raw(): Raw_Optional_Value<T> {
+        return [this.value]
     }
 
     value: T

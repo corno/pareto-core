@@ -1,3 +1,4 @@
+import { Raw_Optional_Value } from "../Raw_Optional_Value"
 
 
 /**
@@ -21,5 +22,8 @@ export interface Optional_Value<T> {
         set: ($: T) => void,
         not_set: () => void,
     ): void
+
+    __get_raw(
+    ): Raw_Optional_Value<T>
 
 }
