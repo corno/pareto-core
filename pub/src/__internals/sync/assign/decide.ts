@@ -63,7 +63,7 @@ export namespace decide {
         dictionary: _pi.Dictionary<T>,
     ) => {
         return {
-            
+
             has_entries: <RT>(
                 if_true: ($: _pi.Dictionary<T>) => RT,
                 if_not_true: () => RT
@@ -71,6 +71,7 @@ export namespace decide {
                     ? if_true(dictionary)
                     : if_not_true()
         }
+
     }
 
     export const list = <T>(
@@ -103,16 +104,17 @@ export namespace decide {
 
             has_match: <RT>(
                 test: ($: T) => _pi.Optional_Value<RT>,
-            ): _pi.Optional_Value<RT> => {
+                if_no_match: () => RT,
+            ): RT => {
                 const raw = list.__get_raw_copy()
                 for (let i = 0; i < raw.length; i++) {
                     const item = raw[i]
-                    const result = test(item)
-                    if (result.__get_raw() !== null) {
-                        return result
+                    const result = test(item).__get_raw()
+                    if (result !== null) {
+                        return result[0]
                     }
                 }
-                return new Not_Set_Optional_Value<RT>()
+                return if_no_match()
             },
 
             has_single_item: <RT>(
