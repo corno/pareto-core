@@ -57,16 +57,20 @@ export namespace decide {
             ? if_true()
             : if_false()
 
-    export namespace dictionary {
 
-        export const has_entries = <T, RT>(
-            dictionary: _pi.Dictionary<T>,
-            if_true: ($: _pi.Dictionary<T>) => RT,
-            if_not_true: () => RT
-        ): RT => dictionary.__get_number_of_entries() !== 0
-                ? if_true(dictionary)
-                : if_not_true()
 
+    export const dictionary = <T>(
+        dictionary: _pi.Dictionary<T>,
+    ) => {
+        return {
+            
+            has_entries: <RT>(
+                if_true: ($: _pi.Dictionary<T>) => RT,
+                if_not_true: () => RT
+            ): RT => dictionary.__get_number_of_entries() !== 0
+                    ? if_true(dictionary)
+                    : if_not_true()
+        }
     }
 
     export const list = <T>(
