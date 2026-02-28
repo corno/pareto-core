@@ -69,7 +69,19 @@ export namespace decide {
                 if_not_true: () => RT
             ): RT => dictionary.__get_number_of_entries() !== 0
                     ? if_true(dictionary)
-                    : if_not_true()
+                    : if_not_true(),
+
+            has_single_entry: <RT>(
+                if_true: ($: T, id: string) => RT,
+                if_multiple: ($: _pi.Dictionary<T>) => RT,
+                if_none: () => RT,
+            ): RT => {
+                return list(dictionary.__to_list(($, id) => ({ 'id': id, 'value': $ }))).has_single_item(
+                    (item) => if_true(item.value, item.id),
+                    () => if_multiple(dictionary),
+                    if_none,
+                )
+            }
         }
 
     }
@@ -128,7 +140,7 @@ export namespace decide {
                         ($) => if_true($),
                         () => if_none(),
                     )
-            }
+            },
 
         }
     }
