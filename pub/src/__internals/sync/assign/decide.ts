@@ -134,7 +134,7 @@ export namespace decide {
                 if_multiple: ($: _pi.List<T>) => RT,
                 if_none: () => RT,
             ): RT => {
-                return list.__get_number_of_items() > 2
+                return (list.__get_number_of_items() > 2)
                     ? if_multiple(list)
                     : list.__deprecated_get_possible_item_at(0).__decide(
                         ($) => if_true($),
