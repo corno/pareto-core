@@ -1,29 +1,6 @@
 import { Raw_Optional_Value } from "./Raw_Optional_Value"
-import { Transformer } from "./algorithm_signatures/Transformer"
 import { Circular_Dependency } from "./data/Circular_Dependency"
-
-export type Abort<Error> = (error: Error) => never
-
-export type Iterator<Item> = {
-    look: () => Raw_Optional_Value<Item>,
-    look_ahead: (offset: number) => Raw_Optional_Value<Item>
-    consume: <T>(
-        assign: (value: Item, position: number) => T,
-        abort: {
-            no_more_tokens: Abort<null>
-        }
-    ) => T,
-    discard: <T>(
-        assign: () => T
-    ) => T,
-    get_position: () => number,
-    assert_finished: <T>(
-        assign: () => T,
-        abort: {
-            not_finished: Abort<null>
-        }
-    ) => T
-}
+import { Abort } from "./abort"
 
 export namespace lookup {
 

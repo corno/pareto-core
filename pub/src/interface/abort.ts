@@ -1,0 +1,2 @@
+
+export type Abort<Error> = (error: Error) => never

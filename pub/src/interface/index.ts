@@ -4,7 +4,9 @@ export * from "./data/Circular_Dependency"
 export * from "./data/Dictionary"
 export * from "./data/Optional_Value"
 
-export * from "./specials"
+export * from "./iterator"
+export * from "./lookup"
+export * from "./abort"
 
 export * from "./algorithm_signatures/Command"
 export * from "./algorithm_signatures/Production"

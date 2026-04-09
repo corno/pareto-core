@@ -18,31 +18,33 @@ export namespace listx {
     ): _pi.Command_Promise<Error> => {
         return __command_promise({
             'execute': (on_success, on_error) => {
-                _p_iterate(array, (iterator) => {
-                    const do_next = () => {
-                        const next = iterator.look()
-                        if (next !== null) {
-                            iterator.consume(
-                                ($) => {
-                                    $.__start(
-                                        () => {
-                                            do_next()
-                                        },
-                                        on_error
-                                    )
-                                },
-                                {
-                                    no_more_tokens: () => {
+                _p_iterate(
+                    array,
+                    null,
+                    (iterator) => {
+                        const do_next = () => {
+                            const next = iterator.look_raw()
+                            if (next !== null) {
+                                iterator.consume(
+                                    ($) => {
+                                        $.__start(
+                                            () => {
+                                                do_next()
+                                            },
+                                            on_error
+                                        )
+                                    },
+                                    () => {
                                         throw new Error("not reachable, just did a look()")
                                     }
-                                },
-                            )
-                        } else {
-                            on_success()
+                                )
+                            } else {
+                                on_success()
+                            }
                         }
+                        do_next()
                     }
-                    do_next()
-                })
+                )
 
             }
         })
