@@ -1,10 +1,17 @@
 
-export class Unreachable_Code_Path_Error extends Error {
-    constructor(explanation: string) {
-        super(`PANIC; this should have been an unreachable code path because ${explanation}`)
+export class Unreachable_Code_Path_Error {
+    constructor(
+        message: string,
+        stack? : string,
+    ) {
+        this.message = message
+        this.stack = stack
     }
+    message: string
+    stack?: string
 }
 
 export default function _p_unreachable_code_path(explanation: string): never {
-    throw new Unreachable_Code_Path_Error(explanation)
+    const err = new Error(explanation)
+    throw new Unreachable_Code_Path_Error(explanation, err.stack)
 }
