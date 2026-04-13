@@ -36,11 +36,11 @@ export default function _p_iterate<Item, End_Info, Return_Type>(
         },
         consume: (
             assign,
-            abort
+            no_item,
         ) => {
             const currentx = look_raw()
             if (currentx === null) {
-                return abort()
+                return no_item()
             }
             const current = $.__deprecated_get_item_at(
                 position,

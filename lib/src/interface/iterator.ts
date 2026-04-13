@@ -18,7 +18,7 @@ export type Iterator<Item, End_Info> = {
     expect: <T, Error>($: {
         abort: Abort<Error>,
         get_error: ($: Optional_Value<Item>) => Error,
-        item: (token: Item, abort: () => never) => T,
+        item: (token: Item, abort: Abort<null>) => T,
     }) => T
     get_end_info: () => End_Info
     list: <List_Item>($: {
