@@ -14,7 +14,7 @@ export type I_Async_Monitor = {
  * @param callback this callback creates a scope within which the counter is provided
  * @param onEnd this callback will be called when all ongoing operations are finished
  */
-export function create_asynchronous_processes_monitor(
+export default function create_asynchronous_processes_monitor(
     monitoring_phase: ($: I_Async_Monitor) => void,
     on_all_finished: () => void
 ): void {

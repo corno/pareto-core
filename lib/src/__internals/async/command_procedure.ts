@@ -1,17 +1,17 @@
 import * as _pi from "../../interface"
 
-import { __command } from "./command"
-import { __command_promise } from "./command_promise"
-import { __handle_command_block } from "./handle_command_block"
 import { Command_Block } from "./Command_Block"
+import _command from "./command"
+import __command_promise from "./command_promise"
+import __handle_command_block from "./handle_command_block"
 
-export const command_procedure = <Error, Parameters, Command_Resources, Query_Resources>(
+export default function command_procedure<Error, Parameters, Command_Resources, Query_Resources>(
     execution_handler: (
         $p: Parameters,
         $cr: Command_Resources,
         $qr: Query_Resources,
     ) => Command_Block<Error>,
-): _pi.Command_Procedure<_pi.Command<Error, Parameters>, Command_Resources, Query_Resources> => {
+): _pi.Command_Procedure<_pi.Command<Error, Parameters>, Command_Resources, Query_Resources> {
     return ($cr, $qr) => {
         return {
             'execute': (parameters, error_transformer) => {

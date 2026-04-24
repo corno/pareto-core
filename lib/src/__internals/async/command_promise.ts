@@ -48,7 +48,7 @@ class Command_Promise_Class<E> implements _pi.Command_Promise<E> {
  * @param executer the function that produces the eventual value
  * @returns 
  */
-export function __command_promise<E>(
+export default function __command_promise<E>(
     executer: Executer<E>,
 ): _pi.Command_Promise<E> {
     return new Command_Promise_Class<E>(executer)

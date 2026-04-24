@@ -10,9 +10,9 @@ export type Refinement_Result<Output, Error> = {
 
 }
 
-export const create_refinement_context = <Output, Error>(
+export default function create_refinement_context <Output, Error>(
     callback: (abort: _pi.Abort<Error>) => Output,
-): Refinement_Result<Output, Error> => {
+): Refinement_Result<Output, Error> {
     return ({
         __extract_data(
             on_result: ($: Output) => void,

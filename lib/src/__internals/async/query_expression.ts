@@ -1,8 +1,8 @@
 import * as _pi from "../../interface"
-import { __query_result } from "./__query_result"
+import __query_result from "./__query_result"
 import { Query_Result } from "./Query_Result"
-import { create_asynchronous_dictionary_builder } from "./asynchronous_collection_builder"
-import { create_asynchronous_processes_monitor } from "./create_asynchronous_processes_monitor"
+import create_asynchronous_dictionary_builder from "./asynchronous_dictionary_builder"
+import create_asynchronous_processes_monitor from "./create_asynchronous_processes_monitor"
 
 
 export namespace dictionaryx {

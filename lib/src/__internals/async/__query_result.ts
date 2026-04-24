@@ -1,5 +1,5 @@
 import * as _pi from "../../interface"
-import { create_refinement_context } from "./create_refinement_context"
+import create_refinement_context from "./create_refinement_context"
 import { Query_Result } from "./Query_Result"
 
 /**
@@ -122,7 +122,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
 }
 
 
-export function __query_result<T, E>(
+export default function __query_result<T, E>(
     executer: Executer<T, E>,
 ): Query_Result<T, E> {
     return new Query_Result_Class<T, E>(executer)
