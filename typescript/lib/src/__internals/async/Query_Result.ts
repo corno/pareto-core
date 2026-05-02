@@ -9,15 +9,15 @@ export type Queryer<Output, Error, Input> = (
 export interface Query_Result<Output, Error> {
     __query_result: null // I think I added this to prevent accidental duck-type conversions from other types to Query Result
 
-    transform_result<New_Output>(
+    transform<New_Output>(
         transformer: _pi.Transformer<Output, New_Output>
     ): Query_Result<New_Output, Error>
 
-    query_without_error_transformation<New_Output>(
+    query<New_Output>(
         query: Queryer<New_Output, Error, Output>
     ): Query_Result<New_Output, Error>
 
-    refine_without_error_transformation<New_Output>(
+    refine<New_Output>(
         callback: ($: Output, abort: _pi.Abort<Error>) => New_Output,
     ): Query_Result<New_Output, Error>
 

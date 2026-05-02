@@ -27,7 +27,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
     public __query_result: null
 
 
-    transform_result<New_Output>(
+    transform<New_Output>(
         transformer: _pi.Transformer<Output, New_Output>
     ): Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
@@ -40,7 +40,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
         })
     }
 
-    query_without_error_transformation<New_Output>(
+    query<New_Output>(
         queryer: Queryer<New_Output, Error, Output>
     ): Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
@@ -56,27 +56,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
         })
     }
 
-    // query<New_Output, Query_Error>(
-    //     queryer: Queryer<New_Output, Query_Error, Output>,
-    //     error_transformer: _pi._pi.Transformer<Query_Error, Error>,
-    // ): Query_Result<New_Output, Error> {
-    //     return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
-    //         this.executer(
-    //             ($) => {
-    //                 queryer($).__extract_data(
-    //                     on_result,
-    //                     (queryer_error) => {
-    //                         on_error(error_transformer(queryer_error))
-    //                     },
-    //                 )
-    //             },
-    //             on_error,
-    //         )
-    //     })
-    // }
-
-
-    refine_without_error_transformation<New_Output>(
+    refine<New_Output>(
         callback: ($: Output, abort: _pi.Abort<Error>) => New_Output,
     ): Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
