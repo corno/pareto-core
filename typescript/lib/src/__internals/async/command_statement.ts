@@ -324,9 +324,8 @@ export namespace if_ {
         })
     }
 
-    export const query = <Error, Intermediate_Result>(
-        precondition: Query_Result<Intermediate_Result, Error>,
-        transformer: _pi.Transformer<Intermediate_Result, boolean>,
+    export const query = <Error>(
+        precondition: Query_Result<boolean, Error>,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
     ): _pi.Command_Promise<Error> => {
@@ -334,7 +333,7 @@ export namespace if_ {
             'execute': (on_success, on_error) => {
                 precondition.__extract_data(
                     ($) => {
-                        if (transformer($)) {
+                        if ($) {
                             __handle_command_block(command_block).__start(
                                 on_success,
                                 on_error
