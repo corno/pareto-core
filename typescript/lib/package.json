@@ -1,9 +1,9 @@
 {
   "name": "pareto-core",
   "version": "0.1.84",
-  "license": "ISC",
-  "description": "the core language constructs for the Pareto programming language (in TypeScript)",
+  "license": "Apache-2.0",
   "author": "Corno",
+  "description": "the core language constructs for the Pareto programming language (in TypeScript)",
   "keywords": [
     "pareto",
     "core",
@@ -13,14 +13,14 @@
   "bugs": {
     "url": "https://github.com/corno/pareto-core/issues"
   },
-  "dependencies": {},
-  "main": "./dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/corno/pareto-core.git"
-  }
+  },
+  "dependencies": {},
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts"
 }
