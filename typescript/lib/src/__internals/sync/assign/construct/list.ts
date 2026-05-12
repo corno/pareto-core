@@ -107,6 +107,32 @@ export namespace from {
             reverse: (
             ): _pi.List<T> => {
                 return new List_Class(list.__get_raw_copy().slice().reverse())
+            },
+
+            map_with_state: <Target_Element, State, Result_Type>(
+                initial_state: State,
+                handle_value: (
+                    value: T,
+                    state: State
+                ) => Target_Element,
+                update_state: (
+                    value: Target_Element,
+                    state: State
+                ) => State,
+                wrapup: (
+                    final_list: _pi.List<Target_Element>,
+                    final_state: State
+                ) => Result_Type,
+            ): Result_Type => {
+                let current_state = initial_state
+                return wrapup(
+                    list.__l_map(($) => {
+                        const result = handle_value($, current_state)
+                        current_state = update_state(result, current_state)
+                        return result
+                    }),
+                    current_state
+                )
             }
 
         }
