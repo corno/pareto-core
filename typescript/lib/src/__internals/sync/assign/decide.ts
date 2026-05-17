@@ -64,6 +64,15 @@ export namespace decide {
     ) => {
         return {
 
+            contains_entry: <RT>(
+                id: string,
+                if_true: ($: T) => RT,
+                if_not_true: () => RT
+            ): RT => dictionary.__get_possible_entry_deprecated(id).__decide(
+                ($) => if_true($),
+                () => if_not_true(),
+            ),
+
             has_entries: <RT>(
                 if_true: ($: _pi.Dictionary<T>) => RT,
                 if_not_true: () => RT

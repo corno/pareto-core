@@ -118,12 +118,12 @@ export namespace from {
                 return literal(temp)
             },
 
-            resolve: <Resolved>(
+            resolve_static: <Resolved>(
                 assign_entry: (
                     value: T,
                     id: string,
-                    acyclic_lookup: _pi.lookup.Acyclic<Resolved>,
-                    cyclic_lookup: _pi.lookup.Cyclic<Resolved>,
+                    acyclic_lookup: _pi.static_lookup.Acyclic<Resolved>,
+                    cyclic_lookup: _pi.static_lookup.Cyclic<Resolved>,
                 ) => Resolved,
             ): _pi.Dictionary<Resolved> => {
                 const source = dictionary
@@ -226,6 +226,141 @@ export namespace from {
                                     }
                                 }
                             }
+                        }
+                    )
+                }
+                source.__d_map(($, id) => {
+                    inner_resolve($, id, [id])
+                })
+
+                cyclic_references.forEach(($) => {
+                    const value = out[$.id]
+                    if (value === undefined) {
+                        $.abort.no_such_entry($.id)
+                    } else {
+                        $.value = value
+                    }
+
+                })
+
+                return literal(out)
+            },
+
+            resolve_dynamic: <Resolved>(
+                assign_entry: (
+                    value: T,
+                    id: string,
+                    acyclic_lookup: _pi.dynamic_lookup.Acyclic<Resolved>,
+                    cyclic_lookup: _pi.dynamic_lookup.Cyclic<Resolved>,
+                ) => Resolved,
+            ): _pi.Dictionary<Resolved> => {
+                const source = dictionary
+                const out: { [id: string]: Resolved } = {}
+
+                const entries_started: { [id: string]: null } = {}
+
+                type Cyclic_Reference = {
+                    'id': string,
+                    'value': undefined | Resolved,
+                    'abort': {
+                        no_such_entry: _pi.Abort<string>,
+                        accessing_cyclic_sibling_before_it_is_resolved: _pi.Abort<null>,
+                    }
+                }
+
+                const cyclic_references: Cyclic_Reference[] = []
+
+                const inner_resolve = (
+                    value: T,
+                    id: string,
+                    stack: string[]
+                ): void => {
+                    if (out[id] !== undefined) {
+                        // already resolved
+                        return
+                    }
+                    entries_started[id] = null
+                    out[id] = assign_entry(
+                        value,
+                        id,
+                        {
+                            map_possible_entry: (id, handlers) => {
+                                throw new Error("IMPLEMENT map_possible_entry in resolve_dynamic")
+                            }
+                            // get_entry: (
+                            //     id,
+                            //     abort,
+                            // ) => {
+                            //     if (out[id] === undefined) {
+                            //         if (entries_started[id] !== undefined) {
+                            //             return abort['cycle_detected'](stack.concat([id]))
+                            //         } else {
+                            //             inner_resolve(
+                            //                 source.__get_entry_deprecated(
+                            //                     id,
+                            //                     {
+                            //                         no_such_entry: () => abort.no_such_entry(null)
+                            //                     }
+                            //                 ),
+                            //                 id,
+                            //                 stack.concat([id])
+                            //             )
+                            //         }
+
+                            //     }
+                            //     // now it must be resolved, otherwise we would have aborted
+                            //     return out[id]
+                            // },
+                            // __get_entry_raw: (
+                            //     id,
+                            //     abort,
+                            // ) => {
+                            //     const x = source.__get_entry_raw(id)
+                            //     if (x === null) {
+                            //         return null
+                            //     } else {
+                            //         if (out[id] === undefined) {
+                            //             if (entries_started[id] !== undefined) {
+                            //                 return abort.cycle_detected(stack.concat([id]))
+                            //             } else {
+                            //                 inner_resolve(
+                            //                     x[0],
+                            //                     id,
+                            //                     stack.concat([id])
+                            //                 )
+                            //             }
+                            //         }
+                            //         // now it must be resolved, otherwise we would have aborted
+                            //         return [out[id]]
+
+                            //     }
+                            // }
+                        },
+                        {
+                            'map_possible_entry': (id, handlers) => {
+                                throw new Error("IMPLEMENT map_possible_entry in resolve_dynamic")
+
+                            }
+                            // get_entry: (
+                            //     id,
+                            //     abort,
+                            // ) => {
+                            //     const temp_reference: Cyclic_Reference = {
+                            //         'id': id,
+                            //         'value': undefined,
+                            //         'abort': abort,
+                            //     }
+                            //     cyclic_references.push(temp_reference)
+                            //     return {
+                            //         get_circular_dependent: () => {
+                            //             if (temp_reference.value === undefined) {
+                            //                 return abort.accessing_cyclic_sibling_before_it_is_resolved(null)
+                            //             } else {
+                            //                 return temp_reference.value
+                            //             }
+                            //         }
+                            //     }
+                            // }
                         }
                     )
                 }

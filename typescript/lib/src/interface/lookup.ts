@@ -2,7 +2,7 @@ import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { Circular_Dependency } from "./data/Circular_Dependency"
 import { Abort } from "./abort"
 
-export namespace lookup {
+export namespace static_lookup {
 
     export type Acyclic<Type> = {
         get_entry: (
@@ -50,6 +50,54 @@ export namespace lookup {
                 cycle_detected: Abort<string[]>,
             }
         ) => number
+    }
+
+}
+
+export namespace dynamic_lookup {
+
+    export type Acyclic<Type> = {
+        map_possible_entry: <Out>(
+            id: string,
+            handlers: {
+                found_entry: ($: Type) => Out,
+                no_such_entry: ($: string) => Out,
+                no_context_lookup: () => Out,
+                cycle_detected: ($: string[]) => Out,
+            }
+        ) => Out
+    }
+
+    export type Cyclic<Type> = {
+        map_possible_entry: <Out>(
+            id: string,
+            handlers: {
+                found_entry: ($: Type) => Out,
+                no_such_entry: ($: string) => Out,
+                no_context_lookup: () => Out,
+                accessing_cyclic_sibling_before_it_is_resolved: () => Out,
+            }
+        ) => Circular_Dependency<Out>
+    }
+
+    export type Stack<Type> = {
+        // get_entry_depth: (
+        //     id: string,
+        //     abort: {
+        //         no_context_lookup: Abort<null>,
+        //         no_such_entry: Abort<string>,
+        //         cycle_detected: Abort<string[]>,
+        //     }
+        // ) => number
+        map_possible_entry: <Out>(
+            id: string,
+            handlers: {
+                found_entry: ($: Type) => Out,
+                no_context_lookup: () => Out,
+                no_such_entry: ($: string) => Out,
+                cycle_detected: ($: string[]) => Out,
+            }
+        ) => Out
     }
 
 }
