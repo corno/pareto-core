@@ -36,6 +36,31 @@ export namespace integer {
             return Math.ceil(quotient)
         }
     }
+    export namespace from {
+    
+    
+        export const list = <T>(
+            list: _pi.List<T>,
+        ) => {
+            return {
+
+                sum: (
+                    assign_value: (
+                        item: T,
+                    ) => number,
+                ): number => {
+                    let sum = 0
+                    list.__get_raw_copy().forEach(($) => {
+                        sum += assign_value($)
+                    })
+                    return sum
+                },
+    
+            }
+        }
+    
+    
+    }
 }
 
 export namespace natural {
