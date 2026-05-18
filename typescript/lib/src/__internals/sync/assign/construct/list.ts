@@ -96,6 +96,24 @@ export namespace from {
                 return literal(out)
             },
 
+            full_join: <Other_Type, Result>(
+                other_list: _pi.List<Other_Type>,
+                assign_item: (
+                    value: _pi.Optional_Value<T>,
+                    other_value: _pi.Optional_Value<Other_Type>,
+                ) => Result,
+            ) => {
+                const out: Result[] = []
+                const maxLength = Math.max(list.__get_number_of_items(), other_list.__get_number_of_items())
+                for (let i = 0; i < maxLength; i++) {
+                    out.push(assign_item(
+                        list.__deprecated_get_possible_item_at(i),
+                        other_list.__deprecated_get_possible_item_at(i),
+                    ))
+                }
+                return literal(out)
+            },
+
             map: <New_Type>(
                 assign_item: (
                     item: T,
