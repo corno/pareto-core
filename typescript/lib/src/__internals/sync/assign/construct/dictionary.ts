@@ -10,7 +10,7 @@ export namespace from {
     ) => {
         return {
 
-            filter: <New_Type>(
+            map_optionally: <New_Type>(
                 assign_optional_entry: (
                     value: T,
                     id: string

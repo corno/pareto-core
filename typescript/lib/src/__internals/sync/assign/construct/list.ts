@@ -43,7 +43,7 @@ export namespace from {
     ) => {
         return {
 
-            filter: <New_Type>(
+            map_optionally: <New_Type>(
                 assign_optional_item: (
                     item: T,
                 ) => _pi.Optional_Value<New_Type>
