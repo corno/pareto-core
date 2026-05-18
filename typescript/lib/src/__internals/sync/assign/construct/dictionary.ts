@@ -10,6 +10,22 @@ export namespace from {
     ) => {
         return {
 
+            filter: (
+                callback: (
+                    value: T,
+                    id: string
+                ) => boolean
+            ): _pi.Dictionary<T> => {
+                const out: { [id: string]: T } = {}
+                dictionary.__d_map(($, id) => {
+                    const result = callback($, id)
+                    if (result) {
+                        out[id] = $
+                    }
+                })
+                return literal(out)
+            },
+
             map_optionally: <New_Type>(
                 assign_optional_entry: (
                     value: T,

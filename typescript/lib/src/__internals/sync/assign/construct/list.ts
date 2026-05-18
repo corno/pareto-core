@@ -43,6 +43,14 @@ export namespace from {
     ) => {
         return {
 
+            filter: (
+                callback: (
+                    item: T,
+                ) => boolean
+            ): _pi.List<T> => {
+                return new List_Class(list.__get_raw_copy().filter(callback))
+            },
+
             map_optionally: <New_Type>(
                 assign_optional_item: (
                     item: T,
