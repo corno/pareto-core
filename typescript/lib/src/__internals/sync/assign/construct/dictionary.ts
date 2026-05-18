@@ -49,21 +49,20 @@ export namespace from {
                 get_child_dictionary: (
                     value: T
                 ) => _pi.Dictionary<New_Type>,
-                separator: _pi.Optional_Value<string>,
+                get_id: (
+                    parent_id: string,
+                    child_id: string,
+                ) => string,
                 abort: {
                     duplicate_id: _pi.Abort<string>
                 }
             ) => {
                 const out: { [id: string]: New_Type } = {}
 
-                const sep = separator.__decide(
-                    (s) => s,
-                    () => ""
-                )
                 dictionary.__d_map(($, id) => {
                     const child_dictionary = get_child_dictionary($)
                     child_dictionary.__d_map(($child, child_id) => {
-                        const combined_id = id + sep + child_id
+                        const combined_id = get_id(id, child_id)
                         if (out[combined_id] !== undefined) {
                             abort.duplicate_id(combined_id)
                         }
