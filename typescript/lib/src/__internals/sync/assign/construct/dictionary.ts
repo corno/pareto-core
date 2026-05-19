@@ -23,32 +23,13 @@ export namespace from {
                     id: string
                 ) => _pi.Optional_Value<New_Type>
             ): _pi.Dictionary<New_Type> => {
-                return new Dictionary_Class(dictionary.__get_raw_copy().map(($) => {
-                    const result = assign_optional_entry($[1], $[0])
-                    let hasValue = false
-                    let new_value: New_Type
-                    result.__extract_data(
-                        (value) => {
-                            hasValue = true
-                            new_value = value
-                        },
-                        () => { }
-                    )
-                    return { id: $[0], value: new_value!, hasValue }
-                }).filter(($) => $.hasValue).map(($) => [$.id, $.value]))
-                // const out: { [id: string]: New_Type } = {}
-                // dictionary.__d_map(($, id) => {
-                // const out: { [id: string]: New_Type } = {}
-                // dictionary.__d_map(($, id) => {
-                //     const result = assign_optional_entry($, id)
-                //     result.__extract_data(
-                //         (new_value) => {
-                //             out[id] = new_value
-                //         },
-                //         () => { }
-                //     )
-                // })
-                // return literal(out)
+                return new Dictionary_Class(
+                    dictionary
+                        .__get_raw_copy()
+                        .map(($) => [$[0], assign_optional_entry($[1], $[0])] as [string, _pi.Optional_Value<New_Type>])
+                        .filter(($) => $[1].__get_raw() !== null)
+                        .map(($) => [$[0], $[1].__get_raw()![0]])
+                )
             },
 
             flatten: <New_Type>(
@@ -124,9 +105,7 @@ export namespace from {
                     value: T,
                     id: string
                 ) => New_Type,
-            ): _pi.Dictionary<New_Type> => {
-                return dictionary.__d_map(assign_entry)
-            },
+            ): _pi.Dictionary<New_Type> => dictionary.__d_map(assign_entry),
 
             re_id: (
                 get_id: ($: T, key: string) => string,
