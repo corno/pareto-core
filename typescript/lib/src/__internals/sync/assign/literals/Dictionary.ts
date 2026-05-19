@@ -5,10 +5,7 @@ import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
 import { List_Class } from "./List"
 
 
-export type ID_Value_Pair<T> = {
-    readonly 'id': string
-    readonly 'value': T
-}
+export type ID_Value_Pair<T> = [string, T]
 
 export type Dictionary_As_Array<T> = readonly ID_Value_Pair<T>[]
 
@@ -21,18 +18,16 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
         $v: (entry: T, id: string) => NT
     ) {
         return new Dictionary_Class<NT>(this.source.map(($) => {
-            return {
-                id: $.id,
-                value: $v($.value, $.id)
-            }
+            return [
+                $[0],
+                $v($[1], $[0])
+            ]
         }))
     }
     __to_list<New_Type>(
         handle_value: (value: T, id: string) => New_Type
     ): _pi.List<New_Type> {
-        return new List_Class(this.source.map(($) => {
-            return handle_value($.value, $.id)
-        }))
+        return new List_Class(this.source.map(($) => handle_value($[1], $[0])))
     }
 
     __get_possible_entry_deprecated(
@@ -40,8 +35,8 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
     ): _pi.Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
-            if (entry.id === id) {
-                return new optional.Set_Optional_Value(entry.value)
+            if (entry[0] === id) {
+                return new optional.Set_Optional_Value(entry[1])
             }
         }
         return new optional.Not_Set_Optional_Value()
@@ -52,8 +47,8 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
     ): Raw_Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
-            if (entry.id === id) {
-                return [entry.value]
+            if (entry[0] === id) {
+                return [entry[1]]
             }
         }
         return null
@@ -67,8 +62,8 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
     ): T {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
-            if (entry.id === id) {
-                return entry.value
+            if (entry[0] === id) {
+                return entry[1]
             }
         }
         return abort.no_such_entry(null)
@@ -76,6 +71,10 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
 
     __get_number_of_entries(): number {
         return this.source.length
+    }
+
+    __get_raw_copy(): readonly [string, T][] {
+        return this.source
     }
 
 }

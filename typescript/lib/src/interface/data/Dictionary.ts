@@ -36,4 +36,6 @@ export interface Dictionary<T> {
     ): Raw_Optional_Value<T>
 
     __get_number_of_entries(): number
+
+    __get_raw_copy(): readonly [string, T][]
 }

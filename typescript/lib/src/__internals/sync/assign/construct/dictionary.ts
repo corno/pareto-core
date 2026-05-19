@@ -15,16 +15,7 @@ export namespace from {
                     value: T,
                     id: string
                 ) => boolean
-            ): _pi.Dictionary<T> => {
-                const out: { [id: string]: T } = {}
-                dictionary.__d_map(($, id) => {
-                    const result = callback($, id)
-                    if (result) {
-                        out[id] = $
-                    }
-                })
-                return literal(out)
-            },
+            ): _pi.Dictionary<T> => new Dictionary_Class(dictionary.__get_raw_copy().filter(($) => callback($[1], $[0]))),
 
             map_optionally: <New_Type>(
                 assign_optional_entry: (
@@ -32,17 +23,32 @@ export namespace from {
                     id: string
                 ) => _pi.Optional_Value<New_Type>
             ): _pi.Dictionary<New_Type> => {
-                const out: { [id: string]: New_Type } = {}
-                dictionary.__d_map(($, id) => {
-                    const result = assign_optional_entry($, id)
+                return new Dictionary_Class(dictionary.__get_raw_copy().map(($) => {
+                    const result = assign_optional_entry($[1], $[0])
+                    let hasValue = false
+                    let new_value: New_Type
                     result.__extract_data(
-                        (new_value) => {
-                            out[id] = new_value
+                        (value) => {
+                            hasValue = true
+                            new_value = value
                         },
                         () => { }
                     )
-                })
-                return literal(out)
+                    return { id: $[0], value: new_value!, hasValue }
+                }).filter(($) => $.hasValue).map(($) => [$.id, $.value]))
+                // const out: { [id: string]: New_Type } = {}
+                // dictionary.__d_map(($, id) => {
+                // const out: { [id: string]: New_Type } = {}
+                // dictionary.__d_map(($, id) => {
+                //     const result = assign_optional_entry($, id)
+                //     result.__extract_data(
+                //         (new_value) => {
+                //             out[id] = new_value
+                //         },
+                //         () => { }
+                //     )
+                // })
+                // return literal(out)
             },
 
             flatten: <New_Type>(
@@ -464,7 +470,7 @@ export function literal<T>(
     ): Dictionary_As_Array<X> {
         const imp: ID_Value_Pair<X>[] = []
         Object.keys(source).forEach((id) => {
-            imp.push({ id: id, value: source[id] })
+            imp.push([id, source[id]])
         })
         return imp
     }
