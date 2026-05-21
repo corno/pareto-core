@@ -1,112 +1,109 @@
 import * as _pi from "../../../../interface"
 
+export namespace from {
 
-export namespace integer {
+    export namespace number {
 
-    /**
-     * Performs integer division of two numbers (rounding towards negative infinity).
-     * 
-     * dividend / divisor
-     * 
-     * examples:
-     * integer_division(7, 3) === 2
-     * integer_division(7, -3) === -3
-     * integer_division(-7, 3) === -3
-     * integer_division(-7, -3) === 2
-     */
-    export const divide = (
-        dividend: number,
-        divisor: number,
-        abort: {
-            divided_by_zero: _pi.Abort<null>
-        },
-    ): number => {
-        if (divisor === 0) {
-            abort.divided_by_zero(null)
-        }
-        const quotient = dividend / divisor
-        // when dividend and divisor have different signs, the quotient is negative
-        // For positive quotients, use Math.floor to round down
-
-        // this behavior matches the integer division in Python, Java, and C99 and later
-
-        if (quotient >= 0) {
-            return Math.floor(quotient)
-        } else {
-            return Math.ceil(quotient)
-        }
-    }
-    export namespace from {
-    
-    
-        export const list = <T>(
-            list: _pi.List<T>,
-        ) => {
-            return {
-
-                sum: (
-                    assign_value: (
-                        item: T,
-                    ) => number,
-                ): number => {
-                    let sum = 0
-                    list.__get_raw_copy().forEach(($) => {
-                        sum += assign_value($)
-                    })
-                    return sum
-                },
-    
+        /**
+         * Performs integer division of two numbers (rounding towards negative infinity).
+         * 
+         * dividend / divisor
+         * 
+         * examples:
+         * integer_division(7, 3) === 2
+         * integer_division(7, -3) === -3
+         * integer_division(-7, 3) === -3
+         * integer_division(-7, -3) === 2
+         */
+        export const divide = (
+            dividend: number,
+            divisor: number,
+            abort: {
+                divided_by_zero: _pi.Abort<null>
+            },
+        ): number => {
+            if (divisor === 0) {
+                abort.divided_by_zero(null)
             }
-        }
-    
-    
-    }
-}
+            const quotient = dividend / divisor
+            // when dividend and divisor have different signs, the quotient is negative
+            // For positive quotients, use Math.floor to round down
 
-export namespace natural {
+            // this behavior matches the integer division in Python, Java, and C99 and later
 
-    export namespace from {
-
-        export const dictionary = <T>(
-            dictionary: _pi.Dictionary<T>,
-        ) => {
-            return {
-
-                amount_of_entries: (
-                ): number => {
-                    return dictionary.__get_number_of_entries()
-                }
-
+            if (quotient >= 0) {
+                return Math.floor(quotient)
+            } else {
+                return Math.ceil(quotient)
             }
         }
 
-        export const list = <T>(
-            list: _pi.List<T>,
-        ) => {
-            return {
-
-                amount_of_items: (
-                ): number => {
-                    return list.__get_number_of_items()
-                },
-
-                reduce: (
-                    initial_state: number,
-                    update_state: (
-                        value: T,
-                        current: number
-                    ) => number,
-                ): number => {
-                    let current_state = initial_state
-                    list.__get_raw_copy().forEach(($) => {
-                        current_state = update_state($, current_state)
-                    })
-                    return current_state
-                }
-
-            }
-        }
 
     }
+
+    export const list = <T>(
+        list: _pi.List<T>,
+    ) => {
+        return {
+
+            amount_of_items: (
+            ): number => {
+                return list.__get_number_of_items()
+            },
+
+            reduce: (
+                initial_state: number,
+                update_state: (
+                    value: T,
+                    current: number
+                ) => number,
+            ): number => {
+                let current_state = initial_state
+                list.__get_raw_copy().forEach(($) => {
+                    current_state = update_state($, current_state)
+                })
+                return current_state
+            },
+
+            sum: (
+                assign_value: (
+                    item: T,
+                ) => number,
+            ): number => {
+                let sum = 0
+                list.__get_raw_copy().forEach(($) => {
+                    sum += assign_value($)
+                })
+                return sum
+            },
+
+        }
+    }
+
+    export const dictionary = <T>(
+        dictionary: _pi.Dictionary<T>,
+    ) => {
+        return {
+
+            amount_of_entries: (
+            ): number => {
+                return dictionary.__get_number_of_entries()
+            },
+
+            sum: (
+                assign_value: (
+                    item: T,
+                ) => number,
+            ): number => {
+                let sum = 0
+                dictionary.__get_raw_copy().forEach(($) => {
+                    sum += assign_value($[1])
+                })
+                return sum
+            },
+
+        }
+    }
+
 
 }
