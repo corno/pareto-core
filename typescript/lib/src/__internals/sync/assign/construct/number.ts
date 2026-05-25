@@ -5,19 +5,26 @@ export namespace from {
     export namespace number {
 
         /**
-         * Performs integer division of two numbers (rounding towards negative infinity).
+         * Performs integer division of two numbers with configurable rounding behavior.
          * 
          * dividend / divisor
          * 
-         * examples:
-         * integer_division(7, 3) === 2
-         * integer_division(7, -3) === -3
-         * integer_division(-7, 3) === -3
-         * integer_division(-7, -3) === 2
+         * Rounding modes:
+         * - 'towards negative infinity': floor (7.8 → 7, -7.8 → -8)
+         * - 'towards positive infinity': ceiling (7.2 → 8, -7.8 → -7)
+         * - 'towards zero': truncate (7.8 → 7, -7.8 → -7)
+         * - 'towards nearest': round to nearest integer (7.5 → 8, 7.4 → 7)
+         * - 'away from zero': round away from zero (7.2 → 8, -7.2 → -8)
          */
         export const divide = (
-            dividend: number,
+            $: number,
             divisor: number,
+            round:
+                | ['towards negative infinity', null]
+                | ['towards positive infinity', null]
+                | ['towards nearest', null]
+                | ['towards zero', null]
+                | ['away from zero', null],
             abort: {
                 divided_by_zero: _pi.Abort<null>
             },
@@ -25,16 +32,36 @@ export namespace from {
             if (divisor === 0) {
                 abort.divided_by_zero(null)
             }
-            const quotient = dividend / divisor
-            // when dividend and divisor have different signs, the quotient is negative
-            // For positive quotients, use Math.floor to round down
+            const quotient = $ / divisor
 
-            // this behavior matches the integer division in Python, Java, and C99 and later
+            switch (round[0]) {
+                case 'towards negative infinity':
+                    // Always round down (floor)
+                    return Math.floor(quotient)
 
-            if (quotient >= 0) {
-                return Math.floor(quotient)
-            } else {
-                return Math.ceil(quotient)
+                case 'towards positive infinity':
+                    // Always round up (ceiling)
+                    return Math.ceil(quotient)
+
+                case 'towards zero':
+                    // Truncate decimal part (round towards zero)
+                    return Math.trunc(quotient)
+
+                case 'towards nearest':
+                    // Round to nearest integer (0.5 rounds away from zero)
+                    return Math.round(quotient)
+
+                case 'away from zero':
+                    // Round away from zero
+                    if (quotient >= 0) {
+                        return Math.ceil(quotient)
+                    } else {
+                        return Math.floor(quotient)
+                    }
+
+                default:
+                    const _exhaustiveCheck: never = round
+                    throw new Error(`Unexpected rounding mode: ${round}`)
             }
         }
 
