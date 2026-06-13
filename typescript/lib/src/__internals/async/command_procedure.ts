@@ -5,26 +5,33 @@ import _command from "./command"
 import __command_promise from "./command_promise"
 import __handle_command_block from "./handle_command_block"
 
-export default function command_procedure<Error, Parameters, Command_Resources, Query_Resources, Context_Parameters>(
+export default function command_procedure<
+    Error,
+    Dynamic_Parameters,
+    Static_Parameters,
+    Query_Resources,
+    Command_Resources,
+>(
     execution_handler: (
-        $p: Parameters,
-        $cr: Command_Resources,
+        $d: Dynamic_Parameters,
+        $s: Static_Parameters,
         $qr: Query_Resources,
-        $x: Context_Parameters
+        $cr: Command_Resources,
     ) => Command_Block<Error>,
 ): _pi.Command_Procedure<
-    _pi.Command<Error, Parameters>,
-    Command_Resources,
+    Error,
+    Dynamic_Parameters,
+    Static_Parameters,
     Query_Resources,
-    Context_Parameters
+    Command_Resources
 > {
-    return ($cr, $qr, $x) => {
+    return ($s, $q, $c) => {
         return {
-            'execute': (parameters, error_transformer) => {
+            'execute': ($d, error_transformer) => {
                 return __command_promise({
                     'execute': (on_success, on_error) => {
 
-                        __handle_command_block(execution_handler(parameters, $cr, $qr, $x)).__start(
+                        __handle_command_block(execution_handler($d, $s, $q, $c)).__start(
                             on_success,
                             ($) => {
                                 on_error(

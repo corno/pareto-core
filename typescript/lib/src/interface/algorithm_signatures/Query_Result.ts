@@ -1,4 +1,5 @@
-import * as _pi from "../../interface"
+import { Transformer } from "./Transformer"
+import { Abort } from "../Abort"
 
 export type Queryer<Output, Error, Input> = (
     $: Input,
@@ -10,7 +11,7 @@ export interface Query_Result<Output, Error> {
     __query_result: null // I think I added this to prevent accidental duck-type conversions from other types to Query Result
 
     transform<New_Output>(
-        transformer: _pi.Transformer<Output, New_Output>
+        transformer: Transformer<Output, New_Output>
     ): Query_Result<New_Output, Error>
 
     query<New_Output>(
@@ -18,7 +19,7 @@ export interface Query_Result<Output, Error> {
     ): Query_Result<New_Output, Error>
 
     refine<New_Output>(
-        callback: ($: Output, abort: _pi.Abort<Error>) => New_Output,
+        callback: ($: Output, abort: Abort<Error>) => New_Output,
     ): Query_Result<New_Output, Error>
 
     rework_error_temp<New_Error, Rework_Error>(
@@ -26,7 +27,7 @@ export interface Query_Result<Output, Error> {
         /**
          * if the reworker fails, we need to transform *that* error into the New_Error
          */
-        rework_error_transformer: _pi.Transformer<Rework_Error, New_Error>,
+        rework_error_transformer: Transformer<Rework_Error, New_Error>,
     ): Query_Result<Output, New_Error>
 
     __extract_data: (

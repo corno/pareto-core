@@ -2,7 +2,7 @@ import * as _pi from "../../interface"
 import _p_iterate from "../../_p_iterate"
 
 import { Command_Block } from "./Command_Block"
-import { Query_Result } from "./Query_Result"
+import { Query_Result } from "../../interface/algorithm_signatures/Query_Result"
 import __command_promise from "./command_promise"
 import __handle_command_block from "./handle_command_block"
 import create_refinement_context from "./create_refinement_context"

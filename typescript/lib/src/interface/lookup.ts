@@ -1,6 +1,6 @@
 import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { Circular_Dependency } from "./data/Circular_Dependency"
-import { Abort } from "./abort"
+import { Abort } from "./Abort"
 
 export namespace static_lookup {
 

@@ -1,6 +1,6 @@
 import * as _pi from "../../interface"
 
-import { Query_Result } from "./Query_Result"
+import { Query_Result } from "../../interface/algorithm_signatures/Query_Result"
 import __query_result from "./__query_result"
 
 
