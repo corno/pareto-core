@@ -3,13 +3,15 @@ import * as _pi from "../../interface"
 import __query from "./query"
 import __query_result from "./__query_result"
 import { Query_Result } from "../../interface/algorithm_signatures/Query_Result"
+import { Query } from "../../interface/algorithm_signatures/Query"
+import { Parameters } from "../../interface/Parameters"
 
 export default function query_function<
     Result,
     Error,
-    Dynamic_Parameters,
-    Static_Parameters,
-    Query_Resources,
+    Dynamic_Parameters extends Parameters,
+    Static_Parameters extends Parameters,
+    Query_Resources extends null | { [key: string]: _pi.Query<any, any, any> },
 >(
     handler: (
         $d: Dynamic_Parameters,
@@ -20,9 +22,11 @@ export default function query_function<
         Error
     >
 ): _pi.Query_Function<
-    Result,
-    Error,
-    Dynamic_Parameters,
+    Query<
+        Result,
+        Error,
+        Dynamic_Parameters
+    >,
     Static_Parameters,
     Query_Resources
 > {

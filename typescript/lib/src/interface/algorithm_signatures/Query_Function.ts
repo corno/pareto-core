@@ -1,17 +1,12 @@
 
+import { Parameters } from "../Parameters"
 import { Query } from "./Query"
 
 export type Query_Function<
-    Result,
-    Error,
-    Dynamic_Parameters,
-    Static_Parameters,
-    Query_Resources
+    My_Query extends Query<any, any, any>,
+    Static_Parameters extends Parameters,
+    Query_Resources extends null | { [key: string]: Query<any, any, any> }
 > = (
     $s: Static_Parameters,
     $q: Query_Resources,
-) => Query<
-    Result,
-    Error,
-    Dynamic_Parameters
->
+) => My_Query

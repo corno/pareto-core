@@ -1,20 +1,22 @@
+import { Parameters } from "../Parameters"
+import { Query } from "./Query"
 import { Transformer } from "./Transformer"
 
 export type Command_Procedure<
-    Error,
-    Dynamic_Parameters,
-    Static_Parameters,
-    Query_Resources,
-    Command_Resources
+    My_Command extends Command<any, any>,
+    Static_Parameters extends Parameters,
+    Query_Resources extends null | { [key: string]: Query<any, any, any> },
+    Command_Resources extends null | { [key: string]: Command<any, any> }
 > = (
     $s: Static_Parameters,
     $q: Query_Resources,
     $c: Command_Resources,
-) => Command<Error, Dynamic_Parameters>
+) => My_Command
+
 
 export type Command<
     Error,
-    Dynamic_Parameters
+    Dynamic_Parameters extends Parameters
 > = {
     //these are actions, and should ideally be written like execute.direct(Command, error_transformer, parameters)
     // but TypeScript does a way better job inferring types this way, so it will be Command.execute.direct(error_transformer, parameters)
