@@ -1,6 +1,6 @@
 import * as _pi from "../../interface"
+import * as _pqi from "../../query_interface"
 import create_refinement_context from "./create_refinement_context"
-import { Query_Result } from "../../interface/algorithm_signatures/Query_Result"
 
 /**
  * this function contains the body in which the async value or error is executed
@@ -13,11 +13,7 @@ type Executer<Output, Error> = (
     on_error: ($: Error) => void,
 ) => void
 
-type Queryer<Output, Error, Input> = (
-    $: Input,
-) => Query_Result<Output, Error>
-
-class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
+class Query_Result_Class<Output, Error> implements _pqi.Query_Result<Output, Error> {
     private executer: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
         this.executer = executer
@@ -29,7 +25,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
 
     transform<New_Output>(
         transformer: _pi.Transformer<Output, New_Output>
-    ): Query_Result<New_Output, Error> {
+    ): _pqi.Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
             this.executer(
                 ($) => {
@@ -41,8 +37,8 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
     }
 
     query<New_Output>(
-        queryer: Queryer<New_Output, Error, Output>
-    ): Query_Result<New_Output, Error> {
+        queryer: _pqi.Query_Callback<New_Output, Error, Output>
+    ): _pqi.Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
             this.executer(
                 ($) => {
@@ -58,7 +54,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
 
     refine<New_Output>(
         callback: ($: Output, abort: _pi.Abort<Error>) => New_Output,
-    ): Query_Result<New_Output, Error> {
+    ): _pqi.Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
             this.executer(
                 ($) => {
@@ -73,9 +69,9 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
     }
 
     rework_error_temp<New_Error, Rework_Error>(
-        error_reworker: Queryer<New_Error, Rework_Error, Error>,
+        error_reworker: _pqi.Query_Callback<New_Error, Rework_Error, Error>,
         rework_error_transformer: _pi.Transformer<Rework_Error, New_Error>,
-    ): Query_Result<Output, New_Error> {
+    ): _pqi.Query_Result<Output, New_Error> {
         return new Query_Result_Class<Output, New_Error>((on_result, on_error) => {
             this.executer(
                 on_result,
@@ -104,7 +100,7 @@ class Query_Result_Class<Output, Error> implements Query_Result<Output, Error> {
 
 export default function __query_result<T, E>(
     executer: Executer<T, E>,
-): Query_Result<T, E> {
+): _pqi.Query_Result<T, E> {
     return new Query_Result_Class<T, E>(executer)
 
 }

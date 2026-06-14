@@ -1,13 +1,13 @@
 import * as _pi from "../../interface"
-import { Parameters } from "../../interface/Parameters"
+import * as _pci from "../../command_interface"
 import __command_promise from './command_promise'
 
 export default function __command<
     Error,
-    Dynamic_Parameters extends Parameters
+    Dynamic_Parameters extends _pci.Parameters
 >(
-    handler: ($: Dynamic_Parameters) => _pi.Command_Promise<Error>,
-): _pi.Command<
+    handler: ($: Dynamic_Parameters) => _pci.Command_Promise<Error>,
+): _pci.Command<
     Error,
     Dynamic_Parameters
 > {

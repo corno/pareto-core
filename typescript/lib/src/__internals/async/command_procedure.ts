@@ -1,18 +1,18 @@
 import * as _pi from "../../interface"
+import * as _pqi from "../../query_interface"
+import * as _pci from "../../command_interface"
 
 import { Command_Block } from "./Command_Block"
 import _command from "./command"
 import __command_promise from "./command_promise"
 import __handle_command_block from "./handle_command_block"
-import { Command } from "../../interface/algorithm_signatures/Command"
-import { Parameters } from "../../interface/Parameters"
 
 export default function command_procedure<
     Error,
-    Dynamic_Parameters extends Parameters,
-    Static_Parameters extends Parameters,
-    Query_Resources extends null | { [key: string]: _pi.Query<any, any, any> },
-    Command_Resources extends null | { [key: string]: Command<any, any> },
+    Dynamic_Parameters extends _pci.Parameters,
+    Static_Parameters extends _pci.Parameters,
+    Query_Resources extends null | { [key: string]: _pqi.Query<any, any, any> },
+    Command_Resources extends null | { [key: string]: _pci.Command<any, any> },
 >(
     execution_handler: (
         $d: Dynamic_Parameters,
@@ -20,8 +20,8 @@ export default function command_procedure<
         $qr: Query_Resources,
         $cr: Command_Resources,
     ) => Command_Block<Error>,
-): _pi.Command_Procedure<
-    Command<
+): _pci.Command_Procedure<
+    _pci.Command<
         Error,
         Dynamic_Parameters
     >,

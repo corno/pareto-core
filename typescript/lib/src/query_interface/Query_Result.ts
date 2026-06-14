@@ -1,7 +1,7 @@
-import { Transformer } from "./Transformer"
-import { Abort } from "../Abort"
+import { Transformer } from "../interface/algorithm_signatures/Transformer"
+import { Abort } from "../interface/Abort"
 
-export type Queryer<Output, Error, Input> = (
+export type Query_Callback<Output, Error, Input> = (
     $: Input,
 ) => Query_Result<Output, Error>
 
@@ -15,7 +15,7 @@ export interface Query_Result<Output, Error> {
     ): Query_Result<New_Output, Error>
 
     query<New_Output>(
-        query: Queryer<New_Output, Error, Output>
+        query: Query_Callback<New_Output, Error, Output>
     ): Query_Result<New_Output, Error>
 
     refine<New_Output>(
@@ -23,7 +23,7 @@ export interface Query_Result<Output, Error> {
     ): Query_Result<New_Output, Error>
 
     rework_error_temp<New_Error, Rework_Error>(
-        error_reworker: Queryer<New_Error, Rework_Error, Error>,
+        error_reworker: Query_Callback<New_Error, Rework_Error, Error>,
         /**
          * if the reworker fails, we need to transform *that* error into the New_Error
          */

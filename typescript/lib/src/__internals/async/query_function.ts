@@ -1,28 +1,25 @@
-import * as _pi from "../../interface"
+import * as _pqi from "../../query_interface"
 
 import __query from "./query"
 import __query_result from "./__query_result"
-import { Query_Result } from "../../interface/algorithm_signatures/Query_Result"
-import { Query } from "../../interface/algorithm_signatures/Query"
-import { Parameters } from "../../interface/Parameters"
 
 export default function query_function<
     Result,
     Error,
-    Dynamic_Parameters extends Parameters,
-    Static_Parameters extends Parameters,
-    Query_Resources extends null | { [key: string]: _pi.Query<any, any, any> },
+    Dynamic_Parameters extends _pqi.Parameters,
+    Static_Parameters extends _pqi.Parameters,
+    Query_Resources extends null | { [key: string]: _pqi.Query<any, any, any> },
 >(
     handler: (
         $d: Dynamic_Parameters,
         $s: Static_Parameters,
         $q: Query_Resources,
-    ) => Query_Result<
+    ) => _pqi.Query_Result<
         Result,
         Error
     >
-): _pi.Query_Function<
-    Query<
+): _pqi.Query_Function<
+    _pqi.Query<
         Result,
         Error,
         Dynamic_Parameters

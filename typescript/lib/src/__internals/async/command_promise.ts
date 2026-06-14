@@ -1,4 +1,4 @@
-import * as _pi from  "../../interface"
+import * as _pci from "../../command_interface"
 
 
 /**
@@ -14,7 +14,7 @@ type Executer<E> = {
     ) => void
 }
 
-class Command_Promise_Class<E> implements _pi.Command_Promise<E> {
+class Command_Promise_Class<E> implements _pci.Command_Promise<E> {
     private executer: Executer<E>
     constructor(executer: Executer<E>) {
         this.executer = executer
@@ -29,7 +29,7 @@ class Command_Promise_Class<E> implements _pi.Command_Promise<E> {
 
     map_error<NE>(
         handle_error: (error: E) => NE
-    ): _pi.Command_Promise<NE> {
+    ): _pci.Command_Promise<NE> {
         return new Command_Promise_Class<NE>({
             'execute': (on_success, on_error) => {
                 this.executer.execute(
@@ -50,7 +50,7 @@ class Command_Promise_Class<E> implements _pi.Command_Promise<E> {
  */
 export default function __command_promise<E>(
     executer: Executer<E>,
-): _pi.Command_Promise<E> {
+): _pci.Command_Promise<E> {
     return new Command_Promise_Class<E>(executer)
 
 }

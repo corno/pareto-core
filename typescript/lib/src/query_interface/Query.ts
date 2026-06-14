@@ -1,6 +1,6 @@
-import { Parameters } from "../Parameters"
+import { Parameters } from "./Parameters"
 import { Query_Result } from "./Query_Result"
-import { Transformer } from "./Transformer"
+import { Transformer } from "../interface/algorithm_signatures/Transformer"
 
 export type Query<
     Output,

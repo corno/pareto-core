@@ -1,8 +1,9 @@
 import * as _pi from "../../interface"
+import * as _pci from "../../command_interface"
+import * as _pqi from "../../query_interface"
 import _p_iterate from "../../_p_iterate"
 
 import { Command_Block } from "./Command_Block"
-import { Query_Result } from "../../interface/algorithm_signatures/Query_Result"
 import __command_promise from "./command_promise"
 import __handle_command_block from "./handle_command_block"
 import create_refinement_context from "./create_refinement_context"
@@ -56,7 +57,7 @@ export namespace dictionaryx {
         dictionary: _pi.Dictionary<T>,
         parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
         aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
-    ): _pi.Command_Promise<Error> => {
+    ): _pci.Command_Promise<Error> => {
         return __command_promise({
             'execute': (
                 on_success,
@@ -99,10 +100,10 @@ export namespace dictionaryx {
     export namespace deprecated_parallel {
 
         export const query = <T extends _pi.Value, Error extends _pi.Value, Entry_Error extends _pi.Value>(
-            query_result: Query_Result<_pi.Dictionary<T>, Error>,
+            query_result: _pqi.Query_Result<_pi.Dictionary<T>, Error>,
             parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
             aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
-        ): _pi.Command_Promise<Error> => {
+        ): _pci.Command_Promise<Error> => {
             return __command_promise({
                 'execute': (
                     on_success,
@@ -153,7 +154,7 @@ export const handle_error = <Target_Error, Block_Error>(
     command_block: Command_Block<Block_Error>,
     parametrized_command_block: ($v: Block_Error) => Command_Block<Target_Error>,
     assign_target_error: () => Target_Error,
-): _pi.Command_Promise<Target_Error> => {
+): _pci.Command_Promise<Target_Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -175,7 +176,7 @@ export const handle_error = <Target_Error, Block_Error>(
 }
 
 export const nothing = <Error>(
-): _pi.Command_Promise<Error> => {
+): _pci.Command_Promise<Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -187,7 +188,7 @@ export const nothing = <Error>(
 
 export const fail = <Error>(
     error: Error,
-): _pi.Command_Promise<Error> => {
+): _pci.Command_Promise<Error> => {
     return __command_promise({
         'execute': (on_success, on_error) => {
             on_error(error)
@@ -196,10 +197,10 @@ export const fail = <Error>(
 }
 
 export const query = <Error, Query_Output, Refine_Output>(
-    query_result: Query_Result<Query_Output, Error>,
+    query_result: _pqi.Query_Result<Query_Output, Error>,
     refine: _pi.Refiner<Refine_Output, Error, Query_Output>,
     parametrized_command_block: ($v: Refine_Output) => Command_Block<Error>,
-): _pi.Command_Promise<Error> => {
+): _pci.Command_Promise<Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -226,10 +227,10 @@ export const query = <Error, Query_Output, Refine_Output>(
 }
 
 export const query_stacked = <Error, Staging_Output, Parent_Data>(
-    query_result: Query_Result<Staging_Output, Error>,
+    query_result: _pqi.Query_Result<Staging_Output, Error>,
     parent_data: Parent_Data,
     parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
-): _pi.Command_Promise<Error> => {
+): _pci.Command_Promise<Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -253,7 +254,7 @@ export const refine_without_error_transformation = <Error, Staging_Output>( //I 
     //the only place where parameters are currently refine is in the main functions. can this be solved by adding a refiner to the main function?
     callback: (abort: _pi.Abort<Error>) => Staging_Output,
     parametrized_command_block: ($v: Staging_Output) => Command_Block<Error>,
-): _pi.Command_Promise<Error> => {
+): _pci.Command_Promise<Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -276,7 +277,7 @@ export const refine_stacked = <Error, Staging_Output, Parent_Data>(
     callback: (abort: _pi.Abort<Error>) => Staging_Output,
     parent_data: Parent_Data,
     parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
-): _pi.Command_Promise<Error> => {
+): _pci.Command_Promise<Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -306,7 +307,7 @@ export namespace if_ {
         precondition: boolean,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
-    ): _pi.Command_Promise<Error> => {
+    ): _pci.Command_Promise<Error> => {
         return __command_promise({
             'execute': (on_success, on_error) => {
                 if (precondition) {
@@ -329,10 +330,10 @@ export namespace if_ {
     }
 
     export const query = <Error>(
-        precondition: Query_Result<boolean, Error>,
+        precondition: _pqi.Query_Result<boolean, Error>,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
-    ): _pi.Command_Promise<Error> => {
+    ): _pci.Command_Promise<Error> => {
         return __command_promise({
             'execute': (on_success, on_error) => {
                 precondition.__extract_data(
@@ -365,7 +366,7 @@ export namespace if_ {
         command_block: Command_Block<Block_Error>,
         if_true: () => Command_Block<Target_Error>,
         if_false: ($v: Block_Error) => Command_Block<Target_Error>,
-    ): _pi.Command_Promise<Target_Error> => {
+    ): _pci.Command_Promise<Target_Error> => {
         return __command_promise({
             'execute': (
                 on_success,
@@ -397,7 +398,7 @@ export namespace if_ {
 export const pseudo_query_successfully_executed = <Target_Error, Block_Error>(
     command_block: Command_Block<Block_Error>,
     on_result: ($: boolean) => Command_Block<Target_Error>,
-): _pi.Command_Promise<Target_Error> => {
+): _pci.Command_Promise<Target_Error> => {
     return __command_promise({
         'execute': (
             on_success,
@@ -426,7 +427,7 @@ export namespace assert {
     export const direct = <Error>(
         assertion: boolean,
         error_if_failed: Error,
-    ): _pi.Command_Promise<Error> => {
+    ): _pci.Command_Promise<Error> => {
         return __command_promise({
             'execute': (on_success, on_error) => {
                 if (!assertion) {
@@ -439,9 +440,9 @@ export namespace assert {
     }
 
     export const query = <Error>(
-        assertion: Query_Result<boolean, Error>,
+        assertion: _pqi.Query_Result<boolean, Error>,
         error_if_failed: Error,
-    ): _pi.Command_Promise<Error> => {
+    ): _pci.Command_Promise<Error> => {
         return __command_promise({
             'execute': (on_success, on_error) => {
                 assertion.__extract_data(

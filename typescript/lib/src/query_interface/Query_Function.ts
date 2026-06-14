@@ -1,5 +1,5 @@
 
-import { Parameters } from "../Parameters"
+import { Parameters } from "./Parameters"
 import { Query } from "./Query"
 
 export type Query_Function<
