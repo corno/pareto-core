@@ -160,7 +160,7 @@ export namespace decide {
         if_not_set: () => RT
     ): RT => optional.__decide(if_set, if_not_set)
 
-    export const state = <T extends readonly [string, any], RT extends _pi.Value>(
+    export const state = <T extends _pi.State, RT extends _pi.Value>(
         state: T,
         assign: (output: T) => RT
     ): RT => {

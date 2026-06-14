@@ -209,27 +209,6 @@ export const nested_literal_old = <T extends _pi.Value>(
     return new List_Class(out)
 }
 
-export type Nested<T extends _pi.Value> = undefined | Nested<T>[] | _pi.List<T>
-
-export const nested_literal_new = <T extends _pi.Value>(
-    nested: Nested<T>
-): _pi.List<T> => {
-    const out: T[] = []
-    const flatten = (n: Nested<T>) => {
-        if (n == undefined) {
-            // do nothing
-        } else if (n instanceof Array) {
-            n.forEach(($) => {
-                flatten($)
-            })
-        } else {
-            out.push(...n.__get_raw_copy())
-        }
-    }
-    flatten(nested)
-    return new List_Class(out)
-}
-
 export const repeat = <T extends _pi.Value>(
     item: T,
     times: number,
