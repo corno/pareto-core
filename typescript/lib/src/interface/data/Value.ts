@@ -4,6 +4,7 @@ import { Optional_Value } from "./Optional_Value"
 import { Circular_Dependency } from "./Circular_Dependency"
 
 export type Value =
+    | symbol
     | boolean
     | null
     | string
