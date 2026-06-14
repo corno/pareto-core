@@ -2,7 +2,7 @@ import * as _pi from "../../../interface"
 import { List_Class } from "./literals/List"
 import { Not_Set_Optional_Value } from "./literals/Optional"
 
-export type Option<T> = readonly [string, T]
+export type Option<T extends _pi.Value> = readonly [string, T]
 
 /**
  * ss means 'switch state'.
@@ -21,7 +21,7 @@ export type Option<T> = readonly [string, T]
  *     default: return au($.state[0])
  * }
  */
-export function ss<T, RT>(
+export function ss<T extends _pi.Value, RT extends _pi.Value>(
     option: Option<T>,
     $c: ($: T) => RT): RT {
     return $c(option[1])

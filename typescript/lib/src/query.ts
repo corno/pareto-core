@@ -19,11 +19,28 @@ export * from "./interface/algorithm_signatures/Query_Result"
 
 export namespace decide {
 
-        export const state = <T extends _pi.State, RT extends _pi.Query_Result<any, any>>(
-            state: T,
-            assign: (output: T) => RT
-        ): RT => {
-            return assign(state)
-        }
+    export type Option<T extends _pi.Value> = readonly [string, T]
+
+    export function ss<T extends _pi.Value, RT extends _pi.Query_Result<any, any>>(
+        option: Option<T>,
+        $c: ($: T) => RT): RT {
+        return $c(option[1])
+    }
+
+    export function au<RT extends _pi.Query_Result<any, any>>(
+        _x: never
+    ): RT {
+        throw new Error("unreachable")
+    }
+
+    export const state = <
+        T extends _pi.State,
+        RT extends _pi.Query_Result<any, any>
+    >(
+        state: T,
+        assign: (output: T) => RT
+    ): RT => {
+        return assign(state)
+    }
 
 }
