@@ -1,6 +1,6 @@
 import * as _pi from "../../interface"
-import * as _pqi from "../../query/interface"
-import create_refinement_context from "./create_refinement_context"
+import * as _pqi from "../interface"
+import create_refinement_context from "../../__internals/async/create_refinement_context"
 
 /**
  * this function contains the body in which the async value or error is executed

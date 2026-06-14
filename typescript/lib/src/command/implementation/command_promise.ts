@@ -1,4 +1,4 @@
-import * as _pci from "../../command/interface"
+import * as _pci from "../interface"
 
 
 /**

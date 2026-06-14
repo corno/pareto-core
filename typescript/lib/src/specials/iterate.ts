@@ -4,7 +4,7 @@ import { Raw_Optional_Value } from "../interface/Raw_Optional_Value"
 import _p_list_build_deprecated from "./list_build_deprecated"
 import _p_unreachable_code_path from "./unreachable_code_path"
 
-export default function _p_iterate<
+export default function iterate<
     Item extends _pi.Value,
     End_Info extends _pi.Value,
     Return_Type extends _pi.Value

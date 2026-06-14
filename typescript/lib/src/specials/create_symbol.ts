@@ -1,3 +1,3 @@
-export default function _p_create_symbol(): symbol {
+export default function create_symbol(): symbol {
     return Symbol()
 }

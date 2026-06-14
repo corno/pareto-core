@@ -6,7 +6,7 @@ type List_Builder<T extends _pi.Value> = {
     'add list': ($: _pi.List<T>) => void
 }
 
-export default function _p_list_build_deprecated<T extends _pi.Value>(
+export default function list_build_deprecated<T extends _pi.Value>(
     callback: (
         $i: List_Builder<T>
     ) => void

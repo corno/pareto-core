@@ -1,8 +1,8 @@
 import * as _pi from "../../interface"
-import * as _pqi from "../../query/interface"
+import * as _pqi from "../interface"
 import __query_result from "./__query_result"
-import create_asynchronous_dictionary_builder from "./asynchronous_dictionary_builder"
-import create_asynchronous_processes_monitor from "./create_asynchronous_processes_monitor"
+import create_asynchronous_dictionary_builder from "../../__internals/async/asynchronous_dictionary_builder"
+import create_asynchronous_processes_monitor from "../../__internals/async/create_asynchronous_processes_monitor"
 
 
 export namespace dictionaryx {

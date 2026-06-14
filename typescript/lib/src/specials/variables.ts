@@ -1,5 +1,5 @@
 
-export default function _p_variables<RT>(
+export default function variables<RT>(
     assign: () => RT
 ): RT {
     return assign()

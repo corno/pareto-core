@@ -1,19 +1,21 @@
 
 /**
  * cc means 'change context'. It creates a new scope in which a variable name can be used again
- * (usually '$', a variable name that indicates the current context in exupery)
  * 
  * example: 
  * 
- * cc($[1], ($) => {
- *     //here $[1] has become $
- * })
+ * cc(
+ *     my_func($),
+ *     ($) => {
+ *         //here the reuslt of my_func($) has become $
+ *     }
+ * )
  * 
  * @param context 
  * @param assign 
  * @returns 
  */
-export default function _p_cc<T, Value>(
+export default function p_change_context<T, Value>(
     context: T,
     assign: (context: T) => Value
 ): Value {

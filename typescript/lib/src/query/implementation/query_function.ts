@@ -1,4 +1,4 @@
-import * as _pqi from "../../query/interface"
+import * as _pqi from "../interface"
 
 import __query from "./query"
 import __query_result from "./__query_result"
