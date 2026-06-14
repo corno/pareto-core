@@ -1,5 +1,5 @@
-import { Abort } from "../Abort"
-import { Raw_Optional_Value } from "../Raw_Optional_Value"
+import { Abort } from "../../interface/Abort"
+import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { List } from "./List"
 import { Optional_Value } from "./Optional_Value"
 import { Value } from "./Value"

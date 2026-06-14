@@ -1,29 +1,29 @@
-import * as _pi from "../../../../interface"
+import * as p_di from "../../../../data/interface"
 import { List_Class } from "../literals/List"
 
 
 export namespace from {
 
-    export const dictionary = <T extends _pi.Value>(
-        dictionary: _pi.Dictionary<T>,
+    export const dictionary = <T extends p_di.Value>(
+        dictionary: p_di.Dictionary<T>,
     ) => {
         return {
 
-            convert: <New_Type extends _pi.Value>(
+            convert: <New_Type extends p_di.Value>(
                 assign_item: (
                     value: T,
                     id: string
                 ) => New_Type
-            ): _pi.List<New_Type> => {
+            ): p_di.List<New_Type> => {
                 return dictionary.__to_list(assign_item)
             },
 
-            flatten: <NT extends _pi.Value>(
+            flatten: <NT extends p_di.Value>(
                 assign_item: (
                     value: T,
                     id: string
-                ) => _pi.List<NT>,
-            ): _pi.List<NT> => {
+                ) => p_di.List<NT>,
+            ): p_di.List<NT> => {
                 const out: NT[] = []
                 dictionary.__to_list(assign_item).__get_raw_copy().forEach(($) => {
                     const innerList = $
@@ -38,8 +38,8 @@ export namespace from {
         }
     }
 
-    export const list = <T extends _pi.Value>(
-        list: _pi.List<T>,
+    export const list = <T extends p_di.Value>(
+        list: p_di.List<T>,
     ) => {
         return {
 
@@ -47,15 +47,15 @@ export namespace from {
                 callback: (
                     item: T,
                 ) => boolean
-            ): _pi.List<T> => {
+            ): p_di.List<T> => {
                 return new List_Class(list.__get_raw_copy().filter(callback))
             },
 
-            map_optionally: <New_Type extends _pi.Value>(
+            map_optionally: <New_Type extends p_di.Value>(
                 assign_optional_item: (
                     item: T,
-                ) => _pi.Optional_Value<New_Type>
-            ): _pi.List<New_Type> => {
+                ) => p_di.Optional_Value<New_Type>
+            ): p_di.List<New_Type> => {
                 const out: New_Type[] = []
                 list.__get_raw_copy().forEach(($) => {
                     const result = assign_optional_item($)
@@ -69,11 +69,11 @@ export namespace from {
                 return new List_Class(out)
             },
 
-            flatten: <NT extends _pi.Value>(
+            flatten: <NT extends p_di.Value>(
                 assign_list: (
                     $: T
-                ) => _pi.List<NT>,
-            ): _pi.List<NT> => {
+                ) => p_di.List<NT>,
+            ): p_di.List<NT> => {
                 const out: NT[] = []
                 list.__get_raw_copy().forEach(($) => {
                     const innerList = assign_list($)
@@ -85,11 +85,11 @@ export namespace from {
                 return new List_Class(out)
             },
 
-            join: <Other_Type extends _pi.Value, Result extends _pi.Value>(
-                other_list: _pi.List<Other_Type>,
+            join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
+                other_list: p_di.List<Other_Type>,
                 assign_item: (
                     value: T,
-                    other_value: _pi.Optional_Value<Other_Type>,
+                    other_value: p_di.Optional_Value<Other_Type>,
                 ) => Result,
             ) => {
                 const out: Result[] = []
@@ -105,11 +105,11 @@ export namespace from {
                 return literal(out)
             },
 
-            full_join: <Other_Type extends _pi.Value, Result extends _pi.Value>(
-                other_list: _pi.List<Other_Type>,
+            full_join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
+                other_list: p_di.List<Other_Type>,
                 assign_item: (
-                    value: _pi.Optional_Value<T>,
-                    other_value: _pi.Optional_Value<Other_Type>,
+                    value: p_di.Optional_Value<T>,
+                    other_value: p_di.Optional_Value<Other_Type>,
                 ) => Result,
             ) => {
                 const out: Result[] = []
@@ -123,21 +123,21 @@ export namespace from {
                 return literal(out)
             },
 
-            map: <New_Type extends _pi.Value>(
+            map: <New_Type extends p_di.Value>(
                 assign_item: (
                     item: T,
                 ) => New_Type,
-            ): _pi.List<New_Type> => {
+            ): p_di.List<New_Type> => {
                 return list.__l_map(assign_item)
             },
 
             reverse: (
-            ): _pi.List<T> => {
+            ): p_di.List<T> => {
                 return new List_Class(list.__get_raw_copy().slice().reverse())
             },
 
             map_with_state: <
-                Target_Element extends _pi.Value,
+                Target_Element extends p_di.Value,
                 State,
                 Result_Type
             >(
@@ -151,7 +151,7 @@ export namespace from {
                     state: State
                 ) => State,
                 wrapup: (
-                    final_list: _pi.List<Target_Element>,
+                    final_list: p_di.List<Target_Element>,
                     final_state: State
                 ) => Result_Type,
             ): Result_Type => {
@@ -173,10 +173,10 @@ export namespace from {
 }
 
 export function literal<
-    T extends _pi.Value
+    T extends p_di.Value
 >(
     source: readonly T[]
-): _pi.List<T> {
+): p_di.List<T> {
     if (!(source instanceof Array)) {
         throw new Error("invalid input in 'list_literal'")
     }
@@ -190,9 +190,9 @@ export function literal<
     return new List_Class(data)
 }
 
-export const nested_literal_old = <T extends _pi.Value>(
-    lists: (T[] | _pi.List<T>)[]
-): _pi.List<T> => {
+export const nested_literal_old = <T extends p_di.Value>(
+    lists: (T[] | p_di.List<T>)[]
+): p_di.List<T> => {
     const out: T[] = []
     lists.forEach(($) => {
         if ($ == undefined) {
@@ -209,10 +209,10 @@ export const nested_literal_old = <T extends _pi.Value>(
     return new List_Class(out)
 }
 
-export const repeat = <T extends _pi.Value>(
+export const repeat = <T extends p_di.Value>(
     item: T,
     times: number,
-): _pi.List<T> => {
+): p_di.List<T> => {
     const out: T[] = []
     for (let i = 0; i < times; i++) {
         out.push(item)

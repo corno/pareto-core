@@ -1,4 +1,4 @@
-import { Transformer } from "../../interface/algorithm_signatures/Transformer"
+import * as p_ti from "../../transformer/interface"
 import { Abort } from "../../interface/Abort"
 
 export type Query_Callback<Output, Error, Input> = (
@@ -11,7 +11,7 @@ export interface Query_Result<Output, Error> {
     __query_result: null // I think I added this to prevent accidental duck-type conversions from other types to Query Result
 
     transform<New_Output>(
-        transformer: Transformer<Output, New_Output>
+        transformer: p_ti.Transformer<Output, New_Output>
     ): Query_Result<New_Output, Error>
 
     query<New_Output>(
@@ -27,7 +27,7 @@ export interface Query_Result<Output, Error> {
         /**
          * if the reworker fails, we need to transform *that* error into the New_Error
          */
-        rework_error_transformer: Transformer<Rework_Error, New_Error>,
+        rework_error_transformer: p_ti.Transformer<Rework_Error, New_Error>,
     ): Query_Result<Output, New_Error>
 
     __extract_data: (

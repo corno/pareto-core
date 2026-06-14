@@ -1,8 +1,7 @@
-import * as _pi from "../../../interface"
+import * as p_di from "../../../data/interface"
 import { List_Class } from "./literals/List"
-import { Not_Set_Optional_Value } from "./literals/Optional"
 
-export type Option<T extends _pi.Value> = readonly [string, T]
+export type Option<T extends p_di.Value> = readonly [string, T]
 
 /**
  * ss means 'switch state'.
@@ -21,7 +20,7 @@ export type Option<T extends _pi.Value> = readonly [string, T]
  *     default: return au($.state[0])
  * }
  */
-export function ss<T extends _pi.Value, RT extends _pi.Value>(
+export function ss<T extends p_di.Value, RT extends p_di.Value>(
     option: Option<T>,
     $c: ($: T) => RT): RT {
     return $c(option[1])
@@ -59,12 +58,12 @@ export namespace decide {
 
 
 
-    export const dictionary = <T extends _pi.Value>(
-        dictionary: _pi.Dictionary<T>,
+    export const dictionary = <T extends p_di.Value>(
+        dictionary: p_di.Dictionary<T>,
     ) => {
         return {
 
-            contains_entry: <RT extends _pi.Value>(
+            contains_entry: <RT extends p_di.Value>(
                 id: string,
                 if_true: ($: T) => RT,
                 if_not_true: () => RT
@@ -73,16 +72,16 @@ export namespace decide {
                 () => if_not_true(),
             ),
 
-            has_entries: <RT extends _pi.Value>(
-                if_true: ($: _pi.Dictionary<T>) => RT,
+            has_entries: <RT extends p_di.Value>(
+                if_true: ($: p_di.Dictionary<T>) => RT,
                 if_not_true: () => RT
             ): RT => dictionary.__get_number_of_entries() !== 0
                     ? if_true(dictionary)
                     : if_not_true(),
 
-            has_single_entry: <RT extends _pi.Value>(
+            has_single_entry: <RT extends p_di.Value>(
                 if_true: ($: T, id: string) => RT,
-                if_multiple: ($: _pi.Dictionary<T>) => RT,
+                if_multiple: ($: p_di.Dictionary<T>) => RT,
                 if_none: () => RT,
             ): RT => {
                 return list(dictionary.__to_list(($, id) => ({ 'id': id, 'value': $ }))).has_single_item(
@@ -95,36 +94,36 @@ export namespace decide {
 
     }
 
-    export const list = <T extends _pi.Value>(
-        list: _pi.List<T>,
+    export const list = <T extends p_di.Value>(
+        list: p_di.List<T>,
     ) => {
         return {
 
-            has_first_item: <RT extends _pi.Value>(
-                if_true: ($: T, rest: _pi.List<T>) => RT,
+            has_first_item: <RT extends p_di.Value>(
+                if_true: ($: T, rest: p_di.List<T>) => RT,
                 if_not_true: () => RT
             ): RT => list.__deprecated_get_possible_item_at(0).__decide(
                 ($) => if_true($, new List_Class(list.__get_raw_copy().slice(1))),
                 () => if_not_true(),
             ),
 
-            has_items: <RT extends _pi.Value>(
-                if_true: ($: _pi.List<T>) => RT,
+            has_items: <RT extends p_di.Value>(
+                if_true: ($: p_di.List<T>) => RT,
                 if_not_true: () => RT
             ): RT => list.__get_number_of_items() !== 0
                     ? if_true(list)
                     : if_not_true(),
 
-            has_last_item: <RT extends _pi.Value>(
-                if_true: ($: T, rest: _pi.List<T>) => RT,
+            has_last_item: <RT extends p_di.Value>(
+                if_true: ($: T, rest: p_di.List<T>) => RT,
                 if_not_true: () => RT
             ): RT => list.__deprecated_get_possible_item_at(list.__get_number_of_items() - 1).__decide(
                 ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
                 () => if_not_true(),
             ),
 
-            has_match: <RT extends _pi.Value>(
-                test: ($: T) => _pi.Optional_Value<RT>,
+            has_match: <RT extends p_di.Value>(
+                test: ($: T) => p_di.Optional_Value<RT>,
                 if_no_match: () => RT,
             ): RT => {
                 const raw = list.__get_raw_copy()
@@ -138,9 +137,9 @@ export namespace decide {
                 return if_no_match()
             },
 
-            has_single_item: <RT extends _pi.Value>(
+            has_single_item: <RT extends p_di.Value>(
                 if_true: ($: T) => RT,
-                if_multiple: ($: _pi.List<T>) => RT,
+                if_multiple: ($: p_di.List<T>) => RT,
                 if_none: () => RT,
             ): RT => {
                 return (list.__get_number_of_items() > 1)
@@ -154,20 +153,20 @@ export namespace decide {
         }
     }
 
-    export const optional = <T extends _pi.Value, RT extends _pi.Value>(
-        optional: _pi.Optional_Value<T>,
+    export const optional = <T extends p_di.Value, RT extends p_di.Value>(
+        optional: p_di.Optional_Value<T>,
         if_set: ($: T) => RT,
         if_not_set: () => RT
     ): RT => optional.__decide(if_set, if_not_set)
 
-    export const state = <T extends _pi.State, RT extends _pi.Value>(
+    export const state = <T extends p_di.State, RT extends p_di.Value>(
         state: T,
         assign: (output: T) => RT
     ): RT => {
         return assign(state)
     }
 
-    export const text = <RT extends _pi.Value>(
+    export const text = <RT extends p_di.Value>(
         text: string,
         assign: (
             output: string

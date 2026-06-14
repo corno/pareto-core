@@ -1,7 +1,7 @@
-import * as _pi from "../interface"
+import * as p_id from "../data/interface"
 
-export default function text_from_list <T extends _pi.Value>(
-    list: _pi.List<T>,
+export default function text_from_list <T extends p_id.Value>(
+    list: p_id.List<T>,
     assign_character: (item: T) => number,
 ) {
     let out = ""

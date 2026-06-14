@@ -1,15 +1,16 @@
 import * as _pi from "./interface"
+import * as p_id from "./data/interface"
 
 
 export namespace acyclic {
 
-    export const not_set = <T extends _pi.Value>(
+    export const not_set = <T extends p_id.Value>(
     ): _pi.dynamic_lookup.Acyclic<T> => ({
         map_possible_entry: (id, handlers) => handlers.no_context_lookup(),
     })
 
-    export const from_resolved_dictionary = <T extends _pi.Value>(
-        dict: _pi.Dictionary<T>,
+    export const from_resolved_dictionary = <T extends p_id.Value>(
+        dict: p_id.Dictionary<T>,
     ): _pi.dynamic_lookup.Acyclic<T> => ({
         map_possible_entry: (id, handlers) => dict.__get_possible_entry_deprecated(id).__decide(
             ($) => handlers.found_entry($),
@@ -21,7 +22,7 @@ export namespace acyclic {
 
 export namespace cyclic {
 
-    export const not_set = <T extends _pi.Value>(
+    export const not_set = <T extends p_id.Value>(
     ): _pi.dynamic_lookup.Cyclic<T> => ({
         map_possible_entry: (id, handlers) => {
             //return abort['no context dynamic_lookup']()
@@ -35,12 +36,12 @@ export namespace cyclic {
 
 export namespace stack {
 
-    export const empty = <T extends _pi.Value>(
+    export const empty = <T extends p_id.Value>(
     ): _pi.dynamic_lookup.Stack<T> => ({
         map_possible_entry: (id, handlers) => handlers.no_context_lookup(),
     })
 
-    export const push = <T extends _pi.Value>(
+    export const push = <T extends p_id.Value>(
         stack: _pi.dynamic_lookup.Stack<T>,
         item: _pi.dynamic_lookup.Acyclic<T>,
     ): _pi.dynamic_lookup.Stack<T> => {

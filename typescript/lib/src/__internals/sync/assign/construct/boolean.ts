@@ -1,9 +1,9 @@
-import * as _pi from "../../../../interface"
+import * as p_di from "../../../../data/interface"
 
 export namespace from {
 
-    export const dictionary = <T extends _pi.Value>(
-        dictionary: _pi.Dictionary<T>,
+    export const dictionary = <T extends p_di.Value>(
+        dictionary: p_di.Dictionary<T>,
     ) => {
         return {
 
@@ -13,8 +13,8 @@ export namespace from {
         }
     }
 
-    export const list = <T extends _pi.Value>(
-        list: _pi.List<T>,
+    export const list = <T extends p_di.Value>(
+        list: p_di.List<T>,
     ) => {
         return {
             is_empty: (): boolean => {
@@ -38,8 +38,8 @@ export namespace from {
         }
     }
 
-    export const optional = <T extends _pi.Value>(
-        optional: _pi.Optional_Value<T>,
+    export const optional = <T extends p_di.Value>(
+        optional: p_di.Optional_Value<T>,
     ) => {
         return {
             is_set: (): boolean => {

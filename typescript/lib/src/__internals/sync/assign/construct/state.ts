@@ -1,6 +1,6 @@
-import * as _pi from "../../../../interface"
+import * as p_di from "../../../../data/interface"
 
-export function block<RT extends _pi.State>(
+export function block<RT extends p_di.State>(
     assign_option: () => RT
 ): RT {
     //this seems to be only used for switching on strings

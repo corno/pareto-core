@@ -1,7 +1,7 @@
-import * as _pi from "../../../../interface"
-import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
+import * as p_di from "../../../../data/interface"
 
-export class Not_Set_Optional_Value<T extends _pi.Value> implements _pi.Optional_Value<T> {
+
+export class Not_Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_Value<T> {
 
     public __decide<NT>(
         set: ($: T) => NT,
@@ -22,7 +22,7 @@ export class Not_Set_Optional_Value<T extends _pi.Value> implements _pi.Optional
     }
 }
 
-export class Set_Optional_Value<T extends _pi.Value> implements _pi.Optional_Value<T> {
+export class Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_Value<T> {
 
     constructor(source: T) {
         this.value = source
@@ -42,7 +42,7 @@ export class Set_Optional_Value<T extends _pi.Value> implements _pi.Optional_Val
         set(this.value)
     }
 
-    public __get_raw(): Raw_Optional_Value<T> {
+    public __get_raw(): p_di.Raw_Optional_Value<T> {
         return [this.value]
     }
 

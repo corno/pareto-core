@@ -1,20 +1,20 @@
-import * as _pi from "../../../../interface"
+import * as p_i from "../../../../interface"
+import * as p_id from "../../../../data/interface"
 import * as optional from "./Optional"
 
-import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
 import { List_Class } from "./List"
 
 
 export type ID_Value_Pair<T> = [string, T]
 
-export type Dictionary_As_Array<T extends _pi.Value> = readonly ID_Value_Pair<T>[]
+export type Dictionary_As_Array<T extends p_id.Value> = readonly ID_Value_Pair<T>[]
 
-export class Dictionary_Class<T extends _pi.Value> implements _pi.Dictionary<T> {
+export class Dictionary_Class<T extends p_id.Value> implements p_id.Dictionary<T> {
     private source: Dictionary_As_Array<T>
     constructor(source: Dictionary_As_Array<T>) {
         this.source = source
     }
-    public __d_map<NT extends _pi.Value>(
+    public __d_map<NT extends p_id.Value>(
         $v: (entry: T, id: string) => NT
     ) {
         return new Dictionary_Class<NT>(this.source.map(($) => {
@@ -24,15 +24,15 @@ export class Dictionary_Class<T extends _pi.Value> implements _pi.Dictionary<T> 
             ]
         }))
     }
-    __to_list<New_Type extends _pi.Value>(
+    __to_list<New_Type extends p_id.Value>(
         handle_value: (value: T, id: string) => New_Type
-    ): _pi.List<New_Type> {
+    ): p_id.List<New_Type> {
         return new List_Class(this.source.map(($) => handle_value($[1], $[0])))
     }
 
     __get_possible_entry_deprecated(
         id: string,
-    ): _pi.Optional_Value<T> {
+    ): p_id.Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
             if (entry[0] === id) {
@@ -44,7 +44,7 @@ export class Dictionary_Class<T extends _pi.Value> implements _pi.Dictionary<T> 
 
     __get_entry_raw(
         id: string,
-    ): Raw_Optional_Value<T> {
+    ): p_id.Raw_Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
             if (entry[0] === id) {
@@ -57,7 +57,7 @@ export class Dictionary_Class<T extends _pi.Value> implements _pi.Dictionary<T> 
     __get_entry_deprecated(
         id: string,
         abort: {
-            no_such_entry: _pi.Abort<null>,
+            no_such_entry: p_i.Abort<null>,
         }
     ): T {
         for (let i = 0; i !== this.source.length; i += 1) {

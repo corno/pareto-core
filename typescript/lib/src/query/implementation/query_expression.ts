@@ -1,5 +1,8 @@
-import * as _pi from "../../interface"
-import * as _pqi from "../interface"
+import * as p_i from "../../interface"
+
+import * as p_qi from "../interface"
+import * as p_ti from "../../transformer/interface"
+import * as p_di from "../../data/interface"
 import __query_result from "./__query_result"
 import create_asynchronous_dictionary_builder from "../../__internals/async/asynchronous_dictionary_builder"
 import create_asynchronous_processes_monitor from "../../__internals/async/create_asynchronous_processes_monitor"
@@ -8,16 +11,16 @@ import create_asynchronous_processes_monitor from "../../__internals/async/creat
 export namespace dictionaryx {
 
     export const parallel = <
-        Entry extends _pi.Value,
-        Result extends _pi.Value,
-        Error extends _pi.Value,
-        Entry_Error extends _pi.Value
+        Entry extends p_di.Value,
+        Result extends p_di.Value,
+        Error extends p_di.Value,
+        Entry_Error extends p_di.Value
     >(
-        dictionary: _pi.Dictionary<Entry>,
-        map_entry: ($: Entry, id: string) => _pqi.Query_Result<Result, Entry_Error>,
-        aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
+        dictionary: p_di.Dictionary<Entry>,
+        map_entry: ($: Entry, id: string) => p_qi.Query_Result<Result, Entry_Error>,
+        aggregate_errors: p_ti.Transformer<p_di.Dictionary<Entry_Error>, Error>,
 
-    ): _pqi.Query_Result<_pi.Dictionary<Result>, Error> => {
+    ): p_qi.Query_Result<p_di.Dictionary<Result>, Error> => {
         return __query_result((on_success, on_error) => {
             let has_errors = false
             const errors_builder = create_asynchronous_dictionary_builder<Entry_Error>()
@@ -55,7 +58,7 @@ export namespace dictionaryx {
 
 export const direct_result = <Result, Error>(
     result: Result,
-): _pqi.Query_Result<Result, Error> => {
+): p_qi.Query_Result<Result, Error> => {
     return __query_result((on_success, on_error) => {
         on_success(result)
     })
@@ -63,7 +66,7 @@ export const direct_result = <Result, Error>(
 
 export const direct_error = <T, E>(
     $: E
-): _pqi.Query_Result<T, E> => {
+): p_qi.Query_Result<T, E> => {
     return __query_result((on_value, on_error) => {
         on_error($)
     })

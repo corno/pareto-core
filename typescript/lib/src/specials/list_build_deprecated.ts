@@ -1,16 +1,16 @@
 import { List_Class } from "../__internals/sync/assign/literals/List"
-import * as _pi from "../interface"
+import * as p_id from "../data/interface"
 
-type List_Builder<T extends _pi.Value> = {
+type List_Builder<T extends p_id.Value> = {
     'add item': ($: T) => void
-    'add list': ($: _pi.List<T>) => void
+    'add list': ($: p_id.List<T>) => void
 }
 
-export default function list_build_deprecated<T extends _pi.Value>(
+export default function list_build_deprecated<T extends p_id.Value>(
     callback: (
         $i: List_Builder<T>
     ) => void
-): _pi.List<T> {
+): p_id.List<T> {
     const temp: T[] = []
     callback({
         'add item': ($) => {

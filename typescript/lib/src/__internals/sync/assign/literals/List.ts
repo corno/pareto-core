@@ -1,12 +1,13 @@
-import * as _pi from "../../../../interface"
+import * as p_di from "../../../../data/interface"
+import * as p_i from "../../../../interface"
 import * as optional from "./Optional"
 
-export class List_Class<T extends _pi.Value> implements _pi.List<T> {
+export class List_Class<T extends p_di.Value> implements p_di.List<T> {
     private data: readonly T[]
     constructor(data: readonly T[]) {
         this.data = data
     }
-    __l_map<NT extends _pi.Value>(
+    __l_map<NT extends p_di.Value>(
         $v: (entry: T) => NT
     ) {
         return new List_Class(this.data.map((entry) => {
@@ -28,7 +29,7 @@ export class List_Class<T extends _pi.Value> implements _pi.List<T> {
     __deprecated_get_item_at(
         index: number,
         abort: {
-            out_of_bounds: _pi.Abort<null>
+            out_of_bounds: p_i.Abort<null>
         },
     ) {
         if (index < 0 || index >= this.data.length) {

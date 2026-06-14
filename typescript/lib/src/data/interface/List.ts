@@ -1,4 +1,4 @@
-import { Abort } from "../Abort"
+import { Abort } from "../../interface/Abort"
 import { Optional_Value } from "./Optional_Value"
 import { Value } from "./Value"
 

@@ -1,4 +1,4 @@
-import { Abort } from "../Abort"
+import { Abort } from "../../interface/Abort"
 
 export type Refiner<Result, Error, Input> = (
     $: Input,

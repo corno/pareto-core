@@ -1,17 +1,18 @@
-import * as _pi from "../interface"
+import * as p_id from "../data/interface"
+import * as p_i from "../interface"
+import * as p_pi from "../production/interface"
 import * as _p from "../assign"
-import { Raw_Optional_Value } from "../interface/Raw_Optional_Value"
 import _p_list_build_deprecated from "./list_build_deprecated"
 import _p_unreachable_code_path from "./unreachable_code_path"
 
 export default function iterate<
-    Item extends _pi.Value,
-    End_Info extends _pi.Value,
-    Return_Type extends _pi.Value
+    Item extends p_id.Value,
+    End_Info extends p_id.Value,
+    Return_Type extends p_id.Value
 >(
-    $: _pi.List<Item>,
+    $: p_id.List<Item>,
     end_info: End_Info,
-    assign: ($iter: _pi.Iterator<Item, End_Info>) => Return_Type,
+    assign: ($iter: p_pi.Iterator<Item, End_Info>) => Return_Type,
 ): Return_Type {
 
     const raw = $.__get_raw_copy()
@@ -20,7 +21,7 @@ export default function iterate<
 
     let position = 0
 
-    const look_raw = (): Raw_Optional_Value<Item> => {
+    const look_raw = (): p_id.Raw_Optional_Value<Item> => {
         if (position < 0 || position >= raw.length) {
             return null
         }
@@ -86,10 +87,10 @@ export default function iterate<
         // get_position: () => {
         //     return position
         // },
-        list: <List_Item extends _pi.Value>($x: {
+        list: <List_Item extends p_id.Value>($x: {
             has_more_items: ($: Item) => boolean,
             handle: ($: Item) => List_Item,
-        }): _pi.List<List_Item> => {
+        }): p_id.List<List_Item> => {
             return _p_list_build_deprecated<List_Item>(($i) => {
                 while (true) {
                     const next_element = look_raw()

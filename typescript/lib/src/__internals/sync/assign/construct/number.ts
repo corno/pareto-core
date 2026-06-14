@@ -1,4 +1,5 @@
-import * as _pi from "../../../../interface"
+import * as p_di from "../../../../data/interface"
+import * as p_i from "../../../../interface"
 
 export namespace from {
 
@@ -26,7 +27,7 @@ export namespace from {
                 | ['towards zero', null]
                 | ['away from zero', null],
             abort: {
-                divided_by_zero: _pi.Abort<null>
+                divided_by_zero: p_i.Abort<null>
             },
         ): number => {
             if (divisor === 0) {
@@ -68,8 +69,8 @@ export namespace from {
 
     }
 
-    export const list = <T extends _pi.Value>(
-        list: _pi.List<T>,
+    export const list = <T extends p_di.Value>(
+        list: p_di.List<T>,
     ) => {
         return {
 
@@ -107,8 +108,8 @@ export namespace from {
         }
     }
 
-    export const dictionary = <T extends _pi.Value>(
-        dictionary: _pi.Dictionary<T>,
+    export const dictionary = <T extends p_di.Value>(
+        dictionary: p_di.Dictionary<T>,
     ) => {
         return {
 

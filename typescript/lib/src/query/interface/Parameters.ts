@@ -1,3 +1,3 @@
-import { Value } from "../../interface/data/Value"
+import { Value } from "../../data/interface/Value"
 
 export type Parameters = null | { [key: string]: Value }

@@ -1,4 +1,4 @@
-import * as _pi from "../../../../interface"
+import * as p_di from "../../../../data/interface"
 
 export namespace literal {
 
@@ -11,15 +11,15 @@ export namespace literal {
 
 export namespace from {
 
-    export const list = <T extends _pi.Value>(
-        list: _pi.List<T>,
+    export const list = <T extends p_di.Value>(
+        list: p_di.List<T>,
     ) => {
         return {
 
             map_with_state: <
-                Target_Item extends _pi.Value,
+                Target_Item extends p_di.Value,
                 State,
-                Result_Type extends { [id: string]: _pi.Value }>(
+                Result_Type extends { [id: string]: p_di.Value }>(
                     initial_state: State,
                     assign_item: (
                         item: T,
@@ -30,7 +30,7 @@ export namespace from {
                         state: State
                     ) => State,
                     wrapup: (
-                        final_list: _pi.List<Target_Item>,
+                        final_list: p_di.List<Target_Item>,
                         final_state: State
                     ) => Result_Type,
                 ): Result_Type => {

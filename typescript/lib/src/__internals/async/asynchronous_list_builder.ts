@@ -1,18 +1,18 @@
-import * as _pi from "../../interface"
+import * as p_di from "../../data/interface"
 import { List_Class } from "../sync/assign/literals/List"
 import * as _p from "../../assign"
 
 
 export type Asynchronous_List_Builder<
-    Item extends _pi.Value
+    Item extends p_di.Value
 > = {
     'add item': (item: Item) => void,
-    'add list': (list: _pi.List<Item>) => void,
-    'get list': () => _pi.List<Item>,
+    'add list': (list: p_di.List<Item>) => void,
+    'get list': () => p_di.List<Item>,
 }
 
 export default function create_asynchronous_list_builder<
-    Item extends _pi.Value
+    Item extends p_di.Value
 >(): Asynchronous_List_Builder<Item> {
     const items: Item[] = []
 
@@ -20,7 +20,7 @@ export default function create_asynchronous_list_builder<
         'add item': (item: Item) => {
             items.push(item)
         },
-        'add list': (list: _pi.List<Item>) => {
+        'add list': (list: p_di.List<Item>) => {
             items.push(...list.__get_raw_copy())
         },
 

@@ -1,11 +1,12 @@
-import * as _pi from "../../interface"
-import * as _p from "./assign/literals/Optional"
+import * as p_di from "../../data/interface"
+import * as xxxx from "./assign/literals/Optional"
+import * as p_i from "../../interface"
 
-export const entry = <T extends _pi.Value>(
-    dictionary: _pi.Dictionary<T>,
+export const entry = <T extends p_di.Value>(
+    dictionary: p_di.Dictionary<T>,
     id: string,
     abort: {
-        no_such_entry: _pi.Abort<null>
+        no_such_entry: p_i.Abort<null>
     }
 ): T => {
     const entry = dictionary.__get_entry_raw(id)
@@ -14,13 +15,13 @@ export const entry = <T extends _pi.Value>(
         : entry[0]
 }
 
-export const possible_entry = <T extends _pi.Value>(
-    dictionary: _pi.Dictionary<T>,
+export const possible_entry = <T extends p_di.Value>(
+    dictionary: p_di.Dictionary<T>,
     id: string,
-): _pi.Optional_Value<T> => {
+): p_di.Optional_Value<T> => {
     const entry = dictionary.__get_entry_raw(id)
     return entry === null
-        ? new _p.Not_Set_Optional_Value<T>()
-        : new _p.Set_Optional_Value<T>(entry[0])
+        ? new xxxx.Not_Set_Optional_Value<T>()
+        : new xxxx.Set_Optional_Value<T>(entry[0])
 }
 
