@@ -1,5 +1,5 @@
-import * as _pqi from "../query_interface"
-import * as _pi from "../interface"
+import * as _pqi from "../../query/interface"
+import * as _pi from "../../interface"
 
 export type Command_Procedure<
     My_Command extends Command<any, any>,

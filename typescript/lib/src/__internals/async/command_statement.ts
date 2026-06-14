@@ -1,7 +1,7 @@
 import * as _pi from "../../interface"
-import * as _pci from "../../command_interface"
-import * as _pqi from "../../query_interface"
-import _p_iterate from "../../_p_iterate"
+import * as _pci from "../../command/interface"
+import * as _pqi from "../../query/interface"
+import _p_iterate from "../../specials/iterate"
 
 import { Command_Block } from "./Command_Block"
 import __command_promise from "./command_promise"

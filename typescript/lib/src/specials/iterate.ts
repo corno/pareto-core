@@ -1,8 +1,8 @@
-import * as _pi from "./interface"
-import * as _p from "./assign"
-import { Raw_Optional_Value } from "./interface/Raw_Optional_Value"
-import _p_list_build_deprecated from "./_p_list_build_deprecated"
-import _p_unreachable_code_path from "./_p_unreachable_code_path"
+import * as _pi from "../interface"
+import * as _p from "../assign"
+import { Raw_Optional_Value } from "../interface/Raw_Optional_Value"
+import _p_list_build_deprecated from "./list_build_deprecated"
+import _p_unreachable_code_path from "./unreachable_code_path"
 
 export default function _p_iterate<
     Item extends _pi.Value,

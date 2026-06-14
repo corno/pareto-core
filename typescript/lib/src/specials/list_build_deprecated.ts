@@ -1,5 +1,5 @@
-import { List_Class } from "./__internals/sync/assign/literals/List"
-import * as _pi from "./interface"
+import { List_Class } from "../__internals/sync/assign/literals/List"
+import * as _pi from "../interface"
 
 type List_Builder<T extends _pi.Value> = {
     'add item': ($: T) => void

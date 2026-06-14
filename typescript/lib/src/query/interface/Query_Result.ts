@@ -1,5 +1,5 @@
-import { Transformer } from "../interface/algorithm_signatures/Transformer"
-import { Abort } from "../interface/Abort"
+import { Transformer } from "../../interface/algorithm_signatures/Transformer"
+import { Abort } from "../../interface/Abort"
 
 export type Query_Callback<Output, Error, Input> = (
     $: Input,

@@ -1,5 +1,5 @@
 import * as _pi from "../../interface"
-import * as _pqi from "../../query_interface"
+import * as _pqi from "../../query/interface"
 import create_refinement_context from "./create_refinement_context"
 
 /**

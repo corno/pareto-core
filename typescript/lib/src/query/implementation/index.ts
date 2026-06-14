@@ -1,9 +1,9 @@
-import query from "./__internals/async/query"
-import query_function from "./__internals/async/query_function"
-import __query_result from "./__internals/async/__query_result"
+import query from "../../__internals/async/query"
+import query_function from "../../__internals/async/query_function"
+import __query_result from "../../__internals/async/__query_result"
 
-import * as _pi from "./interface"
-import * as _pqi from "./query_interface"
+import * as _pi from "../../interface"
+import * as _pqi from "../interface"
 
 export {
     query,
@@ -11,11 +11,11 @@ export {
     __query_result,
 }
 
-export * from "./__internals/sync/extracts_for_async"
-export * from "./__internals/async/query_expression"
-export * from "./__internals/async/query_function"
-export * from "./__internals/async/__query_result"
-export * from "./__internals/async/query"
+export * from "../../__internals/sync/extracts_for_async"
+export * from "../../__internals/async/query_expression"
+export * from "../../__internals/async/query_function"
+export * from "../../__internals/async/__query_result"
+export * from "../../__internals/async/query"
 
 export type Option<T extends _pi.Value> = readonly [string, T]
 

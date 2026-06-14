@@ -1,6 +1,6 @@
 import * as _pi from "../../interface"
-import * as _pqi from "../../query_interface"
-import * as _pci from "../../command_interface"
+import * as _pqi from "../../query/interface"
+import * as _pci from "../../command/interface"
 
 import { Command_Block } from "./Command_Block"
 import _command from "./command"

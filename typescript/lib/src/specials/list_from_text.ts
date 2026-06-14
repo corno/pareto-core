@@ -1,6 +1,6 @@
-import * as _pi from "./interface"
+import * as _pi from "../interface"
 
-import { List_Class } from "./__internals/sync/assign/literals/List"
+import { List_Class } from "../__internals/sync/assign/literals/List"
 
 export default function _p_list_from_text  <T extends _pi.Value>(
     $: string,

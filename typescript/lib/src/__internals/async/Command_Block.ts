@@ -1,4 +1,4 @@
-import * as _pci from  "../../command_interface"
+import * as _pci from  "../../command/interface"
 
 export type Command_Block<Error> = _pci.Command_Promise<Error>[]
 

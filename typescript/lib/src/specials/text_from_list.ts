@@ -1,4 +1,4 @@
-import * as _pi from "./interface"
+import * as _pi from "../interface"
 
 export default function _p_text_from_list <T extends _pi.Value>(
     list: _pi.List<T>,

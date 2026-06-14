@@ -1,5 +1,5 @@
 import * as _pi from "../../interface"
-import * as _pci from "../../command_interface"
+import * as _pci from "../../command/interface"
 import __command_promise from './command_promise'
 
 export default function __command<

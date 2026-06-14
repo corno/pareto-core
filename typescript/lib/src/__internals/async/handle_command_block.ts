@@ -1,4 +1,4 @@
-import * as _pi from "../../command_interface"
+import * as _pi from "../../command/interface"
 import __command_promise from "./command_promise"
 import { Command_Block } from './Command_Block'
 
