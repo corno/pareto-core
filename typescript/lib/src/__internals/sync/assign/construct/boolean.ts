@@ -2,7 +2,7 @@ import * as _pi from "../../../../interface"
 
 export namespace from {
 
-    export const dictionary = <T>(
+    export const dictionary = <T extends _pi.Value>(
         dictionary: _pi.Dictionary<T>,
     ) => {
         return {
@@ -13,7 +13,7 @@ export namespace from {
         }
     }
 
-    export const list = <T>(
+    export const list = <T extends _pi.Value>(
         list: _pi.List<T>,
     ) => {
         return {
@@ -38,7 +38,7 @@ export namespace from {
         }
     }
 
-    export const optional = <T>(
+    export const optional = <T extends _pi.Value>(
         optional: _pi.Optional_Value<T>,
     ) => {
         return {

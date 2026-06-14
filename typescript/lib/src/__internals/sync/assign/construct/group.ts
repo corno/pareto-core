@@ -11,26 +11,29 @@ export namespace literal {
 
 export namespace from {
 
-    export const list = <T>(
+    export const list = <T extends _pi.Value>(
         list: _pi.List<T>,
     ) => {
         return {
 
-            map_with_state: <Target_Item, State, Result_Type extends { [id: string]: any }>(
-                initial_state: State,
-                assign_item: (
-                    item: T,
-                    state: State
-                ) => Target_Item,
-                update_state: (
-                    item: Target_Item,
-                    state: State
-                ) => State,
-                wrapup: (
-                    final_list: _pi.List<Target_Item>,
-                    final_state: State
-                ) => Result_Type,
-            ): Result_Type => {
+            map_with_state: <
+                Target_Item extends _pi.Value,
+                State,
+                Result_Type extends { [id: string]: _pi.Value }>(
+                    initial_state: State,
+                    assign_item: (
+                        item: T,
+                        state: State
+                    ) => Target_Item,
+                    update_state: (
+                        item: Target_Item,
+                        state: State
+                    ) => State,
+                    wrapup: (
+                        final_list: _pi.List<Target_Item>,
+                        final_state: State
+                    ) => Result_Type,
+                ): Result_Type => {
                 let current_state = initial_state
                 return wrapup(
                     list.__l_map(($) => {

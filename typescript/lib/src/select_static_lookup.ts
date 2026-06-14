@@ -3,14 +3,14 @@ import * as _pi from "./interface"
 
 export namespace acyclic {
 
-    export const not_set = <T>(
+    export const not_set = <T extends _pi.Value>(
     ): _pi.static_lookup.Acyclic<T> => ({
         get_entry: (id, abort) => abort.no_context_lookup(null),
         __get_entry_raw: (id, abort) => abort.no_context_lookup(null),
     })
 
-    export const from_resolved_dictionary = <T>(
-        dict: _pi.Dictionary<T>,
+    export const from_resolved_dictionary = <T extends _pi.Value>(
+        dict: _pi.Dictionary<T >,
     ): _pi.static_lookup.Acyclic<T> => ({
         get_entry: (id, abort) => dict.__get_entry_deprecated(
             id,
@@ -25,7 +25,7 @@ export namespace acyclic {
 
 export namespace cyclic {
 
-    export const not_set = <T>(
+    export const not_set = <T extends _pi.Value>(
     ): _pi.static_lookup.Cyclic<T> => ({
         get_entry: (id, abort) => {
             //return abort['no context static_lookup']()
@@ -39,7 +39,7 @@ export namespace cyclic {
 
 export namespace stack {
 
-    export const empty = <T>(
+    export const empty = <T extends _pi.Value>(
     ): _pi.static_lookup.Stack<T> => ({
         get_entry: (id, abort) => abort.no_context_lookup(null),
         get_entry_depth(id) {
@@ -47,7 +47,7 @@ export namespace stack {
         },
     })
 
-    export const push = <T>(
+    export const push = <T extends _pi.Value>(
         stack: _pi.static_lookup.Stack<T>,
         item: _pi.static_lookup.Acyclic<T>,
     ): _pi.static_lookup.Stack<T> => {

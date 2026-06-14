@@ -1,20 +1,23 @@
 import { Abort } from "../Abort"
 import { Optional_Value } from "./Optional_Value"
+import { Value } from "./Value"
 
 /**
  * A List for Pareto.
  * unmutable and minimal by design
  */
-export interface List<T> {
-    
-    __l_map<NT>(
+export interface List<
+    T extends Value
+> {
+
+    __l_map<NT extends Value>(
         assign_item: ($: T) => NT,
     ): List<NT>
 
     __get_number_of_items(): number
 
     __deprecated_get_possible_item_at(index: number): Optional_Value<T>
-    
+
     __deprecated_get_item_at(
         index: number,
         abort: {

@@ -1,12 +1,12 @@
 import * as _pi from "../../../../interface"
 import * as optional from "./Optional"
 
-export class List_Class<T> implements _pi.List<T> {
+export class List_Class<T extends _pi.Value> implements _pi.List<T> {
     private data: readonly T[]
     constructor(data: readonly T[]) {
         this.data = data
     }
-    __l_map<NT>(
+    __l_map<NT extends _pi.Value>(
         $v: (entry: T) => NT
     ) {
         return new List_Class(this.data.map((entry) => {

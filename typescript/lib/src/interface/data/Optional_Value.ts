@@ -1,4 +1,5 @@
 import { Raw_Optional_Value } from "../Raw_Optional_Value"
+import { Value } from "./Value"
 
 
 /**
@@ -7,13 +8,13 @@ import { Raw_Optional_Value } from "../Raw_Optional_Value"
  * you cannot discern if a return value is null because of the function or because of the data
  * this 'Optional_Value' type makes it possible to have recursive optional types like this: Optional_Value<Optional_Value<number>>
  */
-export interface Optional_Value<T> {
+export interface Optional_Value<T extends Value> {
     
     /**
      * @param set what to do when the value was set, returns the new type
      * @param not_set  what to do when the value was not set, returns the new type
      */
-    __decide<NT>(
+    __decide<NT extends Value>(
         set: ($: T) => NT,
         not_set: () => NT,
     ): NT

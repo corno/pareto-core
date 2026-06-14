@@ -3,6 +3,7 @@ export * from "./data/List"
 export * from "./data/Circular_Dependency"
 export * from "./data/Dictionary"
 export * from "./data/Optional_Value"
+export * from "./data/Value"
 
 export * from "./Iterator"
 export * from "./lookup"

@@ -10,49 +10,49 @@ import create_asynchronous_dictionary_builder from "./asynchronous_dictionary_bu
 import create_asynchronous_processes_monitor from "./create_asynchronous_processes_monitor"
 
 
-export namespace listx {
+// export namespace listx {
 
-    export const serie = <Error>(
-        array: _pi.List<_pi.Command_Promise<Error>>,
-    ): _pi.Command_Promise<Error> => {
-        return __command_promise({
-            'execute': (on_success, on_error) => {
-                _p_iterate(
-                    array,
-                    null,
-                    (iterator) => {
-                        const do_next = () => {
-                            const next = iterator.look_raw()
-                            if (next !== null) {
-                                iterator.consume(
-                                    ($) => {
-                                        $.__start(
-                                            () => {
-                                                do_next()
-                                            },
-                                            on_error
-                                        )
-                                    },
-                                    () => {
-                                        throw new Error("not reachable, just did a look()")
-                                    }
-                                )
-                            } else {
-                                on_success()
-                            }
-                        }
-                        do_next()
-                    }
-                )
+//     export const serie = <Error extends _pi.Value>(
+//         array: _pi.List<_pi.Command_Promise<Error>>,
+//     ): _pi.Command_Promise<Error> => {
+//         return __command_promise({
+//             'execute': (on_success, on_error) => {
+//                 _p_iterate(
+//                     array,
+//                     null,
+//                     (iterator) => {
+//                         const do_next = () => {
+//                             const next = iterator.look_raw()
+//                             if (next !== null) {
+//                                 iterator.consume(
+//                                     ($) => {
+//                                         $.__start(
+//                                             () => {
+//                                                 do_next()
+//                                             },
+//                                             on_error
+//                                         )
+//                                     },
+//                                     () => {
+//                                         throw new Error("not reachable, just did a look()")
+//                                     }
+//                                 )
+//                             } else {
+//                                 on_success()
+//                             }
+//                         }
+//                         do_next()
+//                     }
+//                 )
 
-            }
-        })
-    }
-}
+//             }
+//         })
+//     }
+// }
 
 export namespace dictionaryx {
 
-    export const parallel = <T, Error, Entry_Error>(
+    export const parallel = <T extends _pi.Value, Error extends _pi.Value, Entry_Error extends _pi.Value>(
         dictionary: _pi.Dictionary<T>,
         parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
         aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
@@ -67,10 +67,12 @@ export namespace dictionaryx {
 
                 create_asynchronous_processes_monitor(
                     (monitor) => {
-                        dictionary.__d_map(($, id) => {
+                        dictionary.__get_raw_copy().forEach(($) => {
+                            const id = $[0]
+                            const value = $[1]
                             monitor['report process started']()
 
-                            __handle_command_block(parametrized_command_block($, id)).__start(
+                            __handle_command_block(parametrized_command_block(value, id)).__start(
                                 () => {
                                     monitor['report process finished']()
                                 },
@@ -96,7 +98,7 @@ export namespace dictionaryx {
 
     export namespace deprecated_parallel {
 
-        export const query = <T, Error, Entry_Error>(
+        export const query = <T extends _pi.Value, Error extends _pi.Value, Entry_Error extends _pi.Value>(
             query_result: Query_Result<_pi.Dictionary<T>, Error>,
             parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
             aggregate_errors: _pi.Transformer<_pi.Dictionary<Entry_Error>, Error>,
@@ -113,10 +115,12 @@ export namespace dictionaryx {
                         (dictionary) => {
                             create_asynchronous_processes_monitor(
                                 (monitor) => {
-                                    dictionary.__d_map(($, id) => {
+                                    dictionary.__get_raw_copy().forEach(($) => {
+                                        const id = $[0]
+                                        const value = $[1]
                                         monitor['report process started']()
 
-                                        __handle_command_block(parametrized_command_block($, id)).__start(
+                                        __handle_command_block(parametrized_command_block(value, id)).__start(
                                             () => {
                                                 monitor['report process finished']()
                                             },

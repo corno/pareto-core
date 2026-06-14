@@ -7,14 +7,14 @@ import { List_Class } from "./List"
 
 export type ID_Value_Pair<T> = [string, T]
 
-export type Dictionary_As_Array<T> = readonly ID_Value_Pair<T>[]
+export type Dictionary_As_Array<T extends _pi.Value> = readonly ID_Value_Pair<T>[]
 
-export class Dictionary_Class<T> implements _pi.Dictionary<T> {
+export class Dictionary_Class<T extends _pi.Value> implements _pi.Dictionary<T> {
     private source: Dictionary_As_Array<T>
     constructor(source: Dictionary_As_Array<T>) {
         this.source = source
     }
-    public __d_map<NT>(
+    public __d_map<NT extends _pi.Value>(
         $v: (entry: T, id: string) => NT
     ) {
         return new Dictionary_Class<NT>(this.source.map(($) => {
@@ -24,7 +24,7 @@ export class Dictionary_Class<T> implements _pi.Dictionary<T> {
             ]
         }))
     }
-    __to_list<New_Type>(
+    __to_list<New_Type extends _pi.Value>(
         handle_value: (value: T, id: string) => New_Type
     ): _pi.List<New_Type> {
         return new List_Class(this.source.map(($) => handle_value($[1], $[0])))

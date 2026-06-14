@@ -2,8 +2,12 @@ import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { List } from "./data/List"
 import { Optional_Value } from "./data/Optional_Value"
 import { Abort } from "./Abort"
+import { Value } from "./data/Value"
 
-export type Iterator<Item, End_Info> = {
+export type Iterator<
+    Item extends Value,
+    End_Info extends Value
+> = {
     assert_finished: <T>(
         assign: () => T,
         abort: {
@@ -21,7 +25,7 @@ export type Iterator<Item, End_Info> = {
         item: (token: Item, abort: Abort<null>) => T,
     }) => T
     get_end_info: () => End_Info
-    list: <List_Item>($: {
+    list: <List_Item extends Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: ($: Item) => List_Item,
     }) => List<List_Item>,
@@ -31,7 +35,7 @@ export type Iterator<Item, End_Info> = {
     ) => T
     look_raw: () => Raw_Optional_Value<Item>,
     look_ahead_raw: (offset: number) => Raw_Optional_Value<Item>
-    optional: <T>($: {
+    optional: <T extends Value>($: {
         item: (token: Item) => Optional_Value<T>,
     }) => Optional_Value<T>
     wrap_up: <T>(

@@ -1,7 +1,7 @@
 import * as _pi from "../../../../interface"
 import { Raw_Optional_Value } from "../../../../interface/Raw_Optional_Value"
 
-export class Not_Set_Optional_Value<T> implements _pi.Optional_Value<T> {
+export class Not_Set_Optional_Value<T extends _pi.Value> implements _pi.Optional_Value<T> {
 
     public __decide<NT>(
         set: ($: T) => NT,
@@ -22,7 +22,7 @@ export class Not_Set_Optional_Value<T> implements _pi.Optional_Value<T> {
     }
 }
 
-export class Set_Optional_Value<T> implements _pi.Optional_Value<T> {
+export class Set_Optional_Value<T extends _pi.Value> implements _pi.Optional_Value<T> {
 
     constructor(source: T) {
         this.value = source

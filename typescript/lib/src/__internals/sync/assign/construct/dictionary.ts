@@ -5,7 +5,7 @@ import { List_Class } from "../literals/List"
 
 export namespace from {
 
-    export const dictionary = <T>(
+    export const dictionary = <T extends _pi.Value>(
         dictionary: _pi.Dictionary<T>,
     ) => {
         return {
@@ -17,7 +17,7 @@ export namespace from {
                 ) => boolean
             ): _pi.Dictionary<T> => new Dictionary_Class(dictionary.__get_raw_copy().filter(($) => callback($[1], $[0]))),
 
-            map_optionally: <New_Type>(
+            map_optionally: <New_Type extends _pi.Value>(
                 assign_optional_entry: (
                     value: T,
                     id: string
@@ -32,7 +32,7 @@ export namespace from {
                 )
             },
 
-            flatten: <New_Type>(
+            flatten: <New_Type extends _pi.Value>(
                 get_child_dictionary: (
                     value: T
                 ) => _pi.Dictionary<New_Type>,
@@ -46,14 +46,18 @@ export namespace from {
             ) => {
                 const out: { [id: string]: New_Type } = {}
 
-                dictionary.__d_map(($, id) => {
-                    const child_dictionary = get_child_dictionary($)
-                    child_dictionary.__d_map(($child, child_id) => {
+                dictionary.__get_raw_copy().forEach(($) => {
+                    const id = $[0]
+                    const value = $[1]
+                    const child_dictionary = get_child_dictionary(value)
+                    child_dictionary.__get_raw_copy().forEach(($) => {
+                        const child_id = $[0]
+                        const child_value = $[1]
                         const combined_id = get_id(id, child_id)
                         if (out[combined_id] !== undefined) {
                             abort.duplicate_id(combined_id)
                         }
-                        out[combined_id] = $child
+                        out[combined_id] = child_value
                     })
                 })
                 return literal(out)
@@ -79,7 +83,7 @@ export namespace from {
                 return literal(temp).__d_map(($) => literal($))
             },
 
-            join: <Other_Type, Result>(
+            join: <Other_Type extends _pi.Value, Result extends _pi.Value>(
                 other_dictionary: _pi.Dictionary<Other_Type>,
                 assign_entry: (
                     value: T,
@@ -88,9 +92,11 @@ export namespace from {
                 ) => Result,
             ) => {
                 const out: { [id: string]: Result } = {}
-                dictionary.__d_map(($, id) => {
+                dictionary.__get_raw_copy().forEach(($) => {
+                    const id = $[0]
+                    const value = $[1]
                     out[id] = assign_entry(
-                        $,
+                        value,
                         other_dictionary.__get_possible_entry_deprecated(
                             id,
                         ),
@@ -100,7 +106,7 @@ export namespace from {
                 return literal(out)
             },
 
-            map: <New_Type>(
+            map: <New_Type extends _pi.Value>(
                 assign_entry: (
                     value: T,
                     id: string
@@ -114,17 +120,19 @@ export namespace from {
                 }
             ) => {
                 const temp: { [id: string]: T } = {}
-                dictionary.__d_map(($, id) => {
-                    const new_id = get_id($, id)
+                dictionary.__get_raw_copy().forEach(($) => {
+                    const id = $[0]
+                    const value = $[1]
+                    const new_id = get_id(value, id)
                     if (temp[new_id] !== undefined) {
-                        abort.duplicate_id($, new_id)
+                        abort.duplicate_id(value, new_id)
                     }
-                    temp[new_id] = $
+                    temp[new_id] = value
                 })
                 return literal(temp)
             },
 
-            resolve_static: <Resolved>(
+            resolve_static: <Resolved extends _pi.Value>(
                 assign_entry: (
                     value: T,
                     id: string,
@@ -235,8 +243,10 @@ export namespace from {
                         }
                     )
                 }
-                source.__d_map(($, id) => {
-                    inner_resolve($, id, [id])
+                source.__get_raw_copy().forEach(($) => {
+                    const id = $[0]
+                    const value = $[1]
+                    inner_resolve(value, id, [id])
                 })
 
                 cyclic_references.forEach(($) => {
@@ -252,7 +262,7 @@ export namespace from {
                 return literal(out)
             },
 
-            resolve_dynamic: <Resolved>(
+            resolve_dynamic: <Resolved extends _pi.Value>(
                 assign_entry: (
                     value: T,
                     id: string,
@@ -371,8 +381,10 @@ export namespace from {
                     )
                 }
 
-                source.__d_map(($, id) => {
-                    inner_resolve($, id, [id])
+                source.__get_raw_copy().forEach(($) => {
+                    const id = $[0]
+                    const value = $[1]
+                    inner_resolve(value, id, [id])
                 })
 
                 cyclic_references.forEach(($) => {
@@ -392,12 +404,12 @@ export namespace from {
         }
     }
 
-    export const list = <T>(
+    export const list = <T extends _pi.Value>(
         list: _pi.List<T>,
     ) => {
         return {
 
-            convert: <NT>(
+            convert: <NT extends _pi.Value>(
                 get_id: (
                     item: T
                 ) => string,
@@ -432,7 +444,11 @@ export namespace from {
                     }
                     temp[id].push($)
                 })
-                return literal(temp).__d_map(($) => new List_Class($))
+                const temp2: { [id: string]: _pi.List<T> } = {}
+                Object.keys(temp).forEach((id) => {
+                    temp2[id] = new List_Class(temp[id])
+                })
+                return literal(temp2)
             }
 
         }
@@ -440,11 +456,11 @@ export namespace from {
 
 }
 
-export function literal<T>(
+export function literal<T extends _pi.Value>(
     source: { readonly [id: string]: T }
 ): _pi.Dictionary<T> {
 
-    function create_dictionary_as_array<X>(
+    function create_dictionary_as_array<X extends _pi.Value>(
         source: { readonly [id: string]: X }
     ): Dictionary_As_Array<X> {
         const imp: ID_Value_Pair<X>[] = []

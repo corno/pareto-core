@@ -1,10 +1,11 @@
 import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { Circular_Dependency } from "./data/Circular_Dependency"
 import { Abort } from "./Abort"
+import { Value } from "./data/Value"
 
 export namespace static_lookup {
 
-    export type Acyclic<Type> = {
+    export type Acyclic<Type extends Value> = {
         get_entry: (
             id: string,
             abort: {
@@ -22,7 +23,7 @@ export namespace static_lookup {
         ) => Raw_Optional_Value<Type>
     }
 
-    export type Cyclic<Type> = {
+    export type Cyclic<Type extends Value> = {
         get_entry: (
             id: string,
             abort: {
@@ -33,7 +34,7 @@ export namespace static_lookup {
         ) => Circular_Dependency<Type>
     }
 
-    export type Stack<Type> = {
+    export type Stack<Type extends Value> = {
         get_entry: (
             id: string,
             abort: {
@@ -56,8 +57,8 @@ export namespace static_lookup {
 
 export namespace dynamic_lookup {
 
-    export type Acyclic<Type> = {
-        map_possible_entry: <Out>(
+    export type Acyclic<Type extends Value> = {
+        map_possible_entry: <Out extends Value>(
             id: string,
             handlers: {
                 found_entry: ($: Type) => Out,
@@ -68,8 +69,8 @@ export namespace dynamic_lookup {
         ) => Out
     }
 
-    export type Cyclic<Type> = {
-        map_possible_entry: <Out>(
+    export type Cyclic<Type extends Value> = {
+        map_possible_entry: <Out extends Value>(
             id: string,
             handlers: {
                 found_entry: ($: Type) => Out,
@@ -80,7 +81,7 @@ export namespace dynamic_lookup {
         ) => Circular_Dependency<Out>
     }
 
-    export type Stack<Type> = {
+    export type Stack<Type extends Value> = {
         // get_entry_depth: (
         //     id: string,
         //     abort: {
@@ -89,7 +90,7 @@ export namespace dynamic_lookup {
         //         cycle_detected: Abort<string[]>,
         //     }
         // ) => number
-        map_possible_entry: <Out>(
+        map_possible_entry: <Out extends Value>(
             id: string,
             handlers: {
                 found_entry: ($: Type) => Out,

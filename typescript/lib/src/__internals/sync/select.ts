@@ -1,7 +1,7 @@
 import * as _pi from "../../interface"
 import * as _p from "./assign/literals/Optional"
 
-export const entry = <T>(
+export const entry = <T extends _pi.Value>(
     dictionary: _pi.Dictionary<T>,
     id: string,
     abort: {
@@ -14,7 +14,7 @@ export const entry = <T>(
         : entry[0]
 }
 
-export const possible_entry = <T>(
+export const possible_entry = <T extends _pi.Value>(
     dictionary: _pi.Dictionary<T>,
     id: string,
 ): _pi.Optional_Value<T> => {

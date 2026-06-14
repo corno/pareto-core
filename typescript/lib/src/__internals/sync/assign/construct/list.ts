@@ -4,12 +4,12 @@ import { List_Class } from "../literals/List"
 
 export namespace from {
 
-    export const dictionary = <T>(
+    export const dictionary = <T extends _pi.Value>(
         dictionary: _pi.Dictionary<T>,
     ) => {
         return {
 
-            convert: <New_Type>(
+            convert: <New_Type extends _pi.Value>(
                 assign_item: (
                     value: T,
                     id: string
@@ -18,7 +18,7 @@ export namespace from {
                 return dictionary.__to_list(assign_item)
             },
 
-            flatten: <NT>(
+            flatten: <NT extends _pi.Value>(
                 assign_item: (
                     value: T,
                     id: string
@@ -38,7 +38,7 @@ export namespace from {
         }
     }
 
-    export const list = <T>(
+    export const list = <T extends _pi.Value>(
         list: _pi.List<T>,
     ) => {
         return {
@@ -51,7 +51,7 @@ export namespace from {
                 return new List_Class(list.__get_raw_copy().filter(callback))
             },
 
-            map_optionally: <New_Type>(
+            map_optionally: <New_Type extends _pi.Value>(
                 assign_optional_item: (
                     item: T,
                 ) => _pi.Optional_Value<New_Type>
@@ -69,7 +69,7 @@ export namespace from {
                 return new List_Class(out)
             },
 
-            flatten: <NT>(
+            flatten: <NT extends _pi.Value>(
                 assign_list: (
                     $: T
                 ) => _pi.List<NT>,
@@ -85,7 +85,7 @@ export namespace from {
                 return new List_Class(out)
             },
 
-            join: <Other_Type, Result>(
+            join: <Other_Type extends _pi.Value, Result extends _pi.Value>(
                 other_list: _pi.List<Other_Type>,
                 assign_item: (
                     value: T,
@@ -94,17 +94,18 @@ export namespace from {
             ) => {
                 const out: Result[] = []
                 let index = -1
-                list.__l_map(($) => {
-                    index++
-                    out.push(assign_item(
-                        $,
-                        other_list.__deprecated_get_possible_item_at(index),
-                    ))
-                })
+                list.__get_raw_copy().forEach(
+                    ($) => {
+                        index++
+                        out.push(assign_item(
+                            $,
+                            other_list.__deprecated_get_possible_item_at(index),
+                        ))
+                    })
                 return literal(out)
             },
 
-            full_join: <Other_Type, Result>(
+            full_join: <Other_Type extends _pi.Value, Result extends _pi.Value>(
                 other_list: _pi.List<Other_Type>,
                 assign_item: (
                     value: _pi.Optional_Value<T>,
@@ -122,7 +123,7 @@ export namespace from {
                 return literal(out)
             },
 
-            map: <New_Type>(
+            map: <New_Type extends _pi.Value>(
                 assign_item: (
                     item: T,
                 ) => New_Type,
@@ -135,7 +136,11 @@ export namespace from {
                 return new List_Class(list.__get_raw_copy().slice().reverse())
             },
 
-            map_with_state: <Target_Element, State, Result_Type>(
+            map_with_state: <
+                Target_Element extends _pi.Value,
+                State,
+                Result_Type
+            >(
                 initial_state: State,
                 handle_value: (
                     value: T,
@@ -167,7 +172,9 @@ export namespace from {
 
 }
 
-export function literal<T>(
+export function literal<
+    T extends _pi.Value
+>(
     source: readonly T[]
 ): _pi.List<T> {
     if (!(source instanceof Array)) {
@@ -204,7 +211,7 @@ export const nested_literal_old = <T extends NonUndefined | {}>(
     return new List_Class(out)
 }
 
-export type Nested<T> = undefined | Nested<T>[] | _pi.List<T>
+export type Nested<T extends _pi.Value> = undefined | Nested<T>[] | _pi.List<T>
 
 export const nested_literal_new = <T extends NonUndefined | {}>(
     nested: Nested<T>
@@ -225,7 +232,7 @@ export const nested_literal_new = <T extends NonUndefined | {}>(
     return new List_Class(out)
 }
 
-export const repeat = <T>(
+export const repeat = <T extends _pi.Value>(
     item: T,
     times: number,
 ): _pi.List<T> => {

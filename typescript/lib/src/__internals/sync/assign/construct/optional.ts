@@ -2,7 +2,7 @@ import * as _pi from "../../../../interface"
 
 import { Set_Optional_Value, Not_Set_Optional_Value } from "../literals/Optional"
 
-export function block<RT>(
+export function block<RT extends _pi.Value>(
     assign_optional_value: () => _pi.Optional_Value<RT>
 ): _pi.Optional_Value<RT> {
     return assign_optional_value()
@@ -10,13 +10,13 @@ export function block<RT>(
 
 export namespace literal {
 
-    export const set = <T>(
+    export const set = <T extends _pi.Value>(
         value: T
     ): _pi.Optional_Value<T> => {
         return new Set_Optional_Value(value)
     }
 
-    export const not_set = <T>(
+    export const not_set = <T extends _pi.Value>(
     ): _pi.Optional_Value<T> => {
         return new Not_Set_Optional_Value<T>()
     }
@@ -30,7 +30,7 @@ export namespace from {
     ) => {
         return {
 
-            convert: <T>(
+            convert: <T extends _pi.Value>(
                 assign_set: () => T,
             ): _pi.Optional_Value<T> => {
                 if (boolean_value) {
@@ -44,12 +44,12 @@ export namespace from {
         }
     }
 
-    export const optional = <T>(
+    export const optional = <T extends _pi.Value>(
         optional_value: _pi.Optional_Value<T>,
     ) => {
         return {
 
-            map: <New_Type>(
+            map: <New_Type extends _pi.Value>(
                 assign_set_value: (
                     value: T
                 ) => New_Type,

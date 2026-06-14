@@ -4,7 +4,11 @@ import { Raw_Optional_Value } from "./interface/Raw_Optional_Value"
 import _p_list_build_deprecated from "./_p_list_build_deprecated"
 import _p_unreachable_code_path from "./_p_unreachable_code_path"
 
-export default function _p_iterate<Item, End_Info, Return_Type>(
+export default function _p_iterate<
+    Item extends _pi.Value,
+    End_Info extends _pi.Value,
+    Return_Type extends _pi.Value
+>(
     $: _pi.List<Item>,
     end_info: End_Info,
     assign: ($iter: _pi.Iterator<Item, End_Info>) => Return_Type,
@@ -82,7 +86,7 @@ export default function _p_iterate<Item, End_Info, Return_Type>(
         // get_position: () => {
         //     return position
         // },
-        list: <List_Item>($x: {
+        list: <List_Item extends _pi.Value>($x: {
             has_more_items: ($: Item) => boolean,
             handle: ($: Item) => List_Item,
         }): _pi.List<List_Item> => {

@@ -2,21 +2,22 @@ import { Abort } from "../Abort"
 import { Raw_Optional_Value } from "../Raw_Optional_Value"
 import { List } from "./List"
 import { Optional_Value } from "./Optional_Value"
+import { Value } from "./Value"
 
 
 /**
  * A dictionary for Pareto.
  * unmutable and minimal by design
  */
-export interface Dictionary<T> {
-    __d_map<NT>(
+export interface Dictionary<T extends Value> {
+    __d_map<NT extends Value>(
         assign_entry: (value: T, id: string) => NT,
     ): Dictionary<NT>
 
     /**
      * the ordering of the list will be the same as the insertion order in the dictionary
      */
-    __to_list<New_Type>(
+    __to_list<New_Type extends Value>(
         assign_item: (value: T, id: string) => New_Type
     ): List<New_Type>
 
