@@ -190,10 +190,8 @@ export function literal<
     return new List_Class(data)
 }
 
-export type NonUndefined = null | {}
-
-export const nested_literal_old = <T extends NonUndefined | {}>(
-    lists: (undefined | T[] | _pi.List<T>)[]
+export const nested_literal_old = <T extends _pi.Value>(
+    lists: (T[] | _pi.List<T>)[]
 ): _pi.List<T> => {
     const out: T[] = []
     lists.forEach(($) => {
@@ -213,7 +211,7 @@ export const nested_literal_old = <T extends NonUndefined | {}>(
 
 export type Nested<T extends _pi.Value> = undefined | Nested<T>[] | _pi.List<T>
 
-export const nested_literal_new = <T extends NonUndefined | {}>(
+export const nested_literal_new = <T extends _pi.Value>(
     nested: Nested<T>
 ): _pi.List<T> => {
     const out: T[] = []
