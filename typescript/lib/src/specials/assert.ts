@@ -1,4 +1,4 @@
-import * as p_id from "../data/interface"
+import * as p_di from "../data/interface"
 import * as p_i from "../interface"
 
 /**
@@ -8,11 +8,11 @@ import * as p_i from "../interface"
  * so use this function if you want an error checking on top of the errors that are the result of the data conversion
  */
 export default function assert<
-    Return_Type extends p_id.Value,
-    Error extends p_id.Value
+    Return_Type extends p_di.Value,
+    Error extends p_di.Value
 >(
     abort: p_i.Abort<Error>,
-    tester: () => p_id.Optional_Value<Error>,
+    tester: () => p_di.Optional_Value<Error>,
     assign: () => Return_Type
 ): Return_Type {
     const test_result = tester()

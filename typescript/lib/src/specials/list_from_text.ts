@@ -1,11 +1,11 @@
-import * as p_id from "../data/interface"
+import * as p_di from "../data/interface"
 
 import { List_Class } from "../__internals/sync/assign/literals/List"
 
-export default function list_from_text  <T extends p_id.Value>(
+export default function list_from_text  <T extends p_di.Value>(
     $: string,
     assign_item: ($: number) => T
-): p_id.List<T> {
+): p_di.List<T> {
     const out: T[] = []
     for (let i = 0; i < $.length; i++) {
         out.push(assign_item($.charCodeAt(i)))

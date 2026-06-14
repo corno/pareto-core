@@ -1,4 +1,4 @@
-import * as p_id from "../data/interface"
+import * as p_di from "../data/interface"
 import * as p_i from "../interface"
 import * as p_pi from "../production/interface"
 import * as _p from "../assign"
@@ -6,11 +6,11 @@ import _p_list_build_deprecated from "./list_build_deprecated"
 import _p_unreachable_code_path from "./unreachable_code_path"
 
 export default function iterate<
-    Item extends p_id.Value,
-    End_Info extends p_id.Value,
-    Return_Type extends p_id.Value
+    Item extends p_di.Value,
+    End_Info extends p_di.Value,
+    Return_Type extends p_di.Value
 >(
-    $: p_id.List<Item>,
+    $: p_di.List<Item>,
     end_info: End_Info,
     assign: ($iter: p_pi.Iterator<Item, End_Info>) => Return_Type,
 ): Return_Type {
@@ -21,7 +21,7 @@ export default function iterate<
 
     let position = 0
 
-    const look_raw = (): p_id.Raw_Optional_Value<Item> => {
+    const look_raw = (): p_di.Raw_Optional_Value<Item> => {
         if (position < 0 || position >= raw.length) {
             return null
         }
@@ -87,10 +87,10 @@ export default function iterate<
         // get_position: () => {
         //     return position
         // },
-        list: <List_Item extends p_id.Value>($x: {
+        list: <List_Item extends p_di.Value>($x: {
             has_more_items: ($: Item) => boolean,
             handle: ($: Item) => List_Item,
-        }): p_id.List<List_Item> => {
+        }): p_di.List<List_Item> => {
             return _p_list_build_deprecated<List_Item>(($i) => {
                 while (true) {
                     const next_element = look_raw()

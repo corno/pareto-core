@@ -1,9 +1,9 @@
 import * as p_i from "../../interface"
-import * as p_id from "../../data/interface"
+import * as p_di from "../../data/interface"
 
 export type Iterator<
-    Item extends p_id.Value,
-    End_Info extends p_id.Value
+    Item extends p_di.Value,
+    End_Info extends p_di.Value
 > = {
     assert_finished: <T>(
         assign: () => T,
@@ -18,23 +18,23 @@ export type Iterator<
     discard: <T>(callback: () => T) => void
     expect: <T, Error>($: {
         abort: p_i.Abort<Error>,
-        get_error: ($: p_id.Optional_Value<Item>) => Error,
+        get_error: ($: p_di.Optional_Value<Item>) => Error,
         item: (token: Item, abort: p_i.Abort<null>) => T,
     }) => T
     get_end_info: () => End_Info
-    list: <List_Item extends p_id.Value>($: {
+    list: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: ($: Item) => List_Item,
-    }) => p_id.List<List_Item>,
+    }) => p_di.List<List_Item>,
     look: <T>(
         item: (token: Item) => T,
         no_item: (end_info: End_Info) => T,
     ) => T
-    look_raw: () => p_id.Raw_Optional_Value<Item>,
-    look_ahead_raw: (offset: number) => p_id.Raw_Optional_Value<Item>
-    optional: <T extends p_id.Value>($: {
-        item: (token: Item) => p_id.Optional_Value<T>,
-    }) => p_id.Optional_Value<T>
+    look_raw: () => p_di.Raw_Optional_Value<Item>,
+    look_ahead_raw: (offset: number) => p_di.Raw_Optional_Value<Item>
+    optional: <T extends p_di.Value>($: {
+        item: (token: Item) => p_di.Optional_Value<T>,
+    }) => p_di.Optional_Value<T>
     wrap_up: <T>(
         callback: () => T,
         post: () => any,

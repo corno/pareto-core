@@ -1,7 +1,7 @@
-import * as p_id from "../data/interface"
+import * as p_di from "../data/interface"
 
-export default function text_from_list <T extends p_id.Value>(
-    list: p_id.List<T>,
+export default function text_from_list <T extends p_di.Value>(
+    list: p_di.List<T>,
     assign_character: (item: T) => number,
 ) {
     let out = ""

@@ -1,5 +1,5 @@
 import * as p_i from "../../../../interface"
-import * as p_id from "../../../../data/interface"
+import * as p_di from "../../../../data/interface"
 import * as optional from "./Optional"
 
 import { List_Class } from "./List"
@@ -7,14 +7,14 @@ import { List_Class } from "./List"
 
 export type ID_Value_Pair<T> = [string, T]
 
-export type Dictionary_As_Array<T extends p_id.Value> = readonly ID_Value_Pair<T>[]
+export type Dictionary_As_Array<T extends p_di.Value> = readonly ID_Value_Pair<T>[]
 
-export class Dictionary_Class<T extends p_id.Value> implements p_id.Dictionary<T> {
+export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T> {
     private source: Dictionary_As_Array<T>
     constructor(source: Dictionary_As_Array<T>) {
         this.source = source
     }
-    public __d_map<NT extends p_id.Value>(
+    public __d_map<NT extends p_di.Value>(
         $v: (entry: T, id: string) => NT
     ) {
         return new Dictionary_Class<NT>(this.source.map(($) => {
@@ -24,15 +24,15 @@ export class Dictionary_Class<T extends p_id.Value> implements p_id.Dictionary<T
             ]
         }))
     }
-    __to_list<New_Type extends p_id.Value>(
+    __to_list<New_Type extends p_di.Value>(
         handle_value: (value: T, id: string) => New_Type
-    ): p_id.List<New_Type> {
+    ): p_di.List<New_Type> {
         return new List_Class(this.source.map(($) => handle_value($[1], $[0])))
     }
 
     __get_possible_entry_deprecated(
         id: string,
-    ): p_id.Optional_Value<T> {
+    ): p_di.Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
             if (entry[0] === id) {
@@ -44,7 +44,7 @@ export class Dictionary_Class<T extends p_id.Value> implements p_id.Dictionary<T
 
     __get_entry_raw(
         id: string,
-    ): p_id.Raw_Optional_Value<T> {
+    ): p_di.Raw_Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
             if (entry[0] === id) {

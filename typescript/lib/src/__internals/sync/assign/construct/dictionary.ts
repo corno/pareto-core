@@ -137,8 +137,8 @@ export namespace from {
                 assign_entry: (
                     value: T,
                     id: string,
-                    acyclic_lookup: p_i.static_lookup.Acyclic<Resolved>,
-                    cyclic_lookup: p_i.static_lookup.Cyclic<Resolved>,
+                    acyclic_lookup: p_di.static_lookup.Acyclic<Resolved>,
+                    cyclic_lookup: p_di.static_lookup.Cyclic<Resolved>,
                 ) => Resolved,
             ): p_di.Dictionary<Resolved> => {
                 const source = dictionary
@@ -267,8 +267,8 @@ export namespace from {
                 assign_entry: (
                     value: T,
                     id: string,
-                    acyclic_lookup: p_i.dynamic_lookup.Acyclic<Resolved>,
-                    cyclic_lookup: p_i.dynamic_lookup.Cyclic<Resolved>,
+                    acyclic_lookup: p_di.dynamic_lookup.Acyclic<Resolved>,
+                    cyclic_lookup: p_di.dynamic_lookup.Cyclic<Resolved>,
                 ) => Resolved,
             ): p_di.Dictionary<Resolved> => {
                 const source = dictionary

@@ -1,9 +1,11 @@
-import * as p_di from "../data/interface"
-import { Abort } from "./Abort"
+import { Abort } from "../../interface/Abort"
+import { Value } from "./Value"
+import { Raw_Optional_Value } from "./Raw_Optional_Value"
+import { Circular_Dependency } from "./Circular_Dependency"
 
 export namespace static_lookup {
 
-    export type Acyclic<Type extends p_di.Value> = {
+    export type Acyclic<Type extends Value> = {
         get_entry: (
             id: string,
             abort: {
@@ -18,10 +20,10 @@ export namespace static_lookup {
                 no_context_lookup: Abort<null>,
                 cycle_detected: Abort<string[]>,
             }
-        ) => p_di.Raw_Optional_Value<Type>
+        ) => Raw_Optional_Value<Type>
     }
 
-    export type Cyclic<Type extends p_di.Value> = {
+    export type Cyclic<Type extends Value> = {
         get_entry: (
             id: string,
             abort: {
@@ -29,10 +31,10 @@ export namespace static_lookup {
                 no_context_lookup: Abort<null>,
                 accessing_cyclic_sibling_before_it_is_resolved: Abort<null>,
             }
-        ) => p_di.Circular_Dependency<Type>
+        ) => Circular_Dependency<Type>
     }
 
-    export type Stack<Type extends p_di.Value> = {
+    export type Stack<Type extends Value> = {
         get_entry: (
             id: string,
             abort: {
@@ -55,8 +57,8 @@ export namespace static_lookup {
 
 export namespace dynamic_lookup {
 
-    export type Acyclic<Type extends p_di.Value> = {
-        map_possible_entry: <Out extends p_di.Value>(
+    export type Acyclic<Type extends Value> = {
+        map_possible_entry: <Out extends Value>(
             id: string,
             handlers: {
                 found_entry: ($: Type) => Out,
@@ -67,8 +69,8 @@ export namespace dynamic_lookup {
         ) => Out
     }
 
-    export type Cyclic<Type extends p_di.Value> = {
-        map_possible_entry: <Out extends p_di.Value>(
+    export type Cyclic<Type extends Value> = {
+        map_possible_entry: <Out extends Value>(
             id: string,
             handlers: {
                 found_entry: ($: Type) => Out,
@@ -76,10 +78,10 @@ export namespace dynamic_lookup {
                 no_context_lookup: () => Out,
                 accessing_cyclic_sibling_before_it_is_resolved: () => Out,
             }
-        ) => p_di.Circular_Dependency<Out>
+        ) => Circular_Dependency<Out>
     }
 
-    export type Stack<Type extends p_di.Value> = {
+    export type Stack<Type extends Value> = {
         // get_entry_depth: (
         //     id: string,
         //     abort: {
@@ -88,7 +90,7 @@ export namespace dynamic_lookup {
         //         cycle_detected: p_di.Abort<string[]>,
         //     }
         // ) => number
-        map_possible_entry: <Out extends p_di.Value>(
+        map_possible_entry: <Out extends Value>(
             id: string,
             handlers: {
                 found_entry: ($: Type) => Out,
