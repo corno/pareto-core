@@ -16,6 +16,7 @@ export * from "./query_expression"
 export * from "./query_function"
 export * from "./__query_result"
 export * from "./query"
+export * from "../interface/Query_Result" //useful for cases where typescript cannot infer the type
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 
