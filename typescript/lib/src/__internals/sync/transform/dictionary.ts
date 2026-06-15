@@ -1,8 +1,8 @@
 import * as p_di from "../../../data/interface"
-import * as p_i from "../../../interface"
 
 import { Dictionary_Class } from "../assign/literals/Dictionary"
 import { List_Class } from "../assign/literals/List"
+import { Abort } from "../../Abort"
 
 import { dictionary as literal } from "../literal"
 
@@ -44,7 +44,7 @@ export namespace from {
                     child_id: string,
                 ) => string,
                 abort: {
-                    duplicate_id: p_i.Abort<string>
+                    duplicate_id: Abort<string>
                 }
             ) => {
                 const out: { [id: string]: New_Type } = {}
@@ -152,8 +152,8 @@ export namespace from {
                     'id': string,
                     'value': undefined | Resolved,
                     'abort': {
-                        no_such_entry: p_i.Abort<string>,
-                        accessing_cyclic_sibling_before_it_is_resolved: p_i.Abort<null>,
+                        no_such_entry: Abort<string>,
+                        accessing_cyclic_sibling_before_it_is_resolved: Abort<null>,
                     }
                 }
 
@@ -282,8 +282,8 @@ export namespace from {
                     'id': string,
                     'value': undefined | Resolved,
                     'abort': {
-                        no_such_entry: p_i.Abort<string>,
-                        accessing_cyclic_sibling_before_it_is_resolved: p_i.Abort<null>,
+                        no_such_entry: Abort<string>,
+                        accessing_cyclic_sibling_before_it_is_resolved: Abort<null>,
                     }
                 }
 
@@ -420,7 +420,7 @@ export namespace from {
                     item: T
                 ) => NT,
                 abort: {
-                    duplicate_id: p_i.Abort<string>
+                    duplicate_id: Abort<string>
                 }
             ): p_di.Dictionary<NT> => {
                 const temp: { [id: string]: NT } = {}

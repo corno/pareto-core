@@ -1,5 +1,5 @@
-import * as p_di from "../../../data/interface"
-import { List_Class } from "./literals/List"
+import * as p_di from "../../data/interface"
+import { List_Class } from "./assign/literals/List"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 
@@ -20,33 +20,7 @@ export type Option<T extends p_di.Value> = readonly [string, T]
  *     default: return au($.state[0])
  * }
  */
-export function ss<T extends p_di.Value, RT extends p_di.Value>(
-    option: Option<T>,
-    $c: ($: T) => RT): RT {
-    return $c(option[1])
-}
 
-/**
- * au means 'assert unreachable'. Used in the 'default' clause of switch statements to ensure
- * during compile time that all possible cases have been implemented
- * 
- * example: 
- * 
- * switch (x) {
- *     case '5':
- *         return 5
- *     default: return au(x)
- * }
- * 
- * @param _x 
- */
-export function au<RT>(
-    _x: never
-): RT {
-    throw new Error("unreachable")
-}
-
-export namespace decide {
 
     export const boolean = <RT>(
         boolean_value: boolean,
@@ -174,5 +148,3 @@ export namespace decide {
     ): RT => {
         return assign(text)
     }
-
-}

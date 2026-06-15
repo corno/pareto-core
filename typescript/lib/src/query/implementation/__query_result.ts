@@ -1,7 +1,7 @@
-import * as _pi from "../../interface"
 import * as p_ti from "../../transformer/interface"
 import * as p_qi from "../interface"
 import create_refinement_context from "../../__internals/async/create_refinement_context"
+import { Abort } from "../../__internals/Abort"
 
 /**
  * this function contains the body in which the async value or error is executed
@@ -54,7 +54,7 @@ class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Err
     }
 
     refine<New_Output>(
-        callback: ($: Output, abort: _pi.Abort<Error>) => New_Output,
+        callback: ($: Output, abort: Abort<Error>) => New_Output,
     ): p_qi.Query_Result<New_Output, Error> {
         return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
             this.executer(

@@ -1,9 +1,8 @@
 import * as p_di from "../data/interface"
-import * as p_i from "../interface"
 import * as p_pi from "../production/interface"
-import * as _p from "../assign"
+import * as p_a from "../assign"
 import _p_list_build_deprecated from "./list_build_deprecated"
-import _p_unreachable_code_path from "./unreachable_code_path"
+import p_unreachable_code_path from "./unreachable_code_path"
 
 export default function iterate<
     Item extends p_di.Value,
@@ -50,7 +49,7 @@ export default function iterate<
             const current = $.__deprecated_get_item_at(
                 position,
                 {
-                    out_of_bounds: () => _p_unreachable_code_path("just checked that position is in bounds"),
+                    out_of_bounds: () => p_unreachable_code_path("just checked that position is in bounds"),
                 }
             )
             position += 1
@@ -67,12 +66,12 @@ export default function iterate<
         ) => {
             const next = look_raw()
             if (next === null) {
-                return $i.abort($i.get_error(_p.literal.not_set()))
+                return $i.abort($i.get_error(p_a.literal.not_set()))
             }
             return $i.item(
                 next[0],
                 () => $i.abort(
-                    $i.get_error(_p.literal.set(next[0])),
+                    $i.get_error(p_a.literal.set(next[0])),
                 )
             )
         },
@@ -128,7 +127,7 @@ export default function iterate<
         ) => {
             const next = look_raw()
             if (next === null) {
-                return _p.literal.not_set()
+                return p_a.literal.not_set()
             }
             return $i.item(
                 next[0],

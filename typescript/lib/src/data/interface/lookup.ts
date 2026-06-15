@@ -1,4 +1,4 @@
-import { Abort } from "../../interface/Abort"
+import { Abort } from "../../__internals/Abort"
 import { Value } from "./Value"
 import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { Circular_Dependency } from "./Circular_Dependency"

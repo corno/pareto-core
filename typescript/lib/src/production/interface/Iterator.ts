@@ -1,5 +1,5 @@
-import * as p_i from "../../interface"
 import * as p_di from "../../data/interface"
+import { Abort } from "../../__internals/Abort"
 
 export type Iterator<
     Item extends p_di.Value,
@@ -8,7 +8,7 @@ export type Iterator<
     assert_finished: <T>(
         assign: () => T,
         abort: {
-            not_finished: p_i.Abort<null>
+            not_finished: Abort<null>
         }
     ) => T
     consume: <T>(
@@ -17,9 +17,9 @@ export type Iterator<
     ) => T
     discard: <T>(callback: () => T) => void
     expect: <T, Error>($: {
-        abort: p_i.Abort<Error>,
+        abort: Abort<Error>,
         get_error: ($: p_di.Optional_Value<Item>) => Error,
-        item: (token: Item, abort: p_i.Abort<null>) => T,
+        item: (token: Item, abort: Abort<null>) => T,
     }) => T
     get_end_info: () => End_Info
     list: <List_Item extends p_di.Value>($: {

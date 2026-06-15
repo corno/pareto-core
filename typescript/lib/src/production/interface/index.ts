@@ -1,4 +1,4 @@
-import { Abort } from "../../interface/Abort"
+import { Abort } from "../../__internals/Abort"
 import { Iterator } from "./Iterator"
 import { Value } from "../../data/interface/Value"
 

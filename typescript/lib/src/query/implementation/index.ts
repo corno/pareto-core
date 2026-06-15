@@ -11,7 +11,7 @@ export {
     __query_result,
 }
 
-export * from "../../__internals/sync/literal"
+export * as literal from "../../__internals/sync/literal"
 export * from "./query_expression"
 export * from "./query_function"
 export * from "./__query_result"

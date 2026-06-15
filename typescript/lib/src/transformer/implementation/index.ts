@@ -1,5 +1,6 @@
+export * from "../../__internals/sync/data_switch"
 
-export * from "../../__internals/sync/assign/decide"
+export * as decide from "../../__internals/sync/decide"
 
 export * as boolean from "../../__internals/sync/transform/boolean"
 export * as dictionary from "../../__internals/sync/transform/dictionary"

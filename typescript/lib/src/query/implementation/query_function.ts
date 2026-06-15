@@ -1,4 +1,4 @@
-import * as _pqi from "../interface"
+import * as p_qi from "../interface"
 
 import __query from "./query"
 import __query_result from "./__query_result"
@@ -6,20 +6,20 @@ import __query_result from "./__query_result"
 export default function query_function<
     Result,
     Error,
-    Dynamic_Parameters extends _pqi.Parameters,
-    Static_Parameters extends _pqi.Parameters,
-    Query_Resources extends null | { [key: string]: _pqi.Query<any, any, any> },
+    Dynamic_Parameters extends p_qi.Parameters,
+    Static_Parameters extends p_qi.Parameters,
+    Query_Resources extends null | { [key: string]: p_qi.Query<any, any, any> },
 >(
     handler: (
         $d: Dynamic_Parameters,
         $s: Static_Parameters,
         $q: Query_Resources,
-    ) => _pqi.Query_Result<
+    ) => p_qi.Query_Result<
         Result,
         Error
     >
-): _pqi.Query_Function<
-    _pqi.Query<
+): p_qi.Query_Function<
+    p_qi.Query<
         Result,
         Error,
         Dynamic_Parameters

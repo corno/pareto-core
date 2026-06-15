@@ -1,10 +1,10 @@
-import * as _pi from "../interface"
+import * as p_i from "../interface"
 import __command_promise from "./command_promise"
 import { Command_Block } from './Command_Block'
 
 export default function __handle_command_block<Error>(
     block: Command_Block<Error>,
-): _pi.Command_Promise<Error> {
+): p_i.Command_Promise<Error> {
     return __command_promise({
         'execute': (
             on_success,

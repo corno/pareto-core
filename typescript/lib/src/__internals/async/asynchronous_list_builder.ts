@@ -1,6 +1,5 @@
 import * as p_di from "../../data/interface"
 import { List_Class } from "../sync/assign/literals/List"
-import * as _p from "../../assign"
 
 
 export type Asynchronous_List_Builder<

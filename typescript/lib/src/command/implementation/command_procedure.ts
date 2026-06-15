@@ -1,6 +1,5 @@
-import * as _pi from "../../interface"
-import * as _pqi from "../../query/interface"
-import * as _pci from "../interface"
+import * as p_qi from "../../query/interface"
+import * as p_ci from "../interface"
 
 import { Command_Block } from "./Command_Block"
 import _command from "./command"
@@ -9,10 +8,10 @@ import __handle_command_block from "./handle_command_block"
 
 export default function command_procedure<
     Error,
-    Dynamic_Parameters extends _pci.Parameters,
-    Static_Parameters extends _pci.Parameters,
-    Query_Resources extends null | { [key: string]: _pqi.Query<any, any, any> },
-    Command_Resources extends null | { [key: string]: _pci.Command<any, any> },
+    Dynamic_Parameters extends p_ci.Parameters,
+    Static_Parameters extends p_ci.Parameters,
+    Query_Resources extends null | { [key: string]: p_qi.Query<any, any, any> },
+    Command_Resources extends null | { [key: string]: p_ci.Command<any, any> },
 >(
     execution_handler: (
         $d: Dynamic_Parameters,
@@ -20,8 +19,8 @@ export default function command_procedure<
         $qr: Query_Resources,
         $cr: Command_Resources,
     ) => Command_Block<Error>,
-): _pci.Command_Procedure<
-    _pci.Command<
+): p_ci.Command_Procedure<
+    p_ci.Command<
         Error,
         Dynamic_Parameters
     >,

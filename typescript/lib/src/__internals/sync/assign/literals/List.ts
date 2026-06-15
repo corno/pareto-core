@@ -1,6 +1,6 @@
 import * as p_di from "../../../../data/interface"
-import * as p_i from "../../../../interface"
 import * as optional from "./Optional"
+import { Abort } from "../../../Abort"
 
 export class List_Class<T extends p_di.Value> implements p_di.List<T> {
     private data: readonly T[]
@@ -29,7 +29,7 @@ export class List_Class<T extends p_di.Value> implements p_di.List<T> {
     __deprecated_get_item_at(
         index: number,
         abort: {
-            out_of_bounds: p_i.Abort<null>
+            out_of_bounds: Abort<null>
         },
     ) {
         if (index < 0 || index >= this.data.length) {

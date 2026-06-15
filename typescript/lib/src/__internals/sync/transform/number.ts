@@ -1,5 +1,5 @@
 import * as p_di from "../../../data/interface"
-import * as p_i from "../../../interface"
+import { Abort } from "../../Abort"
 
 export namespace from {
 
@@ -27,7 +27,7 @@ export namespace from {
                 | ['towards zero', null]
                 | ['away from zero', null],
             abort: {
-                divided_by_zero: p_i.Abort<null>
+                divided_by_zero: Abort<null>
             },
         ): number => {
             if (divisor === 0) {

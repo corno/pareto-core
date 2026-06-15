@@ -1,6 +1,6 @@
-import * as p_i from "../../../../interface"
 import * as p_di from "../../../../data/interface"
 import * as optional from "./Optional"
+import { Abort } from "../../../Abort"
 
 import { List_Class } from "./List"
 
@@ -57,7 +57,7 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
     __get_entry_deprecated(
         id: string,
         abort: {
-            no_such_entry: p_i.Abort<null>,
+            no_such_entry: Abort<null>,
         }
     ): T {
         for (let i = 0; i !== this.source.length; i += 1) {

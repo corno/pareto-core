@@ -1,12 +1,12 @@
 import * as p_di from "../../data/interface"
 import * as xxxx from "./assign/literals/Optional"
-import * as p_i from "../../interface"
+import { Abort } from "../../__internals/Abort"
 
 export const entry = <T extends p_di.Value>(
     dictionary: p_di.Dictionary<T>,
     id: string,
     abort: {
-        no_such_entry: p_i.Abort<null>
+        no_such_entry: Abort<null>
     }
 ): T => {
     const entry = dictionary.__get_entry_raw(id)

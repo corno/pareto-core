@@ -1,11 +1,11 @@
 import * as p_di from "../../data/interface"
-import * as p_i from "../../interface"
 import * as p_ti from "../../transformer/interface"
 import * as p_ci from "../interface"
 import * as p_qi from "../../query/interface"
 import * as p_ri from "../../refiner/interface"
 import _p_iterate from "../../specials/iterate"
 
+import { Abort } from "../../__internals/Abort"
 import { Command_Block } from "./Command_Block"
 import __command_promise from "./command_promise"
 import __handle_command_block from "./handle_command_block"
@@ -16,9 +16,9 @@ import create_asynchronous_processes_monitor from "../../__internals/async/creat
 
 // export namespace listx {
 
-//     export const serie = <Error extends _pi.Value>(
-//         array: _pi.List<_pi.Command_Promise<Error>>,
-//     ): _pi.Command_Promise<Error> => {
+//     export const serie = <Error extends p_i.Value>(
+//         array: p_i.List<p_i.Command_Promise<Error>>,
+//     ): p_i.Command_Promise<Error> => {
 //         return __command_promise({
 //             'execute': (on_success, on_error) => {
 //                 _p_iterate(
@@ -255,7 +255,7 @@ export const query_stacked = <Error, Staging_Output, Parent_Data>(
 
 export const refine_without_error_transformation = <Error, Staging_Output>( //I doubt that this one is needed. Either parameters are refined or query results.. parameters should already be refined. 
     //the only place where parameters are currently refine is in the main functions. can this be solved by adding a refiner to the main function?
-    callback: (abort: p_i.Abort<Error>) => Staging_Output,
+    callback: (abort: Abort<Error>) => Staging_Output,
     parametrized_command_block: ($v: Staging_Output) => Command_Block<Error>,
 ): p_ci.Command_Promise<Error> => {
     return __command_promise({
@@ -277,7 +277,7 @@ export const refine_without_error_transformation = <Error, Staging_Output>( //I 
 }
 
 export const refine_stacked = <Error, Staging_Output, Parent_Data>(
-    callback: (abort: p_i.Abort<Error>) => Staging_Output,
+    callback: (abort: Abort<Error>) => Staging_Output,
     parent_data: Parent_Data,
     parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
 ): p_ci.Command_Promise<Error> => {

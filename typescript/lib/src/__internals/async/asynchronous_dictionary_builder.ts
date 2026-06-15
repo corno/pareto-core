@@ -1,5 +1,5 @@
 import * as p_di from  "../../data/interface"
-import * as _p from "../../assign"
+import * as p_a from "../../assign"
 
 export type Asynchronous_Dictionary_Builder<Entry extends p_di.Value> = {
     'add entry': (id: string, entry: Entry) => void,
@@ -15,7 +15,7 @@ export default function create_asynchronous_dictionary_builder <Entry extends p_
         },
 
         'get dictionary': () => {
-            return _p.literal.dictionary(entries)
+            return p_a.literal.dictionary(entries)
         },
     }
 }

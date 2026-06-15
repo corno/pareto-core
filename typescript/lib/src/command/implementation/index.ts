@@ -11,7 +11,8 @@ export {
     __command
 }
 
-export * from "../../__internals/sync/literal"
+export * as literal from "../../__internals/sync/literal"
+
 export * from "./command_procedure"
 export * from "./command_promise"
 export * from "./command"

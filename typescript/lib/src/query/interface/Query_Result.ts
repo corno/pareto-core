@@ -1,5 +1,5 @@
 import * as p_ti from "../../transformer/interface"
-import { Abort } from "../../interface/Abort"
+import { Abort } from "../../__internals/Abort"
 
 export type Query_Callback<Output, Error, Input> = (
     $: Input,
