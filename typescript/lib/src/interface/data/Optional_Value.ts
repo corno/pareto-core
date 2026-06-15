@@ -20,9 +20,9 @@ export interface Optional_Value<T extends Value> {
     ): NT
 
     __extract_data(
-        set: ($: T) => void,
-        not_set: () => void,
-    ): void
+        set: ($: T) => undefined,
+        not_set: () => undefined,
+    ): undefined
 
     __get_raw(
     ): Raw_Optional_Value<T>

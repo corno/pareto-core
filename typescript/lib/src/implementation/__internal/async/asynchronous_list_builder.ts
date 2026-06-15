@@ -5,8 +5,8 @@ import { List_Class } from "../sync/assign/literals/List"
 export type Asynchronous_List_Builder<
     Item extends p_di.Value
 > = {
-    'add item': (item: Item) => void,
-    'add list': (list: p_di.List<Item>) => void,
+    'add item': (item: Item) => undefined,
+    'add list': (list: p_di.List<Item>) => undefined,
     'get list': () => p_di.List<Item>,
 }
 

@@ -15,7 +15,7 @@ export type Iterator<
         callback: (token: Item) => T,
         no_item: () => T,
     ) => T
-    discard: <T>(callback: () => T) => void
+    discard: <T>(callback: () => T) => undefined
     expect: <T, Error>($: {
         abort: Abort<Error>,
         get_error: ($: p_di.Optional_Value<Item>) => Error,

@@ -1,7 +1,7 @@
 
 export type I_Async_Monitor = {
-    readonly 'report process started': () => void
-    readonly 'report process finished': () => void
+    readonly 'report process started': () => undefined
+    readonly 'report process finished': () => undefined
 }
 
 /**
@@ -15,9 +15,9 @@ export type I_Async_Monitor = {
  * @param onEnd this callback will be called when all ongoing operations are finished
  */
 export default function create_asynchronous_processes_monitor(
-    monitoring_phase: ($: I_Async_Monitor) => void,
-    on_all_finished: () => void
-): void {
+    monitoring_phase: ($: I_Async_Monitor) => undefined,
+    on_all_finished: () => undefined
+): undefined {
 
     let counter = 0
 

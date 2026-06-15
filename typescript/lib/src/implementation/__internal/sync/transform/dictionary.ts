@@ -163,7 +163,7 @@ export namespace from {
                     value: T,
                     id: string,
                     stack: string[]
-                ): void => {
+                ): undefined => {
                     if (out[id] !== undefined) {
                         // already resolved
                         return
@@ -293,7 +293,7 @@ export namespace from {
                     value: T,
                     id: string,
                     stack: string[]
-                ): void => {
+                ): undefined => {
                     if (out[id] !== undefined) {
                         // already resolved
                         return

@@ -10,9 +10,9 @@ import { Abort } from "../../interface/__internal/Abort"
  * @param on_error the callback to call when an error is produced
  */
 type Executer<Output, Error> = (
-    on_result: ($: Output) => void,
-    on_error: ($: Error) => void,
-) => void
+    on_result: ($: Output) => undefined,
+    on_error: ($: Error) => undefined,
+) => undefined
 
 class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Error> {
     private executer: Executer<Output, Error>
@@ -91,9 +91,9 @@ class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Err
     }
 
     __extract_data(
-        on_result: ($: Output) => void,
-        on_error: ($: Error) => void,
-    ): void {
+        on_result: ($: Output) => undefined,
+        on_error: ($: Error) => undefined,
+    ): undefined {
         this.executer(on_result, on_error)
     }
 }

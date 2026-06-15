@@ -31,8 +31,8 @@ export interface Query_Result<Output, Error> {
     ): Query_Result<Output, New_Error>
 
     __extract_data: (
-        on_success: ($: Output) => void,
-        on_error: ($: Error) => void
-    ) => void
+        on_success: ($: Output) => undefined,
+        on_error: ($: Error) => undefined
+    ) => undefined
 
 }

@@ -2,7 +2,7 @@ import * as p_di from  "../../../interface/data"
 import * as p_a from "../../../assign"
 
 export type Asynchronous_Dictionary_Builder<Entry extends p_di.Value> = {
-    'add entry': (id: string, entry: Entry) => void,
+    'add entry': (id: string, entry: Entry) => undefined,
     'get dictionary': () => p_di.Dictionary<Entry>,
 }
 

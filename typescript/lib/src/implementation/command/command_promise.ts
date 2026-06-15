@@ -9,9 +9,9 @@ import { Command_Promise } from "../../interface/command/Command_Promise"
  */
 type Executer<E> = {
     'execute': (
-        on_success: () => void,
-        on_error: ($: E) => void,
-    ) => void
+        on_success: () => undefined,
+        on_error: ($: E) => undefined,
+    ) => undefined
 }
 
 class Command_Promise_Class<E> implements Command_Promise<E> {
@@ -21,9 +21,9 @@ class Command_Promise_Class<E> implements Command_Promise<E> {
     }
 
     __start(
-        on_success: () => void,
-        on_error: ($: E) => void,
-    ): void {
+        on_success: () => undefined,
+        on_error: ($: E) => undefined,
+    ): undefined {
         this.executer.execute(on_success, on_error)
     }
 

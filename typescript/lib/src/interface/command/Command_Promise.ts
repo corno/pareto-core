@@ -1,7 +1,7 @@
 
 export type Command_Promise<Error> = {
     __start: (
-        on_success: () => void,
-        on_error: (error: Error) => void,
-    ) => void
+        on_success: () => undefined,
+        on_error: (error: Error) => undefined,
+    ) => undefined
 }

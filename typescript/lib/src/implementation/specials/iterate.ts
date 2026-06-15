@@ -59,7 +59,7 @@ export default function iterate<
             assign: () => T
         ) => {
             position += 1
-            return assign()
+            assign()
         },
         expect: (
             $i,

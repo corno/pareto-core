@@ -18,7 +18,9 @@ export default function __handle_command_block<Error>(
                     return
                 }
                 block[index].__start(
-                    () => runStep(index + 1),
+                    () => {
+                        runStep(index + 1)
+                    },
                     on_error,
                 )
             }

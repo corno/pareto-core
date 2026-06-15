@@ -11,10 +11,10 @@ export class Not_Set_Optional_Value<T extends p_di.Value> implements p_di.Option
     }
 
     public __extract_data(
-        set: ($: T) => void,
-        not_set: () => void,
-    ): void {
-        not_set()
+        set: ($: T) => undefined,
+        not_set: () => undefined,
+    ): undefined {
+        return not_set()
     }
 
     public __get_raw() {
@@ -36,10 +36,10 @@ export class Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_V
     }
 
     public __extract_data(
-        set: ($: T) => void,
-        not_set: () => void,
-    ): void {
-        set(this.value)
+        set: ($: T) => undefined,
+        not_set: () => undefined,
+    ): undefined {
+        return set(this.value)
     }
 
     public __get_raw(): p_di.Raw_Optional_Value<T> {
