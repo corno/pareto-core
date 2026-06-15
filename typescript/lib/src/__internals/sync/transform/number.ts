@@ -1,5 +1,5 @@
-import * as p_di from "../../../../data/interface"
-import * as p_i from "../../../../interface"
+import * as p_di from "../../../data/interface"
+import * as p_i from "../../../interface"
 
 export namespace from {
 

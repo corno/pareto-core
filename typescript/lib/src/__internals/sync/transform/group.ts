@@ -1,13 +1,5 @@
-import * as p_di from "../../../../data/interface"
+import * as p_di from "../../../data/interface"
 
-export namespace literal {
-
-    export const resolve = <Resolved>(
-        assign: (
-        ) => Resolved,
-    ): Resolved => assign()
-
-}
 
 export namespace from {
 

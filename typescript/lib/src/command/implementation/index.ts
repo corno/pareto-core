@@ -11,7 +11,7 @@ export {
     __command
 }
 
-export * from "../../__internals/sync/extracts_for_async"
+export * from "../../__internals/sync/literal"
 export * from "./command_procedure"
 export * from "./command_promise"
 export * from "./command"

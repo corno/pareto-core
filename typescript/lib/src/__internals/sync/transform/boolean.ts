@@ -1,4 +1,4 @@
-import * as p_di from "../../../../data/interface"
+import * as p_di from "../../../data/interface"
 
 export namespace from {
 

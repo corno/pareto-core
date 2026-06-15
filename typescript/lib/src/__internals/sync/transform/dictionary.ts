@@ -1,8 +1,10 @@
-import * as p_di from "../../../../data/interface"
-import * as p_i from "../../../../interface"
+import * as p_di from "../../../data/interface"
+import * as p_i from "../../../interface"
 
-import { Dictionary_As_Array, Dictionary_Class, ID_Value_Pair } from "../literals/Dictionary"
-import { List_Class } from "../literals/List"
+import { Dictionary_Class } from "../assign/literals/Dictionary"
+import { List_Class } from "../assign/literals/List"
+
+import { dictionary as literal } from "../literal"
 
 export namespace from {
 
@@ -455,23 +457,4 @@ export namespace from {
         }
     }
 
-}
-
-export function literal<T extends p_di.Value>(
-    source: { readonly [id: string]: T }
-): p_di.Dictionary<T> {
-
-    function create_dictionary_as_array<X extends p_di.Value>(
-        source: { readonly [id: string]: X }
-    ): Dictionary_As_Array<X> {
-        const imp: ID_Value_Pair<X>[] = []
-        Object.keys(source).forEach((id) => {
-            imp.push([id, source[id]])
-        })
-        return imp
-    }
-
-    return new Dictionary_Class(
-        create_dictionary_as_array(source)
-    )
 }

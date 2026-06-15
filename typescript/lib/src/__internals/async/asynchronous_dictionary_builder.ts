@@ -15,7 +15,7 @@ export default function create_asynchronous_dictionary_builder <Entry extends p_
         },
 
         'get dictionary': () => {
-            return _p.dictionary.literal(entries)
+            return _p.literal.dictionary(entries)
         },
     }
 }

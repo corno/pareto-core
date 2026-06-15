@@ -67,12 +67,12 @@ export default function iterate<
         ) => {
             const next = look_raw()
             if (next === null) {
-                return $i.abort($i.get_error(_p.optional.literal.not_set()))
+                return $i.abort($i.get_error(_p.literal.not_set()))
             }
             return $i.item(
                 next[0],
                 () => $i.abort(
-                    $i.get_error(_p.optional.literal.set(next[0])),
+                    $i.get_error(_p.literal.set(next[0])),
                 )
             )
         },
@@ -128,7 +128,7 @@ export default function iterate<
         ) => {
             const next = look_raw()
             if (next === null) {
-                return _p.optional.literal.not_set()
+                return _p.literal.not_set()
             }
             return $i.item(
                 next[0],

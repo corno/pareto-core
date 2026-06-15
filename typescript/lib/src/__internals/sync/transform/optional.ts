@@ -1,26 +1,11 @@
-import * as p_di from "../../../../data/interface"
+import * as p_di from "../../../data/interface"
 
-import { Set_Optional_Value, Not_Set_Optional_Value } from "../literals/Optional"
+import { Set_Optional_Value, Not_Set_Optional_Value } from "../assign/literals/Optional"
 
 export function block<RT extends p_di.Value>(
     assign_optional_value: () => p_di.Optional_Value<RT>
 ): p_di.Optional_Value<RT> {
     return assign_optional_value()
-}
-
-export namespace literal {
-
-    export const set = <T extends p_di.Value>(
-        value: T
-    ): p_di.Optional_Value<T> => {
-        return new Set_Optional_Value(value)
-    }
-
-    export const not_set = <T extends p_di.Value>(
-    ): p_di.Optional_Value<T> => {
-        return new Not_Set_Optional_Value<T>()
-    }
-
 }
 
 export namespace from {

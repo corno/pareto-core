@@ -1,6 +1,7 @@
-import * as p_di from "../../../../data/interface"
-import { List_Class } from "../literals/List"
+import * as p_di from "../../../data/interface"
 
+import { List_Class } from "../assign/literals/List"
+import { list as literal } from "../literal"
 
 export namespace from {
 
@@ -170,52 +171,4 @@ export namespace from {
     }
 
 
-}
-
-export function literal<
-    T extends p_di.Value
->(
-    source: readonly T[]
-): p_di.List<T> {
-    if (!(source instanceof Array)) {
-        throw new Error("invalid input in 'list_literal'")
-    }
-    const data = source.slice() //create a copy
-    /**
-     * this is an implementation, not public by design
-     * If you feel the need to rename this class, don't rename it to 'Array',
-     * it will break the 'instanceOf Array' test
-     */
-
-    return new List_Class(data)
-}
-
-export const nested_literal_old = <T extends p_di.Value>(
-    lists: (T[] | p_di.List<T>)[]
-): p_di.List<T> => {
-    const out: T[] = []
-    lists.forEach(($) => {
-        if ($ == undefined) {
-            // do nothing
-        } else if ($ instanceof Array) {
-            $.forEach(($) => {
-                out.push($)
-            })
-        } else {
-            out.push(...$.__get_raw_copy())
-        }
-
-    })
-    return new List_Class(out)
-}
-
-export const repeat = <T extends p_di.Value>(
-    item: T,
-    times: number,
-): p_di.List<T> => {
-    const out: T[] = []
-    for (let i = 0; i < times; i++) {
-        out.push(item)
-    }
-    return new List_Class(out)
 }
