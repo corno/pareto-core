@@ -15,81 +15,12 @@ type Executer<Output, Error> = (
 ) => undefined
 
 class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Error> {
+
     private executer: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
         this.executer = executer
-        this.query_result = null
     }
-
-    public query_result: null
-
-
-    transform<New_Output>(
-        transformer: p_ti.Transformer<Output, New_Output>
-    ): p_qi.Query_Result<New_Output, Error> {
-        return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
-            this.executer(
-                ($) => {
-                    on_result(transformer($))
-                },
-                on_error,
-            )
-        })
-    }
-
-    query<New_Output>(
-        queryer: p_qi.Query_Callback<New_Output, Error, Output>
-    ): p_qi.Query_Result<New_Output, Error> {
-        return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
-            this.executer(
-                ($) => {
-                    queryer($).__extract_data(
-                        on_result,
-                        on_error,
-                    )
-                },
-                on_error,
-            )
-        })
-    }
-
-    refine<New_Output>(
-        callback: ($: Output, abort: Abort<Error>) => New_Output,
-    ): p_qi.Query_Result<New_Output, Error> {
-        return new Query_Result_Class<New_Output, Error>((on_result, on_error) => {
-            this.executer(
-                ($) => {
-                    create_refinement_context<New_Output, Error>((abort) => callback($, abort)).__extract_data(
-                        on_result,
-                        on_error,
-                    )
-                },
-                on_error,
-            )
-        })
-    }
-
-    rework_error_temp<New_Error, Rework_Error>(
-        error_reworker: p_qi.Query_Callback<New_Error, Rework_Error, Error>,
-        rework_error_transformer: p_ti.Transformer<Rework_Error, New_Error>,
-    ): p_qi.Query_Result<Output, New_Error> {
-        return new Query_Result_Class<Output, New_Error>((on_result, on_error) => {
-            this.executer(
-                on_result,
-                ($) => {
-                    error_reworker($).__extract_data(
-                        (new_target_error) => {
-                            on_error(new_target_error)
-                        },
-                        (rework_error) => {
-                            on_error(rework_error_transformer(rework_error))
-                        },
-                    )
-                },
-            )
-        })
-    }
-
+    
     __extract_data(
         on_result: ($: Output) => undefined,
         on_error: ($: Error) => undefined,
@@ -97,7 +28,6 @@ class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Err
         this.executer(on_result, on_error)
     }
 }
-
 
 export default function query_result<T, E>(
     executer: Executer<T, E>,
