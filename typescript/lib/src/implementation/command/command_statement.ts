@@ -198,10 +198,9 @@ export const fail = <Error>(
     })
 }
 
-export const query = <Error, Query_Output, Refine_Output>(
+export const query = <Error, Query_Output>(
     query_result: p_qi.Query_Result<Query_Output, Error>,
-    refine: p_ri.Refiner<Refine_Output, Error, Query_Output>,
-    parametrized_command_block: ($v: Refine_Output) => Command_Block<Error>,
+    parametrized_command_block: ($v: Query_Output) => Command_Block<Error>,
 ): Command_Promise<Error> => {
     return command_promise({
         'execute': (
@@ -210,15 +209,8 @@ export const query = <Error, Query_Output, Refine_Output>(
         ) => {
             query_result.__extract_data(
                 (output) => {
-                    create_refinement_context<Refine_Output, Error>(
-                        (abort) => refine(output, abort)
-                    ).__extract_data(
-                        ($) => {
-                            handle_command_block(parametrized_command_block($)).__start(
-                                on_success,
-                                on_error
-                            )
-                        },
+                    handle_command_block(parametrized_command_block(output)).__start(
+                        on_success,
                         on_error
                     )
                 },
