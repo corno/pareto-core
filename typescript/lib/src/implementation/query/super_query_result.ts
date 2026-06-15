@@ -98,7 +98,7 @@ class Super_Query_Result_Class<Output, Error> implements p_qi.Super_Query_Result
 
 export default function super_query_result<T, E>(
     query_result: p_qi.Query_Result<T, E>,
-): p_qi.Query_Result<T, E> {
+): p_qi.Super_Query_Result<T, E> {
     return new Super_Query_Result_Class<T, E>((on_result, on_error) => {
         query_result.__extract_data(on_result, on_error)
     })

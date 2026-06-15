@@ -220,30 +220,6 @@ export const query = <Error, Query_Output>(
     })
 }
 
-export const query_stacked = <Error, Staging_Output, Parent_Data>(
-    query_result: p_qi.Query_Result<Staging_Output, Error>,
-    parent_data: Parent_Data,
-    parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
-): Command_Promise<Error> => {
-    return command_promise({
-        'execute': (
-            on_success,
-            on_error,
-        ) => {
-            query_result.__extract_data(
-                (output) => {
-                    handle_command_block(parametrized_command_block(output, parent_data)).__start(
-                        on_success,
-                        on_error,
-                    )
-                },
-                on_error
-            )
-        }
-    })
-}
-
-
 export const refine_without_error_transformation = <Error, Staging_Output>( //I doubt that this one is needed. Either parameters are refined or query results.. parameters should already be refined. 
     //the only place where parameters are currently refine is in the main functions. can this be solved by adding a refiner to the main function?
     callback: (abort: Abort<Error>) => Staging_Output,
@@ -266,31 +242,6 @@ export const refine_without_error_transformation = <Error, Staging_Output>( //I 
         }
     })
 }
-
-export const refine_stacked = <Error, Staging_Output, Parent_Data>(
-    callback: (abort: Abort<Error>) => Staging_Output,
-    parent_data: Parent_Data,
-    parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
-): Command_Promise<Error> => {
-    return command_promise({
-        'execute': (
-            on_success,
-            on_error,
-        ) => {
-            create_refinement_context(callback).__extract_data(
-                (output) => {
-                    handle_command_block(parametrized_command_block(output, parent_data)).__start(
-                        on_success,
-                        on_error,
-                    )
-                },
-                on_error
-            )
-        }
-    })
-}
-
-
 
 
 export namespace if_ {
