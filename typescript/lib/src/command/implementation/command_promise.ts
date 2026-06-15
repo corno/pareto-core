@@ -1,4 +1,5 @@
 import * as p_ci from "../interface"
+import { Command_Promise } from "../interface/Command_Promise"
 
 
 /**
@@ -14,7 +15,7 @@ type Executer<E> = {
     ) => void
 }
 
-class Command_Promise_Class<E> implements p_ci.Command_Promise<E> {
+class Command_Promise_Class<E> implements Command_Promise<E> {
     private executer: Executer<E>
     constructor(executer: Executer<E>) {
         this.executer = executer
@@ -29,7 +30,7 @@ class Command_Promise_Class<E> implements p_ci.Command_Promise<E> {
 
     map_error<NE>(
         handle_error: (error: E) => NE
-    ): p_ci.Command_Promise<NE> {
+    ): Command_Promise<NE> {
         return new Command_Promise_Class<NE>({
             'execute': (on_success, on_error) => {
                 this.executer.execute(
@@ -50,7 +51,7 @@ class Command_Promise_Class<E> implements p_ci.Command_Promise<E> {
  */
 export default function __command_promise<E>(
     executer: Executer<E>,
-): p_ci.Command_Promise<E> {
+): Command_Promise<E> {
     return new Command_Promise_Class<E>(executer)
 
 }

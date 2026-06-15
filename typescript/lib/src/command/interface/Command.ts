@@ -1,5 +1,6 @@
 import * as p_qi from "../../query/interface"
 import * as p_ti from "../../transformer/interface"
+import { Command_Promise } from "./Command_Promise"
 
 export type Command_Procedure<
     My_Command extends Command<any, any>,
@@ -23,11 +24,4 @@ export type Command<
         $d: Dynamic_Parameters,
         error_transformer: p_ti.Transformer<Error, Target_Error>,
     ) => Command_Promise<Target_Error>,
-}
-
-export type Command_Promise<Error> = {
-    __start: (
-        on_success: () => void,
-        on_error: (error: Error) => void,
-    ) => void
 }
