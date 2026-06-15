@@ -1,6 +1,6 @@
 import query from "./query"
 import query_function from "./query_function"
-import __query_result from "./__query_result"
+import query_result from "./query_result"
 
 import * as p_di from "../../interface/data"
 import * as p_qi from "../../interface/query"
@@ -8,13 +8,13 @@ import * as p_qi from "../../interface/query"
 export {
     query,
     query_function,
-    __query_result,
+    query_result,
 }
 
 export * as literal from "../__internal/sync/literal"
 export * from "./query_expression"
 export * from "./query_function"
-export * from "./__query_result"
+export * from "./query_result"
 export * from "./query"
 export * from "../../interface/query/Query_Result" //useful for cases where typescript cannot infer the type
 

@@ -8,7 +8,7 @@ export type Query_Callback<Output, Error, Input> = (
 //Shoutout to Reinout for helping me with the naming here :)
 
 export interface Query_Result<Output, Error> {
-    __query_result: null // I think I added this to prevent accidental duck-type conversions from other types to Query Result
+    query_result: null // I think I added this to prevent accidental duck-type conversions from other types to Query Result
 
     transform<New_Output>(
         transformer: p_ti.Transformer<Output, New_Output>

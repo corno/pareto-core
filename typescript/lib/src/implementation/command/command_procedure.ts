@@ -2,9 +2,8 @@ import * as p_qi from "../../interface/query"
 import * as p_ci from "../../interface/command"
 
 import { Command_Block } from "./Command_Block"
-import _command from "./command"
-import __command_promise from "./command_promise"
-import __handle_command_block from "./handle_command_block"
+import command_promise from "./command_promise"
+import handle_command_block from "./handle_command_block"
 
 export default function command_procedure<
     Error,
@@ -31,10 +30,10 @@ export default function command_procedure<
     return ($s, $q, $c) => {
         return {
             'execute': ($d, error_transformer) => {
-                return __command_promise({
+                return command_promise({
                     'execute': (on_success, on_error) => {
 
-                        __handle_command_block(execution_handler($d, $s, $q, $c)).__start(
+                        handle_command_block(execution_handler($d, $s, $q, $c)).__start(
                             on_success,
                             ($) => {
                                 on_error(

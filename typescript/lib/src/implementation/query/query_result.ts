@@ -18,10 +18,10 @@ class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Err
     private executer: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
         this.executer = executer
-        this.__query_result = null
+        this.query_result = null
     }
 
-    public __query_result: null
+    public query_result: null
 
 
     transform<New_Output>(
@@ -99,7 +99,7 @@ class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Err
 }
 
 
-export default function __query_result<T, E>(
+export default function query_result<T, E>(
     executer: Executer<T, E>,
 ): p_qi.Query_Result<T, E> {
     return new Query_Result_Class<T, E>(executer)

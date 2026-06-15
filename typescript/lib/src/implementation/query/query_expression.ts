@@ -1,7 +1,7 @@
 import * as p_qi from "../../interface/query"
 import * as p_ti from "../../interface/transformer"
 import * as p_di from "../../interface/data"
-import __query_result from "./__query_result"
+import query_result from "./query_result"
 import create_asynchronous_dictionary_builder from "../__internal/async/asynchronous_dictionary_builder"
 import create_asynchronous_processes_monitor from "../__internal/async/create_asynchronous_processes_monitor"
 import { Abort } from "../../interface/__internal/Abort"
@@ -20,7 +20,7 @@ export namespace dictionaryx {
         aggregate_errors: p_ti.Transformer<p_di.Dictionary<Entry_Error>, Error>,
 
     ): p_qi.Query_Result<p_di.Dictionary<Result>, Error> => {
-        return __query_result((on_success, on_error) => {
+        return query_result((on_success, on_error) => {
             let has_errors = false
             const errors_builder = create_asynchronous_dictionary_builder<Entry_Error>()
             const results_builder = create_asynchronous_dictionary_builder<Result>()
@@ -58,7 +58,7 @@ export namespace dictionaryx {
 export const direct_result = <Result, Error>(
     result: Result,
 ): p_qi.Query_Result<Result, Error> => {
-    return __query_result((on_success, on_error) => {
+    return query_result((on_success, on_error) => {
         on_success(result)
     })
 }
@@ -66,7 +66,7 @@ export const direct_result = <Result, Error>(
 export const direct_error = <T, E>(
     $: E
 ): p_qi.Query_Result<T, E> => {
-    return __query_result((on_value, on_error) => {
+    return query_result((on_value, on_error) => {
         on_error($)
     })
 }
@@ -76,7 +76,7 @@ export const refine = <T, E>(
         abort: Abort<E>
     ) => T
 ): p_qi.Query_Result<T, E> => {
-    return __query_result((on_value, on_error) => {
+    return query_result((on_value, on_error) => {
         create_refinement_context<T, E>(
             (abort) => callback(abort),
         ).__extract_data(
@@ -90,7 +90,7 @@ export const transform = <T, E>(
     callback: (
     ) => T
 ): p_qi.Query_Result<T, E> => {
-    return __query_result((on_value, on_error) => {
+    return query_result((on_value, on_error) => {
         on_value(callback())
     })
 }

@@ -1,7 +1,6 @@
 import * as p_di from "../../interface/data"
 import * as p_pi from "../../interface/production"
 import * as p_a from "../../assign"
-import _p_list_build_deprecated from "./list_build_deprecated"
 import p_unreachable_code_path from "./unreachable_code_path"
 
 export default function iterate<
@@ -90,18 +89,19 @@ export default function iterate<
             has_more_items: ($: Item) => boolean,
             handle: ($: Item) => List_Item,
         }): p_di.List<List_Item> => {
-            return _p_list_build_deprecated<List_Item>(($i) => {
-                while (true) {
-                    const next_element = look_raw()
-                    if (next_element === null) {
-                        return
-                    } else if (!$x.has_more_items(next_element[0])) {
-                        return
-                    } else {
-                        $i['add item']($x.handle(next_element[0]))
-                    }
+            const raw: List_Item[] = []
+
+            while (true) {
+                const next_element = look_raw()
+                if (next_element === null) {
+                    break
+                } else if (!$x.has_more_items(next_element[0])) {
+                    break
+                } else {
+                    raw.push($x.handle(next_element[0]))
                 }
-            })
+            }
+            return p_a.literal.list(raw)
         },
         look: (item, no_item) => {
             const next = look_raw()

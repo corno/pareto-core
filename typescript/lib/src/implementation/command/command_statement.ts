@@ -2,12 +2,11 @@ import * as p_di from "../../interface/data"
 import * as p_ti from "../../interface/transformer"
 import * as p_qi from "../../interface/query"
 import * as p_ri from "../../interface/refiner"
-import _p_iterate from "../specials/iterate"
 
 import { Abort } from "../../interface/__internal/Abort"
 import { Command_Block } from "./Command_Block"
-import __command_promise from "./command_promise"
-import __handle_command_block from "./handle_command_block"
+import command_promise from "./command_promise"
+import handle_command_block from "./handle_command_block"
 import create_refinement_context from "../__internal/sync/create_refinement_context"
 import create_asynchronous_dictionary_builder from "../__internal/async/asynchronous_dictionary_builder"
 import create_asynchronous_processes_monitor from "../__internal/async/create_asynchronous_processes_monitor"
@@ -19,7 +18,7 @@ import { Command_Promise } from "../../interface/command/Command_Promise"
 //     export const serie = <Error extends p_i.Value>(
 //         array: p_i.List<p_i.Command_Promise<Error>>,
 //     ): p_i.Command_Promise<Error> => {
-//         return __command_promise({
+//         return command_promise({
 //             'execute': (on_success, on_error) => {
 //                 _p_iterate(
 //                     array,
@@ -61,7 +60,7 @@ export namespace dictionaryx {
         parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
         aggregate_errors: p_ti.Transformer<p_di.Dictionary<Entry_Error>, Error>,
     ): Command_Promise<Error> => {
-        return __command_promise({
+        return command_promise({
             'execute': (
                 on_success,
                 on_error,
@@ -76,7 +75,7 @@ export namespace dictionaryx {
                             const value = $[1]
                             monitor['report process started']()
 
-                            __handle_command_block(parametrized_command_block(value, id)).__start(
+                            handle_command_block(parametrized_command_block(value, id)).__start(
                                 () => {
                                     monitor['report process finished']()
                                 },
@@ -107,7 +106,7 @@ export namespace dictionaryx {
             parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
             aggregate_errors: p_ti.Transformer<p_di.Dictionary<Entry_Error>, Error>,
         ): Command_Promise<Error> => {
-            return __command_promise({
+            return command_promise({
                 'execute': (
                     on_success,
                     on_error,
@@ -124,7 +123,7 @@ export namespace dictionaryx {
                                         const value = $[1]
                                         monitor['report process started']()
 
-                                        __handle_command_block(parametrized_command_block(value, id)).__start(
+                                        handle_command_block(parametrized_command_block(value, id)).__start(
                                             () => {
                                                 monitor['report process finished']()
                                             },
@@ -158,15 +157,15 @@ export const handle_error = <Target_Error, Block_Error>(
     parametrized_command_block: ($v: Block_Error) => Command_Block<Target_Error>,
     assign_target_error: () => Target_Error,
 ): Command_Promise<Target_Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
             on_error,
         ) => {
-            __handle_command_block(command_block).__start(
+            handle_command_block(command_block).__start(
                 on_success,
                 (e) => {
-                    __handle_command_block(parametrized_command_block(e)).__start(
+                    handle_command_block(parametrized_command_block(e)).__start(
                         () => {
                             on_error(assign_target_error())
                         },
@@ -180,7 +179,7 @@ export const handle_error = <Target_Error, Block_Error>(
 
 export const nothing = <Error>(
 ): Command_Promise<Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
         ) => {
@@ -192,7 +191,7 @@ export const nothing = <Error>(
 export const fail = <Error>(
     error: Error,
 ): Command_Promise<Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (on_success, on_error) => {
             on_error(error)
         }
@@ -204,7 +203,7 @@ export const query = <Error, Query_Output, Refine_Output>(
     refine: p_ri.Refiner<Refine_Output, Error, Query_Output>,
     parametrized_command_block: ($v: Refine_Output) => Command_Block<Error>,
 ): Command_Promise<Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
             on_error,
@@ -215,7 +214,7 @@ export const query = <Error, Query_Output, Refine_Output>(
                         (abort) => refine(output, abort)
                     ).__extract_data(
                         ($) => {
-                            __handle_command_block(parametrized_command_block($)).__start(
+                            handle_command_block(parametrized_command_block($)).__start(
                                 on_success,
                                 on_error
                             )
@@ -234,14 +233,14 @@ export const query_stacked = <Error, Staging_Output, Parent_Data>(
     parent_data: Parent_Data,
     parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
 ): Command_Promise<Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
             on_error,
         ) => {
             query_result.__extract_data(
                 (output) => {
-                    __handle_command_block(parametrized_command_block(output, parent_data)).__start(
+                    handle_command_block(parametrized_command_block(output, parent_data)).__start(
                         on_success,
                         on_error,
                     )
@@ -258,14 +257,14 @@ export const refine_without_error_transformation = <Error, Staging_Output>( //I 
     callback: (abort: Abort<Error>) => Staging_Output,
     parametrized_command_block: ($v: Staging_Output) => Command_Block<Error>,
 ): Command_Promise<Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
             on_error,
         ) => {
             create_refinement_context(callback).__extract_data(
                 (output) => {
-                    __handle_command_block(parametrized_command_block(output)).__start(
+                    handle_command_block(parametrized_command_block(output)).__start(
                         on_success,
                         on_error,
                     )
@@ -281,14 +280,14 @@ export const refine_stacked = <Error, Staging_Output, Parent_Data>(
     parent_data: Parent_Data,
     parametrized_command_block: ($v: Staging_Output, $parent: Parent_Data) => Command_Block<Error>,
 ): Command_Promise<Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
             on_error,
         ) => {
             create_refinement_context(callback).__extract_data(
                 (output) => {
-                    __handle_command_block(parametrized_command_block(output, parent_data)).__start(
+                    handle_command_block(parametrized_command_block(output, parent_data)).__start(
                         on_success,
                         on_error,
                     )
@@ -311,16 +310,16 @@ export namespace if_ {
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
     ): Command_Promise<Error> => {
-        return __command_promise({
+        return command_promise({
             'execute': (on_success, on_error) => {
                 if (precondition) {
-                    __handle_command_block(command_block).__start(
+                    handle_command_block(command_block).__start(
                         on_success,
                         on_error
                     )
                 } else {
                     if (else_command_block !== undefined) {
-                        __handle_command_block(else_command_block).__start(
+                        handle_command_block(else_command_block).__start(
                             on_success,
                             on_error
                         )
@@ -337,18 +336,18 @@ export namespace if_ {
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
     ): Command_Promise<Error> => {
-        return __command_promise({
+        return command_promise({
             'execute': (on_success, on_error) => {
                 precondition.__extract_data(
                     ($) => {
                         if ($) {
-                            __handle_command_block(command_block).__start(
+                            handle_command_block(command_block).__start(
                                 on_success,
                                 on_error
                             )
                         } else {
                             if (else_command_block !== undefined) {
-                                __handle_command_block(else_command_block).__start(
+                                handle_command_block(else_command_block).__start(
                                     on_success,
                                     on_error
                                 )
@@ -370,20 +369,20 @@ export namespace if_ {
         if_true: () => Command_Block<Target_Error>,
         if_false: ($v: Block_Error) => Command_Block<Target_Error>,
     ): Command_Promise<Target_Error> => {
-        return __command_promise({
+        return command_promise({
             'execute': (
                 on_success,
                 on_error,
             ) => {
-                __handle_command_block(command_block).__start(
+                handle_command_block(command_block).__start(
                     () => {
-                        __handle_command_block(if_true()).__start(
+                        handle_command_block(if_true()).__start(
                             on_success,
                             on_error,
                         )
                     },
                     (e) => {
-                        __handle_command_block(if_false(e)).__start(
+                        handle_command_block(if_false(e)).__start(
                             on_success,
                             on_error,
                         )
@@ -402,20 +401,20 @@ export const pseudo_query_successfully_executed = <Target_Error, Block_Error>(
     command_block: Command_Block<Block_Error>,
     on_result: ($: boolean) => Command_Block<Target_Error>,
 ): Command_Promise<Target_Error> => {
-    return __command_promise({
+    return command_promise({
         'execute': (
             on_success,
             on_error,
         ) => {
-            __handle_command_block(command_block).__start(
+            handle_command_block(command_block).__start(
                 () => {
-                    __handle_command_block(on_result(true)).__start(
+                    handle_command_block(on_result(true)).__start(
                         on_success,
                         on_error,
                     )
                 },
                 (e) => {
-                    __handle_command_block(on_result(false)).__start(
+                    handle_command_block(on_result(false)).__start(
                         on_success,
                         on_error,
                     )
@@ -431,7 +430,7 @@ export namespace assert {
         assertion: boolean,
         error_if_failed: Error,
     ): Command_Promise<Error> => {
-        return __command_promise({
+        return command_promise({
             'execute': (on_success, on_error) => {
                 if (!assertion) {
                     on_error(error_if_failed)
@@ -446,7 +445,7 @@ export namespace assert {
         assertion: p_qi.Query_Result<boolean, Error>,
         error_if_failed: Error,
     ): Command_Promise<Error> => {
-        return __command_promise({
+        return command_promise({
             'execute': (on_success, on_error) => {
                 assertion.__extract_data(
                     ($) => {

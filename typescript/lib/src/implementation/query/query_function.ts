@@ -1,7 +1,6 @@
 import * as p_qi from "../../interface/query"
 
-import __query from "./query"
-import __query_result from "./__query_result"
+import query_result from "./query_result"
 
 export default function query_function<
     Result,
@@ -31,7 +30,7 @@ export default function query_function<
         $d,
         error_transformer
     ) => {
-        return __query_result(
+        return query_result(
             (
                 on_success,
                 on_error

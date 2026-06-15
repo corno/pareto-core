@@ -2,13 +2,13 @@ import * as p_di from "../../interface/data"
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
 import command_procedure from "./command_procedure"
-import __command_promise from "./command_promise"
-import __command from "./command"
+import command_promise from "./command_promise"
+import command from "./command"
 
 export {
     command_procedure,
-    __command_promise,
-    __command
+    command_promise,
+    command
 }
 
 export * as literal from "../__internal/sync/literal"
