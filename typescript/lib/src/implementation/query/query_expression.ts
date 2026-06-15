@@ -85,3 +85,12 @@ export const refine = <T, E>(
         )
     })
 }
+
+export const transform = <T, E>(
+    callback: (
+    ) => T
+): p_qi.Query_Result<T, E> => {
+    return __query_result((on_value, on_error) => {
+        on_value(callback())
+    })
+}
