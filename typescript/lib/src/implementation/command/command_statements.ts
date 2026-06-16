@@ -13,19 +13,29 @@ import create_asynchronous_dictionary_builder from "../__internal/async/asynchro
 import create_asynchronous_processes_monitor from "../__internal/async/create_asynchronous_processes_monitor"
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
-export const execute = <Error, Dynamic_Parameters extends p_di.Value>(
+export function execute<Error, Dynamic_Parameters extends p_di.Value>(
     command: p_ci.Command<Error, Dynamic_Parameters>,
     $d: Dynamic_Parameters,
     error_transformer: p_ti.Transformer<Error, Error>,
-): Command_Promise<Error> => {
+): Command_Promise<Error> {
     return command.execute($d, error_transformer)
 }
 
-export const dictionary = <T extends p_di.Value, Error extends p_di.Value, Entry_Error extends p_di.Value>(
+export function dictionary<
+    Entry_Error extends p_di.Value,
+    T extends p_di.Value,
+    Error extends p_di.Value
+>(
     dictionary: p_di.Dictionary<T>,
-    parametrized_command_block: (value: T, id: string) => Command_Block<Entry_Error>,
-    aggregate_errors: p_ti.Transformer<p_di.Dictionary<Entry_Error>, Error>,
-): Command_Promise<Error> => {
+    parametrized_command_block: (
+        value: T,
+        id: string
+    ) => Command_Block<Entry_Error>,
+    aggregate_errors: p_ti.Transformer<
+        p_di.Dictionary<Entry_Error>,
+        Error
+    >,
+): Command_Promise<Error> {
     return command_promise({
         'execute': (
             on_success,
@@ -65,11 +75,11 @@ export const dictionary = <T extends p_di.Value, Error extends p_di.Value, Entry
     })
 }
 
-export const handle_error = <Target_Error, Block_Error>(
+export function handle_error<Target_Error, Block_Error>(
     command_block: Command_Block<Block_Error>,
     parametrized_command_block: ($v: Block_Error) => Command_Block<Target_Error>,
     assign_target_error: () => Target_Error,
-): Command_Promise<Target_Error> => {
+): Command_Promise<Target_Error> {
     return command_promise({
         'execute': (
             on_success,
@@ -90,9 +100,9 @@ export const handle_error = <Target_Error, Block_Error>(
     })
 }
 
-export const block = <Error>(
+export function block<Error>(
     block: Command_Block<Error>,
-): Command_Promise<Error> => {
+): Command_Promise<Error> {
     return command_promise({
         'execute': (
             on_success,
@@ -106,9 +116,9 @@ export const block = <Error>(
     })
 }
 
-export const fail = <Error>(
+export function fail<Error>(
     error: Error,
-): Command_Promise<Error> => {
+): Command_Promise<Error> {
     return command_promise({
         'execute': (on_success, on_error) => {
             on_error(error)
@@ -116,10 +126,10 @@ export const fail = <Error>(
     })
 }
 
-export const query = <Error, Query_Output>(
+export function query<Error, Query_Output>(
     query_result: p_qi.Query_Result<Query_Output, Error>,
     parametrized_command_block: ($v: Query_Output) => Command_Block<Error>,
-): Command_Promise<Error> => {
+): Command_Promise<Error> {
     return command_promise({
         'execute': (
             on_success,
@@ -138,11 +148,11 @@ export const query = <Error, Query_Output>(
     })
 }
 
-export const refine = <Error, Staging_Output>( //I doubt that this one is needed. Either parameters are refined or query results.. parameters should already be refined. 
+export function refine<Error, Staging_Output>( //I doubt that this one is needed. Either parameters are refined or query results.. parameters should already be refined. 
     //the only place where parameters are currently refine is in the main functions. can this be solved by adding a refiner to the main function?
     callback: (abort: Abort<Error>) => Staging_Output,
     parametrized_command_block: ($v: Staging_Output) => Command_Block<Error>,
-): Command_Promise<Error> => {
+): Command_Promise<Error> {
     return command_promise({
         'execute': (
             on_success,
@@ -166,11 +176,11 @@ export namespace if_ {
 
 
 
-    export const direct = <Error>(
+    export function direct<Error>(
         precondition: boolean,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
-    ): Command_Promise<Error> => {
+    ): Command_Promise<Error> {
         return command_promise({
             'execute': (on_success, on_error) => {
                 if (precondition) {
@@ -195,11 +205,11 @@ export namespace if_ {
     /**
      * first run the query, then use if_.direct
      */
-    export const query_deprecated = <Error>(
+    export function query_deprecated<Error>(
         precondition: p_qi.Query_Result<boolean, Error>,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
-    ): Command_Promise<Error> => {
+    ): Command_Promise<Error> {
         return command_promise({
             'execute': (on_success, on_error) => {
                 precondition.__extract_data(
@@ -229,10 +239,10 @@ export namespace if_ {
 
 }
 
-export const test_for_successful_execution = <Target_Error, Block_Error extends p_di.Value>(
+export function test_for_successful_execution<Target_Error, Block_Error extends p_di.Value>(
     command_block: Command_Block<Block_Error>,
     on_result: ($: p_di.Optional_Value<Block_Error>) => Command_Block<Target_Error>,
-): Command_Promise<Target_Error> => {
+): Command_Promise<Target_Error> {
     return command_promise({
         'execute': (
             on_success,
@@ -258,10 +268,10 @@ export const test_for_successful_execution = <Target_Error, Block_Error extends 
 
 
 export namespace assert {
-    export const direct = <Error>(
+    export function direct<Error>(
         assertion: boolean,
         error_if_failed: Error,
-    ): Command_Promise<Error> => {
+    ): Command_Promise<Error> {
         return command_promise({
             'execute': (on_success, on_error) => {
                 if (!assertion) {
@@ -276,10 +286,10 @@ export namespace assert {
     /**
      * first run the query, then use assert.direct
      */
-    export const query_deprecated = <Error>(
+    export function query_deprecated<Error>(
         assertion: p_qi.Query_Result<boolean, Error>,
         error_if_failed: Error,
-    ): Command_Promise<Error> => {
+    ): Command_Promise<Error> {
         return command_promise({
             'execute': (on_success, on_error) => {
                 assertion.__extract_data(
