@@ -34,25 +34,25 @@ export const dictionary = <T extends p_di.Value, Error extends p_di.Value, Entry
 
             const errors_builder = create_asynchronous_dictionary_builder<Entry_Error>()
 
-            create_asynchronous_processes_monitor(
-                (monitor) => {
+            create_asynchronous_processes_monitor({
+                monitoring_phase: (monitor) => {
                     dictionary.__get_raw_copy().forEach(($) => {
                         const id = $[0]
                         const value = $[1]
-                        monitor['report process started']()
+                        monitor['report_process_started']()
 
                         handle_command_block(parametrized_command_block(value, id)).__start(
                             () => {
-                                monitor['report process finished']()
+                                monitor['report_process_finished']()
                             },
                             (e) => {
                                 errors_builder['add entry'](id, e)
-                                monitor['report process finished']()
+                                monitor['report_process_finished']()
                             }
                         )
                     })
                 },
-                () => {
+                on_all_finished: () => {
                     const errors = errors_builder['get dictionary']()
                     if (errors.__get_number_of_entries() === 0) {
                         on_success()
@@ -60,7 +60,7 @@ export const dictionary = <T extends p_di.Value, Error extends p_di.Value, Entry
                         on_error(aggregate_errors(errors))
                     }
                 }
-            )
+            })
         }
     })
 }

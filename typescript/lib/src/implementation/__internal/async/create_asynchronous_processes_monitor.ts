@@ -1,7 +1,7 @@
 
 export type I_Async_Monitor = {
-    readonly 'report process started': () => undefined
-    readonly 'report process finished': () => undefined
+    readonly report_process_started: () => undefined
+    readonly report_process_finished: () => undefined
 }
 
 /**
@@ -15,16 +15,18 @@ export type I_Async_Monitor = {
  * @param onEnd this callback will be called when all ongoing operations are finished
  */
 export default function create_asynchronous_processes_monitor(
-    monitoring_phase: ($: I_Async_Monitor) => undefined,
-    on_all_finished: () => undefined
+    parameters: {
+        monitoring_phase: ($: I_Async_Monitor) => undefined,
+        on_all_finished: () => undefined
+    }
 ): undefined {
 
-    let counter = 0
+    let running_processes_counter = 0
 
     /*
      * we need to keep track of if the registration phase is ended or not.
      * it can happen that the counter reaches 0 during the registration phase, specifically if there is no real async calls being made
-     * in that case the reportFinished counter is als called during the registration phase.
+     * in that case the counter is already called during the registration phase.
      * If that happens there should not yet be a call to onEnd().
      */
     let registration_phase_ended = false
@@ -33,28 +35,28 @@ export default function create_asynchronous_processes_monitor(
     function checkStatus() {
         if (registration_phase_ended) {
 
-            if (counter === 0) {
+            if (running_processes_counter === 0) {
                 if (on_all_finished_has_been_called === true) {
                     throw new Error("CORE: already ended")
                 }
                 on_all_finished_has_been_called = true
-                on_all_finished()
+                parameters.on_all_finished()
             }
         }
     }
-    monitoring_phase({
-        'report process started': () => {
+    parameters.monitoring_phase({
+        'report_process_started': () => {
             if (on_all_finished_has_been_called) {
                 throw new Error("CORE: async call done after context is ready")
             }
-            counter += 1
+            running_processes_counter += 1
 
         },
-        'report process finished': () => {
-            if (counter === 0) {
+        'report_process_finished': () => {
+            if (running_processes_counter === 0) {
                 throw new Error("CORE: decrement while counter is 0")
             }
-            counter -= 1
+            running_processes_counter -= 1
             checkStatus()
         },
     })
