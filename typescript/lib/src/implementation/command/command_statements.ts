@@ -148,8 +148,7 @@ export function query<Error, Query_Output>(
     })
 }
 
-export function refine<Error, Staging_Output>( //I doubt that this one is needed. Either parameters are refined or query results.. parameters should already be refined. 
-    //the only place where parameters are currently refine is in the main functions. can this be solved by adding a refiner to the main function?
+export function refine<Error, Staging_Output>( 
     callback: (abort: Abort<Error>) => Staging_Output,
     parametrized_command_block: ($v: Staging_Output) => Command_Block<Error>,
 ): Command_Promise<Error> {
@@ -171,36 +170,36 @@ export function refine<Error, Staging_Output>( //I doubt that this one is needed
     })
 }
 
+export function if_<Error>(
+    precondition: boolean,
+    command_block: Command_Block<Error>,
+    else_command_block?: Command_Block<Error>,
+): Command_Promise<Error> {
+    return command_promise({
+        'execute': (on_success, on_error) => {
+            if (precondition) {
+                handle_command_block(command_block).__start(
+                    on_success,
+                    on_error
+                )
+            } else {
+                if (else_command_block !== undefined) {
+                    handle_command_block(else_command_block).__start(
+                        on_success,
+                        on_error
+                    )
+                } else {
+                    on_success()
+                }
+            }
+        }
+    })
+}
 
 export namespace if_ {
 
 
 
-    export function direct<Error>(
-        precondition: boolean,
-        command_block: Command_Block<Error>,
-        else_command_block?: Command_Block<Error>,
-    ): Command_Promise<Error> {
-        return command_promise({
-            'execute': (on_success, on_error) => {
-                if (precondition) {
-                    handle_command_block(command_block).__start(
-                        on_success,
-                        on_error
-                    )
-                } else {
-                    if (else_command_block !== undefined) {
-                        handle_command_block(else_command_block).__start(
-                            on_success,
-                            on_error
-                        )
-                    } else {
-                        on_success()
-                    }
-                }
-            }
-        })
-    }
 
     /**
      * first run the query, then use if_.direct
@@ -267,21 +266,22 @@ export function test_for_successful_execution<Target_Error, Block_Error extends 
 }
 
 
-export namespace assert {
-    export function direct<Error>(
-        assertion: boolean,
-        error_if_failed: Error,
-    ): Command_Promise<Error> {
-        return command_promise({
-            'execute': (on_success, on_error) => {
-                if (!assertion) {
-                    on_error(error_if_failed)
-                    return
-                }
-                on_success()
+export function assert<Error>(
+    assertion: boolean,
+    error_if_failed: Error,
+): Command_Promise<Error> {
+    return command_promise({
+        'execute': (on_success, on_error) => {
+            if (!assertion) {
+                on_error(error_if_failed)
+                return
             }
-        })
-    }
+            on_success()
+        }
+    })
+}
+
+export namespace assert {
 
     /**
      * first run the query, then use assert.direct
