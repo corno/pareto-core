@@ -1,4 +1,5 @@
 import * as p_di from "../../../../../interface/data"
+import { Raw_Optional_Value } from "../../../../../interface/__internal/Raw_Optional_Value"
 
 
 export class Not_Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_Value<T> {
@@ -42,7 +43,7 @@ export class Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_V
         return set(this.value)
     }
 
-    public __get_raw(): p_di.Raw_Optional_Value<T> {
+    public __get_raw(): Raw_Optional_Value<T> {
         return [this.value]
     }
 

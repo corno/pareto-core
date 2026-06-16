@@ -1,6 +1,7 @@
 import * as p_di from "../../../../../interface/data"
 import * as optional from "./Optional"
 import { Abort } from "../../../../../interface/__internal/Abort"
+import { Raw_Optional_Value } from "../../../../../interface/__internal/Raw_Optional_Value"
 
 import { List_Class } from "./List"
 
@@ -44,7 +45,7 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
 
     __get_entry_raw(
         id: string,
-    ): p_di.Raw_Optional_Value<T> {
+    ): Raw_Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
             const entry = this.source[i]
             if (entry[0] === id) {

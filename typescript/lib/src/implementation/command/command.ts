@@ -1,10 +1,11 @@
 import * as p_ci from "../../interface/command"
+import * as p_di from "../../interface/data"
 import command_promise from './command_promise'
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
 export default function command<
     Error,
-    Dynamic_Parameters extends p_ci.Parameters
+    Dynamic_Parameters extends p_di.Value
 >(
     handler: ($: Dynamic_Parameters) => Command_Promise<Error>,
 ): p_ci.Command<

@@ -1,9 +1,8 @@
 import { Abort } from "../__internal/Abort"
-import { Raw_Optional_Value } from "./Raw_Optional_Value"
 import { List } from "./List"
 import { Optional_Value } from "./Optional_Value"
 import { Value } from "./Value"
-
+import { Raw_Optional_Value } from "../__internal/Raw_Optional_Value"
 
 /**
  * A dictionary for Pareto.

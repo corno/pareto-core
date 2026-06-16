@@ -1,12 +1,13 @@
 import * as p_qi from "../../interface/query"
+import * as p_di from "../../interface/data"
 
 import query_result from "./query_result"
 
 export default function query_function<
     Result,
     Error,
-    Dynamic_Parameters extends p_qi.Parameters,
-    Static_Parameters extends p_qi.Parameters,
+    Dynamic_Parameters extends p_di.Value,
+    Static_Parameters extends p_di.Value,
     Query_Resources extends null | { [key: string]: p_qi.Query<any, any, any> },
 >(
     handler: (

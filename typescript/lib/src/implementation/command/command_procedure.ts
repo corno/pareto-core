@@ -1,3 +1,4 @@
+import * as p_di from "../../interface/data"
 import * as p_qi from "../../interface/query"
 import * as p_ci from "../../interface/command"
 
@@ -7,8 +8,8 @@ import handle_command_block from "./handle_command_block"
 
 export default function command_procedure<
     Error,
-    Dynamic_Parameters extends p_ci.Parameters,
-    Static_Parameters extends p_ci.Parameters,
+    Dynamic_Parameters extends p_di.Value,
+    Static_Parameters extends p_di.Value,
     Query_Resources extends null | { [key: string]: p_qi.Query<any, any, any> },
     Command_Resources extends null | { [key: string]: p_ci.Command<any, any> },
 >(

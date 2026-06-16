@@ -26,21 +26,6 @@ class Command_Promise_Class<E> implements Command_Promise<E> {
     ): undefined {
         this.executer.execute(on_success, on_error)
     }
-
-    map_error<NE>(
-        handle_error: (error: E) => NE
-    ): Command_Promise<NE> {
-        return new Command_Promise_Class<NE>({
-            'execute': (on_success, on_error) => {
-                this.executer.execute(
-                    on_success,
-                    (error) => {
-                        on_error(handle_error(error))
-                    }
-                )
-            }
-        })
-    }
 }
 
 /**

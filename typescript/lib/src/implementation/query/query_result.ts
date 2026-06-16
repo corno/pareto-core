@@ -1,7 +1,4 @@
-import * as p_ti from "../../interface/transformer"
 import * as p_qi from "../../interface/query"
-import create_refinement_context from "../__internal/sync/create_refinement_context"
-import { Abort } from "../../interface/__internal/Abort"
 
 /**
  * this function contains the body in which the async value or error is executed
@@ -16,16 +13,9 @@ type Executer<Output, Error> = (
 
 class Query_Result_Class<Output, Error> implements p_qi.Query_Result<Output, Error> {
 
-    private executer: Executer<Output, Error>
+    public __extract_data: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
-        this.executer = executer
-    }
-    
-    __extract_data(
-        on_result: ($: Output) => undefined,
-        on_error: ($: Error) => undefined,
-    ): undefined {
-        this.executer(on_result, on_error)
+        this.__extract_data = executer
     }
 }
 

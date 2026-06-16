@@ -1,11 +1,11 @@
 import * as p_ti from "../transformer"
-import { Parameters } from "./Parameters"
+import * as p_di from "../data"
 import { Query_Result } from "./Query_Result"
 
 export type Query<
     Output,
     Error,
-    Input extends Parameters
+    Input extends p_di.Value
 > = <Target_Error>(
     $: Input,
     error_transformer: p_ti.Transformer<Error, Target_Error>,

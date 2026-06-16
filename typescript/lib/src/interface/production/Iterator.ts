@@ -1,5 +1,6 @@
 import * as p_di from "../../interface/data"
 import { Abort } from "../__internal/Abort"
+import { Raw_Optional_Value } from "../__internal/Raw_Optional_Value"
 
 export type Iterator<
     Item extends p_di.Value,
@@ -30,8 +31,8 @@ export type Iterator<
         item: (token: Item) => T,
         no_item: (end_info: End_Info) => T,
     ) => T
-    look_raw: () => p_di.Raw_Optional_Value<Item>,
-    look_ahead_raw: (offset: number) => p_di.Raw_Optional_Value<Item>
+    look_raw: () => Raw_Optional_Value<Item>,
+    look_ahead_raw: (offset: number) => Raw_Optional_Value<Item>
     optional: <T extends p_di.Value>($: {
         item: (token: Item) => p_di.Optional_Value<T>,
     }) => p_di.Optional_Value<T>

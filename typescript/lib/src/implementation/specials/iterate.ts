@@ -3,6 +3,8 @@ import * as p_pi from "../../interface/production"
 import * as p_a from "../../assign"
 import p_unreachable_code_path from "./unreachable_code_path"
 
+import { Raw_Optional_Value } from "../../interface/__internal/Raw_Optional_Value"
+
 export default function iterate<
     Item extends p_di.Value,
     End_Info extends p_di.Value,
@@ -19,7 +21,7 @@ export default function iterate<
 
     let position = 0
 
-    const look_raw = (): p_di.Raw_Optional_Value<Item> => {
+    const look_raw = (): Raw_Optional_Value<Item> => {
         if (position < 0 || position >= raw.length) {
             return null
         }

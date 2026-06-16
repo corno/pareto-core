@@ -1,2 +1,2 @@
 export * from "./Command"
-export * from "../query/Parameters"
+export * from "./Command_Procedure"

@@ -1,6 +1,6 @@
 import { Abort } from "../__internal/Abort"
 import { Iterator } from "./Iterator"
-import { Value } from "../../interface/data/Value"
+import { Value } from "../data/Value"
 
 export { Iterator } from "./Iterator"
 
