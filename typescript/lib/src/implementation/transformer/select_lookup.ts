@@ -1,7 +1,7 @@
 import * as p_i from "../../interface/transformer"
 import * as p_di from "../../interface/data"
 
-import * as xxx from "../../assign"
+import * as lit from "../__internal/sync/literal"
 
 export namespace acyclic {
 
@@ -42,7 +42,7 @@ export namespace stack {
     ): p_i.lookup.Stack<T> => ({
         get_entry: (id, exception) => exception.no_context_lookup(null),
         get_entry_depth(id) {
-            return xxx.literal.set(-1)
+            return lit.set(-1)
         },
     })
 
@@ -56,7 +56,7 @@ export namespace stack {
                     id,
                     exception,
                 ).__decide(
-                    ($) => xxx.literal.set($),
+                    ($) => lit.set($),
                     () => stack.get_entry(
                         id,
                         exception,
@@ -69,13 +69,13 @@ export namespace stack {
                     id,
                     exception,
                 ).__decide(
-                    ($) => xxx.literal.set(0),
+                    ($) => lit.set(0),
                     () => stack.get_entry_depth(
                         id,
                         exception,
                     ).__decide(
-                        ($) => xxx.literal.set(1 + $),
-                        () => xxx.literal.not_set()
+                        ($) => lit.set(1 + $),
+                        () => lit.not_set()
                     )
                 )
             }

@@ -1,8 +1,8 @@
 import * as p_di from "../../../interface/data"
 
-import { Dictionary_As_Array, Dictionary_Class, ID_Value_Pair } from "./assign/literals/Dictionary"
-import { List_Class } from "./assign/literals/List"
-import { Set_Optional_Value, Not_Set_Optional_Value } from "./assign/literals/Optional"
+import { Dictionary_As_Array, Dictionary_Class, ID_Value_Pair } from "./literals/Dictionary"
+import { List_Class } from "./literals/List"
+import { Set_Optional_Value, Not_Set_Optional_Value } from "./literals/Optional"
 
 export function dictionary<T extends p_di.Value>(
     source: { readonly [id: string]: T }

@@ -1,7 +1,7 @@
 import * as p_di from "../../interface/data"
 import * as p_pi from "../../interface/production"
-import * as p_a from "../../assign"
 import p_unreachable_code_path from "./unreachable_code_path"
+import * as lit from "../__internal/sync/literal"
 
 import { Raw_Optional_Value } from "../../interface/__internal/Raw_Optional_Value"
 
@@ -67,12 +67,12 @@ export default function iterate<
         ) => {
             const next = look_raw()
             if (next === null) {
-                return $i.abort($i.get_error(p_a.literal.not_set()))
+                return $i.abort($i.get_error(lit.not_set()))
             }
             return $i.item(
                 next[0],
                 () => $i.abort(
-                    $i.get_error(p_a.literal.set(next[0])),
+                    $i.get_error(lit.set(next[0])),
                 )
             )
         },
@@ -103,7 +103,7 @@ export default function iterate<
                     raw.push($x.handle(next_element[0]))
                 }
             }
-            return p_a.literal.list(raw)
+            return lit.list(raw)
         },
         look: (item, no_item) => {
             const next = look_raw()
@@ -129,7 +129,7 @@ export default function iterate<
         ) => {
             const next = look_raw()
             if (next === null) {
-                return p_a.literal.not_set()
+                return lit.not_set()
             }
             return $i.item(
                 next[0],

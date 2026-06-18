@@ -7,7 +7,7 @@ export * as literal from "../__internal/sync/literal"
 
 
 import * as p_di from "../../interface/data"
-import * as xxxx from "../__internal/sync/assign/literals/Optional"
+import * as xxxx from "../__internal/sync/literals/Optional"
 
 export namespace select {
 

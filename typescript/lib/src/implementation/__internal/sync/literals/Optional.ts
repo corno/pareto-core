@@ -1,5 +1,5 @@
-import * as p_di from "../../../../../interface/data"
-import { Raw_Optional_Value } from "../../../../../interface/__internal/Raw_Optional_Value"
+import * as p_di from "../../../../interface/data"
+import { Raw_Optional_Value } from "../../../../interface/__internal/Raw_Optional_Value"
 
 
 export class Not_Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_Value<T> {

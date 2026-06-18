@@ -1,4 +1,3 @@
-import * as p_ from "../../assign"
 import * as p_di from "../../interface/data"
 import * as p_ti from "../../interface/transformer"
 import * as p_qi from "../../interface/query"
@@ -12,6 +11,7 @@ import create_refinement_context from "../__internal/sync/create_refinement_cont
 import create_asynchronous_dictionary_builder from "../__internal/async/asynchronous_dictionary_builder"
 import create_asynchronous_processes_monitor from "../__internal/async/create_asynchronous_processes_monitor"
 import { Command_Promise } from "../../interface/command/Command_Promise"
+import * as lit from "../__internal/sync/literal"
 
 export function execute<
     Error extends p_di.Value,
@@ -264,13 +264,13 @@ export function test_for_successful_execution<
         ) => {
             handle_command_block(command_block).__start(
                 () => {
-                    handle_command_block(on_result(p_.literal.not_set())).__start(
+                    handle_command_block(on_result(lit.not_set())).__start(
                         on_success,
                         on_error,
                     )
                 },
                 (e) => {
-                    handle_command_block(on_result(p_.literal.set(e))).__start(
+                    handle_command_block(on_result(lit.set(e))).__start(
                         on_success,
                         on_error,
                     )

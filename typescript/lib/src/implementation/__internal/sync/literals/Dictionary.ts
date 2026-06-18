@@ -1,10 +1,7 @@
-import * as p_di from "../../../../../interface/data"
+import * as p_di from "../../../../interface/data"
 import * as optional from "./Optional"
-import { Abort } from "../../../../../interface/__internal/Abort"
-import { Raw_Optional_Value } from "../../../../../interface/__internal/Raw_Optional_Value"
-
-import { List_Class } from "./List"
-
+import { Abort } from "../../../../interface/__internal/Abort"
+import { Raw_Optional_Value } from "../../../../interface/__internal/Raw_Optional_Value"
 
 export type ID_Value_Pair<T> = [string, T]
 
@@ -24,11 +21,6 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
                 $v($[1], $[0])
             ]
         }))
-    }
-    __to_list<New_Type extends p_di.Value>(
-        handle_value: (value: T, id: string) => New_Type
-    ): p_di.List<New_Type> {
-        return new List_Class(this.source.map(($) => handle_value($[1], $[0])))
     }
 
     __get_possible_entry_deprecated(

@@ -1,6 +1,6 @@
-import * as p_di from "../../../../../interface/data"
+import * as p_di from "../../../../interface/data"
 import * as optional from "./Optional"
-import { Abort } from "../../../../../interface/__internal/Abort"
+import { Abort } from "../../../../interface/__internal/Abort"
 
 export class List_Class<T extends p_di.Value> implements p_di.List<T> {
     private data: readonly T[]
