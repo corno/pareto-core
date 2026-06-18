@@ -7,7 +7,7 @@ import command_promise from "./command_promise"
 import handle_command_block from "./handle_command_block"
 
 export default function command_procedure<
-    Error,
+    Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value,
     Static_Parameters extends p_di.Value,
     Query_Resources extends null | { [key: string]: p_qi.Query<any, any, any> },

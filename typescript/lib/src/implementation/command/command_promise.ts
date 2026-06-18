@@ -1,3 +1,4 @@
+import * as p_di from "../../interface/data"
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
 
@@ -14,7 +15,7 @@ type Executer<E> = {
     ) => undefined
 }
 
-class Command_Promise_Class<E> implements Command_Promise<E> {
+class Command_Promise_Class<E extends p_di.Value> implements Command_Promise<E> {
     private executer: Executer<E>
     constructor(executer: Executer<E>) {
         this.executer = executer
@@ -33,7 +34,7 @@ class Command_Promise_Class<E> implements Command_Promise<E> {
  * @param executer the function that produces the eventual value
  * @returns 
  */
-export default function command_promise<E>(
+export default function command_promise<E extends p_di.Value>(
     executer: Executer<E>,
 ): Command_Promise<E> {
     return new Command_Promise_Class<E>(executer)

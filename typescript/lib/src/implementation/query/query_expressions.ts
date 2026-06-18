@@ -52,7 +52,10 @@ export function dictionary<
     })
 }
 
-export function direct_result<Result, Error>(
+export function direct_result<
+    Result extends p_di.Value,
+    Error extends p_di.Value
+>(
     result: Result,
 ): p_qi.Query_Result<Result, Error> {
     return query_result((on_success, on_error) => {
@@ -60,7 +63,10 @@ export function direct_result<Result, Error>(
     })
 }
 
-export function direct_error<T, E>(
+export function direct_error<
+    T extends p_di.Value,
+    E extends p_di.Value
+>(
     $: E
 ): p_qi.Query_Result<T, E> {
     return query_result((on_value, on_error) => {
@@ -68,7 +74,10 @@ export function direct_error<T, E>(
     })
 }
 
-export function refine<T, E>(
+export function refine<
+    T extends p_di.Value,
+    E extends p_di.Value
+>(
     callback: (
         abort: Abort<E>
     ) => T
@@ -83,7 +92,10 @@ export function refine<T, E>(
     })
 }
 
-export function transform<T, E>(
+export function transform<
+    T extends p_di.Value,
+    E extends p_di.Value
+>(
     callback: (
     ) => T
 ): p_qi.Query_Result<T, E> {
@@ -95,7 +107,12 @@ export function transform<T, E>(
 /**
  * try the query, handle the succes result and catch the error
  */
-export function observe_behavior<Preparation_Result, Preparation_Error, Target_Outcome, Target_Error>(
+export function observe_behavior<
+    Preparation_Result extends p_di.Value,
+    Preparation_Error extends p_di.Value,
+    Target_Outcome extends p_di.Value,
+    Target_Error extends p_di.Value
+>(
     result: p_qi.Query_Result<Preparation_Result, Preparation_Error>,
     handlers: {
         success: (result: Preparation_Result) => p_qi.Query_Result<Target_Outcome, Target_Error>,

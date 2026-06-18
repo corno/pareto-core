@@ -12,12 +12,15 @@ export type Iterator<
             not_finished: Abort<null>
         }
     ) => T
-    consume: <T>(
+    consume: <T extends p_di.Value>(
         callback: (token: Item) => T,
         no_item: () => T,
     ) => T
-    discard: <T>(callback: () => T) => undefined
-    expect: <T, Error>($: {
+    discard: <T extends p_di.Value>(callback: () => T) => undefined
+    expect: <
+        T extends p_di.Value,
+        Error extends p_di.Value
+    >($: {
         abort: Abort<Error>,
         get_error: ($: p_di.Optional_Value<Item>) => Error,
         item: (token: Item, abort: Abort<null>) => T,
@@ -27,7 +30,7 @@ export type Iterator<
         has_more_items: ($: Item) => boolean,
         handle: ($: Item) => List_Item,
     }) => p_di.List<List_Item>,
-    look: <T>(
+    look: <T extends p_di.Value>(
         item: (token: Item) => T,
         no_item: (end_info: End_Info) => T,
     ) => T
@@ -36,7 +39,7 @@ export type Iterator<
     optional: <T extends p_di.Value>($: {
         item: (token: Item) => p_di.Optional_Value<T>,
     }) => p_di.Optional_Value<T>
-    wrap_up: <T>(
+    wrap_up: <T extends p_di.Value>(
         callback: () => T,
         post: () => any,
     ) => T

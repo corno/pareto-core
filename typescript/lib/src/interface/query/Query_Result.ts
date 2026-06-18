@@ -1,5 +1,8 @@
-
-export interface Query_Result<Output, Error> {
+import * as p_di from "../data"
+export interface Query_Result<
+    Output extends p_di.Value,
+    Error extends p_di.Value
+> {
 
     __extract_data: (
         on_success: ($: Output) => undefined,

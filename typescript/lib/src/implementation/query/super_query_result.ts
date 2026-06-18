@@ -1,10 +1,15 @@
 import * as p_ti from "../../interface/transformer"
+import * as p_di from "../../interface/data"
 import * as p_qi from "../../interface/query"
 import create_refinement_context from "../__internal/sync/create_refinement_context"
 import { Abort } from "../../interface/__internal/Abort"
 
 
-export type Query_Callback<Output, Error, Input> = (
+export type Query_Callback<
+    Output extends p_di.Value,
+    Error extends p_di.Value,
+    Input extends p_di.Value
+> = (
     $: Input,
 ) => p_qi.Query_Result<Output, Error>
 
@@ -14,19 +19,22 @@ export type Query_Callback<Output, Error, Input> = (
  * @param on_result the callback to call when a value is produced
  * @param on_error the callback to call when an error is produced
  */
-type Executer<Output, Error> = (
+type Executer<Output extends p_di.Value, Error extends p_di.Value> = (
     on_result: ($: Output) => undefined,
     on_error: ($: Error) => undefined,
 ) => undefined
 
 
-class Super_Query_Result_Class<Output, Error> {
+class Super_Query_Result_Class<
+    Output extends p_di.Value,
+    Error extends p_di.Value
+> {
     public __extract_data: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
         this.__extract_data = executer
     }
-    
-    transform<New_Output>(
+
+    transform<New_Output extends p_di.Value>(
         transformer: p_ti.Transformer<Output, New_Output>
     ): Super_Query_Result_Class<New_Output, Error> {
         return new Super_Query_Result_Class<New_Output, Error>((on_result, on_error) => {
@@ -39,7 +47,7 @@ class Super_Query_Result_Class<Output, Error> {
         })
     }
 
-    query<New_Output>(
+    query<New_Output extends p_di.Value>(
         queryer: Query_Callback<New_Output, Error, Output>
     ): Super_Query_Result_Class<New_Output, Error> {
         return new Super_Query_Result_Class<New_Output, Error>((on_result, on_error) => {
@@ -55,7 +63,7 @@ class Super_Query_Result_Class<Output, Error> {
         })
     }
 
-    refine<New_Output>(
+    refine<New_Output extends p_di.Value>(
         callback: ($: Output, abort: Abort<Error>) => New_Output,
     ): Super_Query_Result_Class<New_Output, Error> {
         return new Super_Query_Result_Class<New_Output, Error>((on_result, on_error) => {
@@ -71,7 +79,10 @@ class Super_Query_Result_Class<Output, Error> {
         })
     }
 
-    rework_error_temp<New_Error, Rework_Error>(
+    rework_error_temp<
+        New_Error extends p_di.Value,
+        Rework_Error extends p_di.Value
+    >(
         error_reworker: Query_Callback<New_Error, Rework_Error, Error>,
         rework_error_transformer: p_ti.Transformer<Rework_Error, New_Error>,
     ): Super_Query_Result_Class<Output, New_Error> {
@@ -94,7 +105,10 @@ class Super_Query_Result_Class<Output, Error> {
 }
 
 
-export default function super_query_result<T, E>(
+export default function super_query_result<
+    T extends p_di.Value,
+    E extends p_di.Value
+>(
     query_result: p_qi.Query_Result<T, E>,
 ): Super_Query_Result_Class<T, E> {
     return new Super_Query_Result_Class<T, E>(query_result.__extract_data)

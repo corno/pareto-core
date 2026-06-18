@@ -1,8 +1,11 @@
+import * as p_di from "../../interface/data"
 import command_promise from "./command_promise"
 import { Command_Block } from './Command_Block'
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
-export default function handle_command_block<Error>(
+export default function handle_command_block<
+Error extends p_di.Value
+>(
     block: Command_Block<Error>,
 ): Command_Promise<Error> {
     return command_promise({

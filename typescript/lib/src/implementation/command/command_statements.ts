@@ -13,7 +13,10 @@ import create_asynchronous_dictionary_builder from "../__internal/async/asynchro
 import create_asynchronous_processes_monitor from "../__internal/async/create_asynchronous_processes_monitor"
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
-export function execute<Error, Dynamic_Parameters extends p_di.Value>(
+export function execute<
+    Error extends p_di.Value,
+    Dynamic_Parameters extends p_di.Value
+>(
     command: p_ci.Command<Error, Dynamic_Parameters>,
     $d: Dynamic_Parameters,
     error_transformer: p_ti.Transformer<Error, Error>,
@@ -75,7 +78,10 @@ export function dictionary<
     })
 }
 
-export function handle_error<Target_Error, Block_Error>(
+export function handle_error<
+    Target_Error extends p_di.Value,
+    Block_Error extends p_di.Value
+>(
     command_block: Command_Block<Block_Error>,
     parametrized_command_block: ($v: Block_Error) => Command_Block<Target_Error>,
     assign_target_error: () => Target_Error,
@@ -100,7 +106,7 @@ export function handle_error<Target_Error, Block_Error>(
     })
 }
 
-export function block<Error>(
+export function block<Error extends p_di.Value>(
     block: Command_Block<Error>,
 ): Command_Promise<Error> {
     return command_promise({
@@ -116,7 +122,7 @@ export function block<Error>(
     })
 }
 
-export function fail<Error>(
+export function fail<Error extends p_di.Value>(
     error: Error,
 ): Command_Promise<Error> {
     return command_promise({
@@ -126,7 +132,10 @@ export function fail<Error>(
     })
 }
 
-export function query<Error, Query_Output>(
+export function query<
+    Error extends p_di.Value,
+    Query_Output extends p_di.Value
+>(
     query_result: p_qi.Query_Result<Query_Output, Error>,
     parametrized_command_block: ($v: Query_Output) => Command_Block<Error>,
 ): Command_Promise<Error> {
@@ -148,7 +157,10 @@ export function query<Error, Query_Output>(
     })
 }
 
-export function refine<Error, Staging_Output>( 
+export function refine<
+    Error extends p_di.Value,
+    Staging_Output extends p_di.Value
+>(
     callback: (abort: Abort<Error>) => Staging_Output,
     parametrized_command_block: ($v: Staging_Output) => Command_Block<Error>,
 ): Command_Promise<Error> {
@@ -170,7 +182,7 @@ export function refine<Error, Staging_Output>(
     })
 }
 
-export function if_<Error>(
+export function if_<Error extends p_di.Value>(
     precondition: boolean,
     command_block: Command_Block<Error>,
     else_command_block?: Command_Block<Error>,
@@ -204,7 +216,7 @@ export namespace if_ {
     /**
      * first run the query, then use if_.direct
      */
-    export function query_deprecated<Error>(
+    export function query_deprecated<Error extends p_di.Value>(
         precondition: p_qi.Query_Result<boolean, Error>,
         command_block: Command_Block<Error>,
         else_command_block?: Command_Block<Error>,
@@ -238,7 +250,10 @@ export namespace if_ {
 
 }
 
-export function test_for_successful_execution<Target_Error, Block_Error extends p_di.Value>(
+export function test_for_successful_execution<
+    Target_Error extends p_di.Value,
+    Block_Error extends p_di.Value
+>(
     command_block: Command_Block<Block_Error>,
     on_result: ($: p_di.Optional_Value<Block_Error>) => Command_Block<Target_Error>,
 ): Command_Promise<Target_Error> {
@@ -265,8 +280,7 @@ export function test_for_successful_execution<Target_Error, Block_Error extends 
     })
 }
 
-
-export function assert<Error>(
+export function assert<Error extends p_di.Value>(
     assertion: boolean,
     error_if_failed: Error,
 ): Command_Promise<Error> {
@@ -286,7 +300,7 @@ export namespace assert {
     /**
      * first run the query, then use assert.direct
      */
-    export function query_deprecated<Error>(
+    export function query_deprecated<Error extends p_di.Value>(
         assertion: p_qi.Query_Result<boolean, Error>,
         error_if_failed: Error,
     ): Command_Promise<Error> {

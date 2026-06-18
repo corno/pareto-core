@@ -1,4 +1,6 @@
 import * as p_di from "../../../../interface/data"
+import * as p_ri from "../../../../interface/refiner"
+import * as p_ti from "../../../../interface/transformer"
 
 import { Dictionary_Class } from "../assign/literals/Dictionary"
 import { List_Class } from "../assign/literals/List"
@@ -135,12 +137,12 @@ export namespace from {
                 return literal(temp)
             },
 
-            resolve_static: <Resolved extends p_di.Value>(
+            resolve_refiner: <Resolved extends p_di.Value>(
                 assign_entry: (
                     value: T,
                     id: string,
-                    acyclic_lookup: p_di.static_lookup.Acyclic<Resolved>,
-                    cyclic_lookup: p_di.static_lookup.Cyclic<Resolved>,
+                    acyclic_lookup: p_ri.lookup.Acyclic<Resolved>,
+                    cyclic_lookup: p_ri.lookup.Cyclic<Resolved>,
                 ) => Resolved,
             ): p_di.Dictionary<Resolved> => {
                 const source = dictionary
@@ -265,12 +267,12 @@ export namespace from {
                 return literal(out)
             },
 
-            resolve_dynamic: <Resolved extends p_di.Value>(
+            resolve_transformer: <Resolved extends p_di.Value>(
                 assign_entry: (
                     value: T,
                     id: string,
-                    acyclic_lookup: p_di.dynamic_lookup.Acyclic<Resolved>,
-                    cyclic_lookup: p_di.dynamic_lookup.Cyclic<Resolved>,
+                    acyclic_lookup: p_ti.lookup.Acyclic<Resolved>,
+                    cyclic_lookup: p_ti.lookup.Cyclic<Resolved>,
                 ) => Resolved,
             ): p_di.Dictionary<Resolved> => {
                 const source = dictionary

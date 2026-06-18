@@ -4,8 +4,8 @@ import * as p_di from "../../interface/data"
 import query_result from "./query_result"
 
 export default function query_function<
-    Result,
-    Error,
+    Result extends p_di.Value,
+    Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value,
     Static_Parameters extends p_di.Value,
     Query_Resources extends null | { [key: string]: p_qi.Query<any, any, any> },
