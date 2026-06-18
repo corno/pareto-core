@@ -1,12 +1,12 @@
 export * as literal from "../__internal/sync/literal"
-export * as decide from "../__internal/sync/decide"
 
 export * from "../__internal/sync/data_switch"
-
+export * as from from "../__internal/sync/refiner"
 
 
 import * as p_di from "../../interface/data"
 import { Abort } from "../../interface/__internal/Abort"
+
 export namespace select {
 
 
