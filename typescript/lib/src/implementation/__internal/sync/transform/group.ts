@@ -28,7 +28,7 @@ export namespace from {
                 ): Result_Type => {
                 let current_state = initial_state
                 return wrapup(
-                    list.__l_map(($) => {
+                    list.__l_map_deprecated(($) => {
                         const result = assign_item($, current_state)
                         current_state = update_state(result, current_state)
                         return result

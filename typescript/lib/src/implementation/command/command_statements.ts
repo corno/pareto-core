@@ -67,7 +67,7 @@ export function dictionary<
                 },
                 on_all_finished: () => {
                     const errors = errors_builder['get dictionary']()
-                    if (errors.__get_number_of_entries() === 0) {
+                    if (errors.__get_raw_copy().length === 0) {
                         on_success()
                     } else {
                         on_error(aggregate_errors(errors))

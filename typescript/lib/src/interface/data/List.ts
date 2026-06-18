@@ -10,11 +10,9 @@ export interface List<
     T extends Value
 > {
 
-    __l_map<NT extends Value>(
+    __l_map_deprecated<NT extends Value>(
         assign_item: ($: T) => NT,
     ): List<NT>
-
-    __get_number_of_items(): number
 
     __deprecated_get_possible_item_at(index: number): Optional_Value<T>
 

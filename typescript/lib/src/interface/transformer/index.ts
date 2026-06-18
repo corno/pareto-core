@@ -1,5 +1,5 @@
 import * as p_di from "../data"
-import { Value } from "../data"
+import { Raw_Optional_Value } from "../__internal/Raw_Optional_Value"
 
 export type Transformer<
     Input extends p_di.Value,
@@ -10,7 +10,7 @@ export type Transformer<
 
 export type Transformer_With_Parameter<
     Input extends p_di.Value,
-    Result extends p_di.Value, 
+    Result extends p_di.Value,
     Parameter extends p_di.Value,
 > = (
     $: Input,
@@ -20,48 +20,53 @@ export type Transformer_With_Parameter<
 
 export namespace lookup {
 
+    export type Exception_Callback<
+        Type extends p_di.Value,
+        Param extends p_di.Value,
+    > = ($: Param) => p_di.Optional_Value<Type>
+
     export type Acyclic<Type extends p_di.Value> = {
-        map_possible_entry: <Out extends p_di.Value>(
+        get_entry: (
             id: string,
-            handlers: {
-                found_entry: ($: Type) => Out,
-                no_such_entry: ($: string) => Out,
-                no_context_lookup: () => Out,
-                cycle_detected: ($: string[]) => Out,
+            exception: {
+                no_context_lookup: Exception_Callback<Type, null>,
+                cycle_detected: Exception_Callback<Type, p_di.List<string>>,
             }
-        ) => Out
+        ) => p_di.Optional_Value<Type>
+        // __get_entry_raw: (
+        //     id: string,
+        //     exception: {
+        //         no_context_lookup: Exception_Callback<Type, null>,
+        //         cycle_detected: Exception_Callback<Type, p_di.List<string>>,
+        //     }
+        // ) => Raw_Optional_Value<p_di.Optional_Value<Type>>
     }
 
     export type Cyclic<Type extends p_di.Value> = {
-        map_possible_entry: <Out extends p_di.Value>(
+        get_entry: (
             id: string,
-            handlers: {
-                found_entry: ($: Type) => Out,
-                no_such_entry: ($: string) => Out,
-                no_context_lookup: () => Out,
-                accessing_cyclic_sibling_before_it_is_resolved: () => Out,
+            exception: {
+                no_context_lookup: Exception_Callback<Type, null>,
+                accessing_cyclic_sibling_before_it_is_resolved: Exception_Callback<Type, null>,
             }
-        ) => p_di.Circular_Dependency<Out>
+        ) => p_di.Circular_Dependency<p_di.Optional_Value<Type>>
     }
 
     export type Stack<Type extends p_di.Value> = {
-        // get_entry_depth: (
-        //     id: string,
-        //     abort: {
-        //         no_context_lookup: p_di.Abort<null>,
-        //         no_such_entry: p_di.Abort<string>,
-        //         cycle_detected: p_di.Abort<string[]>,
-        //     }
-        // ) => number
-        map_possible_entry: <Out extends Value>(
+        get_entry: (
             id: string,
-            handlers: {
-                found_entry: ($: Type) => Out,
-                no_context_lookup: () => Out,
-                no_such_entry: ($: string) => Out,
-                cycle_detected: ($: string[]) => Out,
+            exception: {
+                no_context_lookup: Exception_Callback<Type, null>,
+                cycle_detected: Exception_Callback<Type, p_di.List<string>>,
             }
-        ) => Out
+        ) => p_di.Optional_Value<Type>
+        get_entry_depth: (
+            id: string,
+            exception: {
+                no_context_lookup: Exception_Callback<Type, null>,
+                cycle_detected: Exception_Callback<Type, p_di.List<string>>,
+            }
+        ) => p_di.Optional_Value<number>
     }
 
 }

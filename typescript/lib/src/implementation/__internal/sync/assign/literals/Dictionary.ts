@@ -15,7 +15,7 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
     constructor(source: Dictionary_As_Array<T>) {
         this.source = source
     }
-    public __d_map<NT extends p_di.Value>(
+    public __d_map_deprecated<NT extends p_di.Value>(
         $v: (entry: T, id: string) => NT
     ) {
         return new Dictionary_Class<NT>(this.source.map(($) => {
@@ -68,10 +68,6 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
             }
         }
         return abort.no_such_entry(null)
-    }
-
-    __get_number_of_entries(): number {
-        return this.source.length
     }
 
     __get_raw_copy(): readonly [string, T][] {

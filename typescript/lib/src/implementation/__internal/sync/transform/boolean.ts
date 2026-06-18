@@ -8,7 +8,7 @@ export namespace from {
         return {
 
             is_empty: (): boolean => {
-                return dictionary.__get_number_of_entries() === 0
+                return dictionary.__get_raw_copy().length === 0
             }
         }
     }
@@ -18,7 +18,7 @@ export namespace from {
     ) => {
         return {
             is_empty: (): boolean => {
-                return list.__get_number_of_items() === 0
+                return list.__get_raw_copy().length === 0
             },
 
             reduce: (

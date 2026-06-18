@@ -7,6 +7,7 @@ import { List_Class } from "../assign/literals/List"
 import { Abort } from "../../../../interface/__internal/Abort"
 
 import { dictionary as literal } from "../literal"
+import * as lit from "../literal"
 
 export namespace from {
 
@@ -75,17 +76,16 @@ export namespace from {
                 ) => string,
             ): p_di.Dictionary<p_di.Dictionary<T>> => {
                 const temp: { [id: string]: { [id: string]: T } } = {}
-                dictionary.__to_list(($, id) => ({
-                    id: id,
-                    value: $,
-                })).__get_raw_copy().forEach(($) => {
-                    const group_id = get_id($.value, $.id)
+                dictionary.__get_raw_copy().forEach(($) => {
+                    const id = $[0]
+                    const value = $[1]
+                    const group_id = get_id(value, id)
                     if (temp[group_id] === undefined) {
                         temp[group_id] = {}
                     }
-                    temp[group_id][$.id] = $.value
+                    temp[group_id][id] = value
                 })
-                return literal(temp).__d_map(($) => literal($))
+                return literal(temp).__d_map_deprecated(($) => literal($))
             },
 
             join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -116,7 +116,7 @@ export namespace from {
                     value: T,
                     id: string
                 ) => New_Type,
-            ): p_di.Dictionary<New_Type> => dictionary.__d_map(assign_entry),
+            ): p_di.Dictionary<New_Type> => dictionary.__d_map_deprecated(assign_entry),
 
             re_id: (
                 get_id: ($: T, key: string) => string,
@@ -181,7 +181,7 @@ export namespace from {
                             ) => {
                                 if (out[id] === undefined) {
                                     if (entries_started[id] !== undefined) {
-                                        return abort['cycle_detected'](stack.concat([id]))
+                                        return abort['cycle_detected'](lit.list(stack.concat([id])))
                                     } else {
                                         inner_resolve(
                                             source.__get_entry_deprecated(
@@ -209,7 +209,7 @@ export namespace from {
                                 } else {
                                     if (out[id] === undefined) {
                                         if (entries_started[id] !== undefined) {
-                                            return abort.cycle_detected(stack.concat([id]))
+                                            return abort.cycle_detected(lit.list(stack.concat([id])))
                                         } else {
                                             inner_resolve(
                                                 x[0],
@@ -267,7 +267,7 @@ export namespace from {
                 return literal(out)
             },
 
-            resolve_transformer: <Resolved extends p_di.Value>(
+            resolve_transform: <Resolved extends p_di.Value>(
                 assign_entry: (
                     value: T,
                     id: string,
@@ -282,10 +282,9 @@ export namespace from {
 
                 type Cyclic_Reference = {
                     'id': string,
-                    'value': undefined | Resolved,
-                    'abort': {
-                        no_such_entry: Abort<string>,
-                        accessing_cyclic_sibling_before_it_is_resolved: Abort<null>,
+                    'value': undefined | p_di.Optional_Value<Resolved>,
+                    'exception': {
+                        accessing_cyclic_sibling_before_it_is_resolved: p_ti.lookup.Exception_Callback<Resolved, null>,
                     }
                 }
 
@@ -305,33 +304,40 @@ export namespace from {
                         value,
                         id,
                         {
-                            map_possible_entry: (id, handlers) => {
-                                throw new Error("IMPLEMENT map_possible_entry in resolve_dynamic")
-                            }
-                            // get_entry: (
-                            //     id,
-                            //     abort,
-                            // ) => {
-                            //     if (out[id] === undefined) {
-                            //         if (entries_started[id] !== undefined) {
-                            //             return abort['cycle_detected'](stack.concat([id]))
-                            //         } else {
-                            //             inner_resolve(
-                            //                 source.__get_entry_deprecated(
-                            //                     id,
-                            //                     {
-                            //                         no_such_entry: () => abort.no_such_entry(null)
-                            //                     }
-                            //                 ),
-                            //                 id,
-                            //                 stack.concat([id])
-                            //             )
-                            //         }
+                            get_entry: (
+                                id,
+                                exception,
+                            ) => {
+                                let no_such_entry: boolean = false
+                                if (out[id] === undefined) {
+                                    if (entries_started[id] !== undefined) {
+                                        return exception['cycle_detected'](lit.list(stack.concat([id])))
+                                    } else {
+                                        source.__get_possible_entry_deprecated(
+                                            id
+                                        ).__extract_data(
+                                            ($) => {
+                                                inner_resolve(
+                                                    $,
+                                                    id,
+                                                    stack.concat([id])
+                                                )
+                                                no_such_entry = false
+                                            },
+                                            () => {
+                                                no_such_entry = true
+                                            }
+                                        )
+                                    }
 
-                            //     }
-                            //     // now it must be resolved, otherwise we would have aborted
-                            //     return out[id]
-                            // },
+                                }
+                                // now it must be resolved, otherwise we would have aborted
+                                if (no_such_entry) {
+                                    return lit.not_set()
+                                } else {
+                                    return lit.set(out[id])
+                                }
+                            },
                             // __get_entry_raw: (
                             //     id,
                             //     abort,
@@ -342,7 +348,7 @@ export namespace from {
                             //     } else {
                             //         if (out[id] === undefined) {
                             //             if (entries_started[id] !== undefined) {
-                            //                 return abort.cycle_detected(stack.concat([id]))
+                            //                 return abort.cycle_detected(lit.list(stack.concat([id])))
                             //             } else {
                             //                 inner_resolve(
                             //                     x[0],
@@ -358,34 +364,29 @@ export namespace from {
                             // }
                         },
                         {
-                            'map_possible_entry': (id, handlers) => {
-                                throw new Error("IMPLEMENT map_possible_entry in resolve_dynamic")
-
+                            get_entry: (
+                                id,
+                                exception,
+                            ) => {
+                                const temp_reference: Cyclic_Reference = {
+                                    'id': id,
+                                    'value': undefined,
+                                    'exception': exception,
+                                }
+                                cyclic_references.push(temp_reference)
+                                return {
+                                    get_circular_dependent: () => {
+                                        if (temp_reference.value === undefined) {
+                                            return exception.accessing_cyclic_sibling_before_it_is_resolved(null)
+                                        } else {
+                                            return temp_reference.value
+                                        }
+                                    }
+                                }
                             }
-                            // get_entry: (
-                            //     id,
-                            //     abort,
-                            // ) => {
-                            //     const temp_reference: Cyclic_Reference = {
-                            //         'id': id,
-                            //         'value': undefined,
-                            //         'abort': abort,
-                            //     }
-                            //     cyclic_references.push(temp_reference)
-                            //     return {
-                            //         get_circular_dependent: () => {
-                            //             if (temp_reference.value === undefined) {
-                            //                 return abort.accessing_cyclic_sibling_before_it_is_resolved(null)
-                            //             } else {
-                            //                 return temp_reference.value
-                            //             }
-                            //         }
-                            //     }
-                            // }
                         }
                     )
                 }
-
                 source.__get_raw_copy().forEach(($) => {
                     const id = $[0]
                     const value = $[1]
@@ -395,15 +396,15 @@ export namespace from {
                 cyclic_references.forEach(($) => {
                     const value = out[$.id]
                     if (value === undefined) {
-                        $.abort.no_such_entry($.id)
+                        $.value = lit.not_set()
                     } else {
-                        $.value = value
+                        $.value = lit.set(value)
                     }
 
                 })
 
                 return literal(out)
-            }
+            },
 
 
         }

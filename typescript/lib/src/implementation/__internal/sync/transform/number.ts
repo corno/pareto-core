@@ -76,7 +76,7 @@ export namespace from {
 
             amount_of_items: (
             ): number => {
-                return list.__get_number_of_items()
+                return list.__get_raw_copy().length
             },
 
             reduce: (
@@ -115,7 +115,7 @@ export namespace from {
 
             amount_of_entries: (
             ): number => {
-                return dictionary.__get_number_of_entries()
+                return dictionary.__get_raw_copy().length
             },
 
             sum: (

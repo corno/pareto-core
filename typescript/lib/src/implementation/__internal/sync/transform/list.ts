@@ -16,7 +16,7 @@ export namespace from {
                     id: string
                 ) => New_Type
             ): p_di.List<New_Type> => {
-                return dictionary.__to_list(assign_item)
+                return literal(dictionary.__get_raw_copy().map(($) => assign_item($[1], $[0])))
             },
 
             flatten: <NT extends p_di.Value>(
@@ -26,8 +26,9 @@ export namespace from {
                 ) => p_di.List<NT>,
             ): p_di.List<NT> => {
                 const out: NT[] = []
-                dictionary.__to_list(assign_item).__get_raw_copy().forEach(($) => {
-                    const innerList = $
+                dictionary.__get_raw_copy().forEach(($) => {
+                    const entry = $
+                    const innerList = assign_item(entry[1], entry[0])
                     innerList.__get_raw_copy().forEach(($) => {
                         out.push($)
                     })
@@ -114,7 +115,10 @@ export namespace from {
                 ) => Result,
             ) => {
                 const out: Result[] = []
-                const maxLength = Math.max(list.__get_number_of_items(), other_list.__get_number_of_items())
+                const maxLength = Math.max(
+                    list.__get_raw_copy().length,
+                    other_list.__get_raw_copy().length
+                )
                 for (let i = 0; i < maxLength; i++) {
                     out.push(assign_item(
                         list.__deprecated_get_possible_item_at(i),
@@ -129,7 +133,7 @@ export namespace from {
                     item: T,
                 ) => New_Type,
             ): p_di.List<New_Type> => {
-                return list.__l_map(assign_item)
+                return list.__l_map_deprecated(assign_item)
             },
 
             reverse: (
@@ -158,7 +162,7 @@ export namespace from {
             ): Result_Type => {
                 let current_state = initial_state
                 return wrapup(
-                    list.__l_map(($) => {
+                    list.__l_map_deprecated(($) => {
                         const result = handle_value($, current_state)
                         current_state = update_state(result, current_state)
                         return result

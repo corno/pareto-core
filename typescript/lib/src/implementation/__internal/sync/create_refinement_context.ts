@@ -1,4 +1,5 @@
 import { Abort } from "../../../interface/__internal/Abort"
+import * as p_di from "../../../interface/data"
 
 export type Refinement_Result<Output, Error> = {
 
@@ -9,7 +10,10 @@ export type Refinement_Result<Output, Error> = {
 
 }
 
-export default function create_refinement_context <Output, Error>(
+export default function create_refinement_context<
+    Output extends p_di.Value,
+    Error extends p_di.Value
+>(
     callback: (abort: Abort<Error>) => Output,
 ): Refinement_Result<Output, Error> {
     return ({

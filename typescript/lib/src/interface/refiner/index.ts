@@ -13,7 +13,7 @@ export type Refiner<
 
 export type Refiner_With_Parameter<
     Result extends p_di.Value,
-    Error,
+    Error extends p_di.Value,
     Input extends p_di.Value,
     Parameter extends p_di.Value
 > = (
@@ -31,14 +31,14 @@ export namespace lookup {
             abort: {
                 no_such_entry: Abort<null>,
                 no_context_lookup: Abort<null>,
-                cycle_detected: Abort<string[]>,
+                cycle_detected: Abort<p_di.List<string>>,
             }
         ) => Type
         __get_entry_raw: (
             id: string,
             abort: {
                 no_context_lookup: Abort<null>,
-                cycle_detected: Abort<string[]>,
+                cycle_detected: Abort<p_di.List<string>>,
             }
         ) => Raw_Optional_Value<Type>
     }
@@ -60,7 +60,7 @@ export namespace lookup {
             abort: {
                 no_context_lookup: Abort<null>,
                 no_such_entry: Abort<string>,
-                cycle_detected: Abort<string[]>,
+                cycle_detected: Abort<p_di.List<string>>,
             }
         ) => Type
         get_entry_depth: (
@@ -68,7 +68,7 @@ export namespace lookup {
             abort: {
                 no_context_lookup: Abort<null>,
                 no_such_entry: Abort<string>,
-                cycle_detected: Abort<string[]>,
+                cycle_detected: Abort<p_di.List<string>>,
             }
         ) => number
     }
