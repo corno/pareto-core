@@ -2,13 +2,7 @@ export * from "../__internal/sync/data_switch"
 
 export * as decide from "../__internal/sync/decide"
 
-export * as boolean from "../__internal/sync/transform/boolean"
-export * as dictionary from "../__internal/sync/transform/dictionary"
-export * as group from "../__internal/sync/transform/group"
-export * as list from "../__internal/sync/transform/list"
-export * as number from "../__internal/sync/transform/number"
-export * as optional from "../__internal/sync/transform/optional"
-export * as state from "../__internal/sync/transform/state"
+export * from "../__internal/sync/transform/transform"
 
 export * as literal from "../__internal/sync/literal"
 
