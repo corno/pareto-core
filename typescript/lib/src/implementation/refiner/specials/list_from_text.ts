@@ -1,6 +1,6 @@
-import * as p_di from "../../interface/data"
+import * as p_di from "../../../interface/data"
 
-import { List_Class } from "../__internal/sync/primitives/List"
+import { List_Class } from "../../__internal/sync/primitives/List"
 
 export default function list_from_text  <T extends p_di.Value>(
     $: string,

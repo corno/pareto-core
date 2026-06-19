@@ -3,17 +3,6 @@ import * as p_ri from "../../interface/refiner"
 import { Abort } from "../../interface/__internal/Abort"
 import * as lit from "../__internal/sync/literal"
 
-
-export const boolean = (
-    boolean_value: boolean,
-) => {
-    return {
-
-
-
-    }
-}
-
 export const dictionary = <T extends p_di.Value>(
     dictionary: p_di.Dictionary<T>,
 ) => {
@@ -225,17 +214,6 @@ export const list = <T extends p_di.Value>(
         },
 
 
-    }
-}
-
-export namespace number {
-
-}
-
-export const number = (
-    number: number,
-) => {
-    return {
     }
 }
 

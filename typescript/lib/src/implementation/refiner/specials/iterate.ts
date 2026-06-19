@@ -1,9 +1,8 @@
-import * as p_di from "../../interface/data"
-import * as p_pi from "../../interface/production"
-import p_unreachable_code_path from "./unreachable_code_path"
-import * as lit from "../__internal/sync/literal"
+import * as p_di from "../../../interface/data"
+import * as p_pi from "../../../interface/production"
+import * as lit from "../../__internal/sync/literal"
 
-import { Raw_Optional_Value } from "../../interface/__internal/Raw_Optional_Value"
+import { Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
 
 export default function iterate<
     Item extends p_di.Value,
@@ -50,7 +49,7 @@ export default function iterate<
             const current = $.__deprecated_get_item_at(
                 position,
                 {
-                    out_of_bounds: () => p_unreachable_code_path("just checked that position is in bounds"),
+                    out_of_bounds: () => { throw new Error("just checked that position is in bounds") },
                 }
             )
             position += 1

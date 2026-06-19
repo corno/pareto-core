@@ -1,5 +1,5 @@
-import { List_Class } from "../__internal/sync/primitives/List"
-import * as p_di from "../../interface/data"
+import { List_Class } from "../../__internal/sync/primitives/List"
+import * as p_di from "../../../interface/data"
 
 type List_Builder<T extends p_di.Value> = {
     'add item': ($: T) => undefined

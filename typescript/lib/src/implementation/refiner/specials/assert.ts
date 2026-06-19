@@ -1,5 +1,5 @@
-import { Abort } from "../../interface/__internal/Abort"
-import * as p_di from "../../interface/data"
+import { Abort } from "../../../interface/__internal/Abort"
+import * as p_di from "../../../interface/data"
 /**
  * 
  * asserts for a condition, and if the condition is not met, aborts with the given error.

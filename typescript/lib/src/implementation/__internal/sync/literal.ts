@@ -87,3 +87,11 @@ export const group_resolve = <Resolved extends p_di.Group>(
     assign: (
     ) => Resolved,
 ): Resolved => assign()
+
+export const nothing = (): symbol =>{
+    return Symbol()
+}
+
+export const group_empty = (): symbol =>{
+    return Symbol()
+}
