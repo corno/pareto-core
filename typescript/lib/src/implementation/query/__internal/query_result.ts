@@ -1,5 +1,5 @@
-import * as p_qi from "../../interface/query"
-import * as p_di from "../../interface/data"
+import * as p_qi from "../../../interface/query"
+import * as p_di from "../../../interface/data"
 
 /**
  * this function contains the body in which the async value or error is executed

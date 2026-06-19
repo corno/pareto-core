@@ -1,17 +1,17 @@
-import * as p_di from "../../interface/data"
-import * as p_ti from "../../interface/transformer"
-import * as p_qi from "../../interface/query"
-import * as p_ci from "../../interface/command"
+import * as p_di from "../../../interface/data"
+import * as p_ti from "../../../interface/transformer"
+import * as p_qi from "../../../interface/query"
+import * as p_ci from "../../../interface/command"
 
-import { Abort } from "../../interface/__internal/Abort"
+import { Abort } from "../../../interface/__internal/Abort"
 import { Command_Block } from "./Command_Block"
 import command_promise from "./command_promise"
 import handle_command_block from "./handle_command_block"
-import create_refinement_context from "../__internal/sync/create_refinement_context"
-import create_asynchronous_dictionary_builder from "../__internal/async/asynchronous_dictionary_builder"
-import create_asynchronous_processes_monitor from "../__internal/async/create_asynchronous_processes_monitor"
-import { Command_Promise } from "../../interface/command/Command_Promise"
-import * as lit from "../__internal/sync/literal"
+import create_refinement_context from "../../__internal/sync/create_refinement_context"
+import create_asynchronous_dictionary_builder from "../../__internal/async/asynchronous_dictionary_builder"
+import create_asynchronous_processes_monitor from "../../__internal/async/create_asynchronous_processes_monitor"
+import { Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import * as lit from "../../__internal/sync/literal"
 
 export function execute<
     Error extends p_di.Value,

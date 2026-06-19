@@ -1,6 +1,6 @@
 
-export * from "./List"
-export * from "./Circular_Dependency"
-export * from "./Dictionary"
-export * from "./Optional_Value"
-export * from "./Value"
+export * from "./__internal/List"
+export * from "./__internal/Circular_Dependency"
+export * from "./__internal/Dictionary"
+export * from "./__internal/Optional_Value"
+export * from "./__internal/Value"

@@ -1,6 +1,6 @@
 
-import * as p_di from "../../interface/data"
-import * as p_qi from "../../interface/query"
+import * as p_di from "../../../interface/data"
+import * as p_qi from "../../../interface/query"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 

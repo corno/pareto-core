@@ -1,3 +1,3 @@
-export * from "./Query_Result"
-export * from "./Query_Function"
-export * from "./Query"
+export * from "./__internal/Query_Result"
+export * from "./__internal/Query_Function"
+export * from "./__internal/Query"

@@ -1,4 +1,4 @@
-import * as p_di from "../../interface/data"
+import * as p_di from "../../../interface/data"
 
 export const state = <State extends p_di.State>(
     state: State,

@@ -1,5 +1,5 @@
-import * as p_ti from "../transformer"
-import * as p_di from "../data"
+import * as p_ti from "../../transformer"
+import * as p_di from "../../data"
 import { Query_Result } from "./Query_Result"
 
 export type Query<

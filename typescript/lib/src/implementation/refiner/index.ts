@@ -1,7 +1,7 @@
 export * as literal from "../__internal/sync/literal"
 
 export * from "../__internal/sync/data_switch"
-export * as from from "./from"
+export * as from from "./__internal/from"
 
 
 import * as p_di from "../../interface/data"

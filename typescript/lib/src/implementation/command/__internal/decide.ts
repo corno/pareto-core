@@ -1,5 +1,5 @@
-import * as p_di from "../../interface/data"
-import { Command_Promise } from "../../interface/command/Command_Promise"
+import * as p_di from "../../../interface/data"
+import { Command_Promise } from "../../../interface/command/__internal/Command_Promise"
 
 import { Command_Block } from "./Command_Block"
 import command_promise from "./command_promise"

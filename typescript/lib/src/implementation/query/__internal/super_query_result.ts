@@ -1,8 +1,8 @@
-import * as p_ti from "../../interface/transformer"
-import * as p_di from "../../interface/data"
-import * as p_qi from "../../interface/query"
-import create_refinement_context from "../__internal/sync/create_refinement_context"
-import { Abort } from "../../interface/__internal/Abort"
+import * as p_ti from "../../../interface/transformer"
+import * as p_di from "../../../interface/data"
+import * as p_qi from "../../../interface/query"
+import create_refinement_context from "../../__internal/sync/create_refinement_context"
+import { Abort } from "../../../interface/__internal/Abort"
 
 
 export type Query_Callback<

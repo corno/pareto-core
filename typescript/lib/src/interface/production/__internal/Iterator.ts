@@ -1,6 +1,6 @@
-import * as p_di from "../../interface/data"
-import { Abort } from "../__internal/Abort"
-import { Raw_Optional_Value } from "../__internal/Raw_Optional_Value"
+import * as p_di from "../../data"
+import { Abort } from "../../__internal/Abort"
+import { Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
 
 export type Iterator<
     Item extends p_di.Value,

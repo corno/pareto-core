@@ -1,5 +1,5 @@
-import * as p_qi from "../query"
-import * as p_di from "../data"
+import * as p_qi from "../../query"
+import * as p_di from "../../data"
 
 import { Command } from "./Command"
 

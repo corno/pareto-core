@@ -1,2 +1,2 @@
-export * from "./Command"
-export * from "./Command_Procedure"
+export * from "./__internal/Command"
+export * from "./__internal/Command_Procedure"

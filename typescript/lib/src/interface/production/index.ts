@@ -1,8 +1,8 @@
 import { Abort } from "../__internal/Abort"
-import { Iterator } from "./Iterator"
+import { Iterator } from "./__internal/Iterator"
 import * as p_di from "../data"
 
-export { Iterator } from "./Iterator"
+export { Iterator } from "./__internal/Iterator"
 
 export type Production<
     Result extends p_di.Value,

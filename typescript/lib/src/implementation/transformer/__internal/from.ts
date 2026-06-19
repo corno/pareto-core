@@ -1,10 +1,10 @@
-import * as p_di from "../../interface/data"
-import * as p_ri from "../../interface/refiner"
-import * as p_ti from "../../interface/transformer"
-import { Dictionary_Class } from "../__internal/sync/primitives/Dictionary"
-import { List_Class } from "../__internal/sync/primitives/List"
-import { Abort } from "../../interface/__internal/Abort"
-import * as lit from "../__internal/sync/literal"
+import * as p_di from "../../../interface/data"
+import * as p_ri from "../../../interface/refiner"
+import * as p_ti from "../../../interface/transformer"
+import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
+import { List_Class } from "../../__internal/sync/primitives/List"
+import { Abort } from "../../../interface/__internal/Abort"
+import * as lit from "../../__internal/sync/literal"
 
 export const boolean = (
     boolean_value: boolean,

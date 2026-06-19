@@ -1,5 +1,5 @@
 
-import * as p_di from "../../interface/data"
+import * as p_di from "../../data"
 import { Query } from "./Query"
 
 export type Query_Function<

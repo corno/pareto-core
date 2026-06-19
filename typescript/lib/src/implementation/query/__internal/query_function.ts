@@ -1,5 +1,5 @@
-import * as p_qi from "../../interface/query"
-import * as p_di from "../../interface/data"
+import * as p_qi from "../../../interface/query"
+import * as p_di from "../../../interface/data"
 
 import query_result from "./query_result"
 

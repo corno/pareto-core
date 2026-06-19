@@ -1,5 +1,5 @@
-import * as p_di from "../data"
-import * as p_ti from "../transformer"
+import * as p_di from "../../data"
+import * as p_ti from "../../transformer"
 import { Command_Promise } from "./Command_Promise"
 
 export type Command<
