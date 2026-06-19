@@ -1,6 +1,6 @@
 export * from "../__internal/sync/data_switch"
 
-export * as from from "../__internal/sync/transformer"
+export * as from from "./from"
 
 export * as literal from "../__internal/sync/literal"
 

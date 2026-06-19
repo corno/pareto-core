@@ -1,7 +1,7 @@
-import * as p_di from "../../../interface/data"
-import * as p_ri from "../../../interface/refiner"
-import { Abort } from "../../../interface/__internal/Abort"
-import * as lit from "./literal"
+import * as p_di from "../../interface/data"
+import * as p_ri from "../../interface/refiner"
+import { Abort } from "../../interface/__internal/Abort"
+import * as lit from "../__internal/sync/literal"
 
 
 export const boolean = (
