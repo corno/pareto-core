@@ -1,6 +1,6 @@
 import * as p_ci from "../../interface/command"
 import * as p_di from "../../interface/data"
-import command_promise from './command_promise'
+import command_promise from "./command_promise"
 import { Command_Promise } from "../../interface/command/Command_Promise"
 
 export default function command<
@@ -13,19 +13,17 @@ export default function command<
     Dynamic_Parameters
 > {
     return {
-        'execute': (parameters, error_transformer) => {
-            return command_promise({
-                'execute': (on_success, on_error) => {
-                    handler(parameters).__start(
-                        on_success,
-                        (error) => {
-                            on_error(
-                                error_transformer(error)
-                            )
-                        }
-                    )
-                }
-            })
-        },
+        'execute': (parameters, error_transformer) => command_promise({
+            'execute': (on_success, on_error) => {
+                handler(parameters).__start(
+                    on_success,
+                    (error) => {
+                        on_error(
+                            error_transformer(error)
+                        )
+                    }
+                )
+            }
+        }),
     }
 }

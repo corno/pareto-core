@@ -30,21 +30,19 @@ export default function command_procedure<
 > {
     return ($s, $q, $c) => {
         return {
-            'execute': ($d, error_transformer) => {
-                return command_promise({
-                    'execute': (on_success, on_error) => {
+            'execute': ($d, error_transformer) => command_promise({
+                'execute': (on_success, on_error) => {
 
-                        handle_command_block(execution_handler($d, $s, $q, $c)).__start(
-                            on_success,
-                            ($) => {
-                                on_error(
-                                    error_transformer($)
-                                )
-                            }
-                        )
-                    }
-                })
-            },
+                    handle_command_block(execution_handler($d, $s, $q, $c)).__start(
+                        on_success,
+                        ($) => {
+                            on_error(
+                                error_transformer($)
+                            )
+                        }
+                    )
+                }
+            }),
         }
     }
 }

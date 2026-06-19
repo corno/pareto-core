@@ -1,8 +1,8 @@
 import * as p_di from "../../../interface/data"
 import * as p_ri from "../../../interface/refiner"
 import * as p_ti from "../../../interface/transformer"
-import { Dictionary_Class } from "./literals/Dictionary"
-import { List_Class } from "./literals/List"
+import { Dictionary_Class } from "./primitives/Dictionary"
+import { List_Class } from "./primitives/List"
 import { Abort } from "../../../interface/__internal/Abort"
 import * as lit from "./literal"
 
