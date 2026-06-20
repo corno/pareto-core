@@ -1,8 +1,6 @@
 import * as p_di from "../../../interface/data"
-import * as p_ri from "../../../interface/refiner"
 import * as p_ti from "../../../interface/transformer"
 import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
-import { List_Class } from "../../__internal/sync/primitives/List"
 import { Abort } from "../../../interface/__internal/Abort"
 import * as lit from "../../__internal/sync/literal"
 
@@ -103,7 +101,7 @@ export const dictionary = <T extends p_di.Value>(
                 })
 
             })
-            return new List_Class(out)
+            return lit.list(out)
         },
 
         group: (
@@ -195,7 +193,7 @@ export const dictionary = <T extends p_di.Value>(
             if_multiple: ($: p_di.Dictionary<T>) => RT,
             if_none: () => RT,
         ): RT => {
-            return list(new List_Class(dictionary.__get_raw_copy().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
+            return list(lit.list(dictionary.__get_raw_copy().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
                 (item) => if_true(item.value, item.id),
                 () => if_multiple(dictionary),
                 if_none,
@@ -412,7 +410,7 @@ export const list = <T extends p_di.Value>(
                 item: T,
             ) => boolean
         ): p_di.List<T> => {
-            return new List_Class(list.__get_raw_copy().filter(callback))
+            return lit.list(list.__get_raw_copy().filter(callback))
         },
 
         flatten: <NT extends p_di.Value>(
@@ -428,7 +426,7 @@ export const list = <T extends p_di.Value>(
                 })
 
             })
-            return new List_Class(out)
+            return lit.list(out)
         },
 
         full_join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -467,7 +465,7 @@ export const list = <T extends p_di.Value>(
             })
             const temp2: { [id: string]: p_di.List<T> } = {}
             Object.keys(temp).forEach((id) => {
-                temp2[id] = new List_Class(temp[id])
+                temp2[id] = lit.list(temp[id])
             })
             return lit.dictionary(temp2)
         },
@@ -519,7 +517,7 @@ export const list = <T extends p_di.Value>(
                     () => { }
                 )
             })
-            return new List_Class(out)
+            return lit.list(out)
         },
 
         map_with_index: <New_Type extends p_di.Value>(
@@ -528,8 +526,8 @@ export const list = <T extends p_di.Value>(
                 index: number
             ) => New_Type,
         ): p_di.List<New_Type> => {
-            
-            return new List_Class(list.__get_raw_copy().map(($, index) => assign_item($, index)))
+
+            return lit.list(list.__get_raw_copy().map(($, index) => assign_item($, index)))
         },
 
         map_with_state: <
@@ -566,7 +564,7 @@ export const list = <T extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
         ): RT => list.__deprecated_get_possible_item_at(0).__decide(
-            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(1))),
+            ($) => if_true($, lit.list(list.__get_raw_copy().slice(1))),
             () => if_not_true(),
         ),
 
@@ -581,7 +579,7 @@ export const list = <T extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
         ): RT => list.__deprecated_get_possible_item_at(list.__get_raw_copy().length - 1).__decide(
-            ($) => if_true($, new List_Class(list.__get_raw_copy().slice(0, -1))),
+            ($) => if_true($, lit.list(list.__get_raw_copy().slice(0, -1))),
             () => if_not_true(),
         ),
 
@@ -658,7 +656,7 @@ export const list = <T extends p_di.Value>(
 
         reverse: (
         ): p_di.List<T> => {
-            return new List_Class(list.__get_raw_copy().slice().reverse())
+            return lit.list(list.__get_raw_copy().slice().reverse())
         },
 
 
@@ -731,6 +729,18 @@ export const number = (
                     const _exhaustiveCheck: never = round
                     throw new Error(`Unexpected rounding mode: ${round}`)
             }
+        },
+
+
+
+        repeat: <T extends p_di.Value>(
+            item: T,
+        ): p_di.List<T> => {
+            const out: T[] = []
+            for (let i = 0; i < number; i++) {
+                out.push(item)
+            }
+            return lit.list(out)
         }
 
 
@@ -764,7 +774,7 @@ export const optional = <T extends p_di.Value>(
                 () => lit.not_set<New_Type>()
             )
         },
-        
+
     }
 }
 

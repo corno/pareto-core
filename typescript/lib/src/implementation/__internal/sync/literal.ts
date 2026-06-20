@@ -61,17 +61,6 @@ export const nested_list = <T extends p_di.Value>(
     return new List_Class(out)
 }
 
-export const repeat = <T extends p_di.Value>(
-    item: T,
-    times: number,
-): p_di.List<T> => {
-    const out: T[] = []
-    for (let i = 0; i < times; i++) {
-        out.push(item)
-    }
-    return new List_Class(out)
-}
-
 export const set = <T extends p_di.Value>(
     value: T
 ): p_di.Optional_Value<T> => {
