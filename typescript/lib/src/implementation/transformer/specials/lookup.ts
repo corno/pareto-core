@@ -1,7 +1,7 @@
-import * as p_i from "../../interface/transformer"
-import * as p_di from "../../interface/data"
+import * as p_i from "../../../interface/transformer"
+import * as p_di from "../../../interface/data"
 
-import * as lit from "../__internal/sync/literal"
+import * as lit from "../../__internal/sync/literal"
 
 export namespace acyclic {
 

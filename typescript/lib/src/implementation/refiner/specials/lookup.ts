@@ -1,5 +1,5 @@
-import * as p_di from "../../interface/data"
-import * as p_i from "../../interface/refiner"
+import * as p_di from "../../../interface/data"
+import * as p_i from "../../../interface/refiner"
 
 export namespace acyclic {
 
