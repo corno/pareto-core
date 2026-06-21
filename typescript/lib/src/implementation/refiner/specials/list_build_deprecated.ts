@@ -17,7 +17,7 @@ export default function list_build_deprecated<T extends p_di.Value>(
             temp.push($)
         },
         'add list': ($) => {
-            temp.push(...$.__get_raw_copy())
+            temp.push(...$.__get_raw())
         }
     })
     return new List_Class(temp)

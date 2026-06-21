@@ -35,7 +35,7 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
         return new optional.Not_Set_Optional_Value()
     }
 
-    __get_entry_raw(
+    __get_entry_raw_deprecated(
         id: string,
     ): Raw_Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
@@ -62,7 +62,7 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
         return abort.no_such_entry(null)
     }
 
-    __get_raw_copy(): readonly [string, T][] {
+    __get_raw(): readonly [string, T][] {
         return this.source
     }
 

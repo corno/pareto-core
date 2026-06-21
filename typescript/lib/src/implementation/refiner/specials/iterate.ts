@@ -14,7 +14,7 @@ export default function iterate<
     assign: ($iter: p_pi.Iterator<Item, End_Info>) => Return_Type,
 ): Return_Type {
 
-    const raw = $.__get_raw_copy()
+    const raw = $.__get_raw()
 
     const length = raw.length
 

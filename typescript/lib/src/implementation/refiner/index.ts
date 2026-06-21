@@ -17,7 +17,7 @@ export namespace select {
             no_such_entry: Abort<null>
         }
     ): T => {
-        const entry = dictionary.__get_entry_raw(id)
+        const entry = dictionary.__get_entry_raw_deprecated(id)
         return entry === null
             ? abort.no_such_entry(null)
             : entry[0]

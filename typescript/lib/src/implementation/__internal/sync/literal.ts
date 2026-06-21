@@ -42,14 +42,24 @@ export function list<
     return new List_Class(data)
 }
 
-export const nested_list = <T extends p_di.Value>(
+export const segmented_list = <T extends p_di.Value>(
     lists: (p_di.List<T>)[]
 ): p_di.List<T> => {
     const out: T[] = []
     lists.forEach(($) => {
-        out.push(...$.__get_raw_copy())
+        out.push(...$.__get_raw())
 
     })
+    return new List_Class(out)
+}
+
+export const chain = <T extends p_di.Value>(
+    list: (p_di.List<T>),
+    tail_element: T,
+): p_di.List<T> => {
+    const out: T[] = []
+    out.push(...list.__get_raw())
+    out.push(tail_element)
     return new List_Class(out)
 }
 
@@ -64,6 +74,10 @@ export const not_set = <T extends p_di.Value>(
     return new Not_Set_Optional_Value<T>()
 }
 
+/**
+ * first the properties can be resolved to variables, then the variables can be
+ * used to construct the group object. This allows for properties to refer to each other, as long as there are no circular references.
+ */
 export const group_resolve = <Resolved extends p_di.Group>(
     assign: (
     ) => Resolved,

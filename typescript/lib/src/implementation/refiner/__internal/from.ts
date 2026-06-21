@@ -8,6 +8,22 @@ export const dictionary = <T extends p_di.Value>(
 ) => {
     return {
 
+        get_entry(
+            id: string,
+            abort: {
+                no_such_entry: Abort<null>,
+            }
+        ): T {
+            const raw = dictionary.__get_raw()
+            for (let i = 0; i !== raw.length; i += 1) {
+                const entry = raw[i]
+                if (entry[0] === id) {
+                    return entry[1]
+                }
+            }
+            return abort.no_such_entry(null)
+        },
+
         map: <New_Type extends p_di.Value>(
             assign_entry: (
                 value: T,
@@ -81,7 +97,7 @@ export const dictionary = <T extends p_di.Value>(
                             id,
                             abort,
                         ) => {
-                            const x = source.__get_entry_raw(id)
+                            const x = source.__get_entry_raw_deprecated(id)
                             if (x === null) {
                                 return null
                             } else {
@@ -126,7 +142,7 @@ export const dictionary = <T extends p_di.Value>(
                     }
                 )
             }
-            source.__get_raw_copy().forEach(($) => {
+            source.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 inner_resolve(value, id, [id])
@@ -165,7 +181,7 @@ export const list = <T extends p_di.Value>(
             }
         ): p_di.Dictionary<NT> => {
             const temp: { [id: string]: NT } = {}
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 const id = get_id($)
                 if (temp[id] !== undefined) {
                     abort.duplicate_id(id)
@@ -221,6 +237,11 @@ export const optional = <T extends p_di.Value>(
     optional_value: p_di.Optional_Value<T>,
 ) => {
     return {
+
+        decide: <RT extends p_di.Value>(
+            if_set: ($: T) => RT,
+            if_not_set: () => RT
+        ): RT => optional_value.__decide(if_set, if_not_set),
 
         map: <New_Type extends p_di.Value>(
             assign_set_value: (

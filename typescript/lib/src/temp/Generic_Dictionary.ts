@@ -14,11 +14,11 @@ export interface Generic_Dictionary<T> {
         }
     ): T
 
-    __get_entry_raw(
+    __get_entry_raw_deprecated(
         id: string
     ): Raw_Optional_Value<T>
 
-    __get_raw_copy(): readonly [string, T][]
+    __get_raw(): readonly [string, T][]
 }
 
 
@@ -42,19 +42,7 @@ export class Generic_Dictionary_Class<T> implements Generic_Dictionary<T> {
         }))
     }
 
-    // __get_possible_entry_deprecated(
-    //     id: string,
-    // ): p_di.Optional_Value<T> {
-    //     for (let i = 0; i !== this.source.length; i += 1) {
-    //         const entry = this.source[i]
-    //         if (entry[0] === id) {
-    //             return new optional.Set_Optional_Value(entry[1])
-    //         }
-    //     }
-    //     return new optional.Not_Set_Optional_Value()
-    // }
-
-    __get_entry_raw(
+    __get_entry_raw_deprecated(
         id: string,
     ): Raw_Optional_Value<T> {
         for (let i = 0; i !== this.source.length; i += 1) {
@@ -81,7 +69,7 @@ export class Generic_Dictionary_Class<T> implements Generic_Dictionary<T> {
         return abort.no_such_entry(null)
     }
 
-    __get_raw_copy(): readonly [string, T][] {
+    __get_raw(): readonly [string, T][] {
         return this.source
     }
 
@@ -91,7 +79,7 @@ export const map_value_dictionary_to_generic_dictionary = <T extends p_di.Value,
     source: p_di.Dictionary<T>,
     $v: (entry: T, id: string) => NT
 ): Generic_Dictionary<NT> => {
-    return new Generic_Dictionary_Class<NT>(source.__get_raw_copy().map(($) => {
+    return new Generic_Dictionary_Class<NT>(source.__get_raw().map(($) => {
         return [
             $[0],
             $v($[1], $[0])

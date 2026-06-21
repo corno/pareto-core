@@ -49,7 +49,7 @@ export function dictionary<
 
             create_asynchronous_processes_monitor({
                 monitoring_phase: (monitor) => {
-                    dictionary.__get_raw_copy().forEach(($) => {
+                    dictionary.__get_raw().forEach(($) => {
                         const id = $[0]
                         const value = $[1]
                         monitor['report_process_started']()
@@ -67,7 +67,7 @@ export function dictionary<
                 },
                 on_all_finished: () => {
                     const errors = errors_builder['get dictionary']()
-                    if (errors.__get_raw_copy().length === 0) {
+                    if (errors.__get_raw().length === 0) {
                         on_success()
                     } else {
                         on_error(aggregate_errors(errors))
@@ -208,48 +208,6 @@ export function if_<Error extends p_di.Value>(
     })
 }
 
-export namespace if_ {
-
-
-
-
-    /**
-     * first run the query, then use if_.direct
-     */
-    export function query_deprecated<Error extends p_di.Value>(
-        precondition: p_qi.Query_Result<boolean, Error>,
-        command_block: Command_Block<Error>,
-        else_command_block?: Command_Block<Error>,
-    ): Command_Promise<Error> {
-        return command_promise({
-            'execute': (on_success, on_error) => {
-                precondition.__extract_data(
-                    ($) => {
-                        if ($) {
-                            handle_command_block(command_block).__start(
-                                on_success,
-                                on_error
-                            )
-                        } else {
-                            if (else_command_block !== undefined) {
-                                handle_command_block(else_command_block).__start(
-                                    on_success,
-                                    on_error
-                                )
-                            } else {
-                                on_success()
-                            }
-                        }
-                    },
-                    on_error
-                )
-            }
-        })
-    }
-
-
-}
-
 export function test_for_successful_execution<
     Target_Error extends p_di.Value,
     Block_Error extends p_di.Value
@@ -294,30 +252,3 @@ export function assert<Error extends p_di.Value>(
         }
     })
 }
-
-export namespace assert {
-
-    /**
-     * first run the query, then use assert.direct
-     */
-    export function query_deprecated<Error extends p_di.Value>(
-        assertion: p_qi.Query_Result<boolean, Error>,
-        error_if_failed: Error,
-    ): Command_Promise<Error> {
-        return command_promise({
-            'execute': (on_success, on_error) => {
-                assertion.__extract_data(
-                    ($) => {
-                        if ($) {
-                            on_success()
-                        } else {
-                            on_error(error_if_failed)
-                        }
-                    },
-                    on_error
-                )
-            }
-        })
-    }
-}
-

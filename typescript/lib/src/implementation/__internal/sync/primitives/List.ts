@@ -15,10 +15,6 @@ export class List_Class<T extends p_di.Value> implements p_di.List<T> {
         }))
     }
 
-    __get_number_of_items() {
-        return this.data.length
-    }
-
     __deprecated_get_possible_item_at(index: number) {
         if (index < 0 || index >= this.data.length) {
             return new optional.Not_Set_Optional_Value<T>()
@@ -38,7 +34,7 @@ export class List_Class<T extends p_di.Value> implements p_di.List<T> {
         return this.data[index]
     }
 
-    __get_raw_copy(): readonly T[] {
+    __get_raw(): readonly T[] {
         return this.data
     }
 

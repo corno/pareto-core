@@ -18,7 +18,7 @@ export namespace acyclic {
                 no_such_entry: () => abort.no_such_entry(null)
             },
         ),
-        __get_entry_raw: (id, abort) => dict.__get_entry_raw(id)
+        __get_entry_raw: (id, abort) => dict.__get_entry_raw_deprecated(id)
     })
 
 }

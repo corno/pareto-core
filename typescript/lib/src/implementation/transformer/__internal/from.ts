@@ -25,7 +25,6 @@ export const boolean = (
         ): RT => boolean_value
                 ? if_true()
                 : if_false()
-
     }
 }
 
@@ -36,7 +35,7 @@ export const dictionary = <T extends p_di.Value>(
 
         amount_of_entries: (
         ): number => {
-            return dictionary.__get_raw_copy().length
+            return dictionary.__get_raw().length
         },
 
         convert_to_list: <New_Type extends p_di.Value>(
@@ -45,7 +44,7 @@ export const dictionary = <T extends p_di.Value>(
                 id: string
             ) => New_Type
         ): p_di.List<New_Type> => {
-            return lit.list(dictionary.__get_raw_copy().map(($) => assign_item($[1], $[0])))
+            return lit.list(dictionary.__get_raw().map(($) => assign_item($[1], $[0])))
         },
 
         filter: (
@@ -53,7 +52,7 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => boolean
-        ): p_di.Dictionary<T> => new Dictionary_Class(dictionary.__get_raw_copy().filter(($) => callback($[1], $[0]))),
+        ): p_di.Dictionary<T> => new Dictionary_Class(dictionary.__get_raw().filter(($) => callback($[1], $[0]))),
 
         flatten: <New_Type extends p_di.Value>(
             get_child_dictionary: (
@@ -69,11 +68,11 @@ export const dictionary = <T extends p_di.Value>(
         ) => {
             const out: { [id: string]: New_Type } = {}
 
-            dictionary.__get_raw_copy().forEach(($) => {
+            dictionary.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const child_dictionary = get_child_dictionary(value)
-                child_dictionary.__get_raw_copy().forEach(($) => {
+                child_dictionary.__get_raw().forEach(($) => {
                     const child_id = $[0]
                     const child_value = $[1]
                     const combined_id = get_id(id, child_id)
@@ -93,15 +92,29 @@ export const dictionary = <T extends p_di.Value>(
             ) => p_di.List<NT>,
         ): p_di.List<NT> => {
             const out: NT[] = []
-            dictionary.__get_raw_copy().forEach(($) => {
+            dictionary.__get_raw().forEach(($) => {
                 const entry = $
                 const innerList = assign_item(entry[1], entry[0])
-                innerList.__get_raw_copy().forEach(($) => {
+                innerList.__get_raw().forEach(($) => {
                     out.push($)
                 })
 
             })
             return lit.list(out)
+        },
+
+
+        get_possible_entry(
+            id: string,
+        ): p_di.Optional_Value<T> {
+            const raw = dictionary.__get_raw()
+            for (let i = 0; i !== raw.length; i += 1) {
+                const entry = raw[i]
+                if (entry[0] === id) {
+                    return lit.set(entry[1])
+                }
+            }
+            return lit.not_set()
         },
 
         group: (
@@ -111,7 +124,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => string,
         ): p_di.Dictionary<p_di.Dictionary<T>> => {
             const temp: { [id: string]: { [id: string]: T } } = {}
-            dictionary.__get_raw_copy().forEach(($) => {
+            dictionary.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const group_id = get_id(value, id)
@@ -124,7 +137,7 @@ export const dictionary = <T extends p_di.Value>(
         },
 
         is_empty: (): boolean => {
-            return dictionary.__get_raw_copy().length === 0
+            return dictionary.__get_raw().length === 0
         },
 
         join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -136,7 +149,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => Result,
         ) => {
             const out: { [id: string]: Result } = {}
-            dictionary.__get_raw_copy().forEach(($) => {
+            dictionary.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 out[id] = assign_entry(
@@ -165,7 +178,7 @@ export const dictionary = <T extends p_di.Value>(
         ): p_di.Dictionary<New_Type> => {
             return new Dictionary_Class(
                 dictionary
-                    .__get_raw_copy()
+                    .__get_raw()
                     .map(($) => [$[0], assign_optional_entry($[1], $[0])] as [string, p_di.Optional_Value<New_Type>])
                     .filter(($) => $[1].__get_raw() !== null)
                     .map(($) => [$[0], $[1].__get_raw()![0]])
@@ -184,7 +197,7 @@ export const dictionary = <T extends p_di.Value>(
         on_has_entries: <RT extends p_di.Value>(
             if_true: ($: p_di.Dictionary<T>) => RT,
             if_not_true: () => RT
-        ): RT => dictionary.__get_raw_copy().length !== 0
+        ): RT => dictionary.__get_raw().length !== 0
                 ? if_true(dictionary)
                 : if_not_true(),
 
@@ -193,7 +206,7 @@ export const dictionary = <T extends p_di.Value>(
             if_multiple: ($: p_di.Dictionary<T>) => RT,
             if_none: () => RT,
         ): RT => {
-            return list(lit.list(dictionary.__get_raw_copy().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
+            return list(lit.list(dictionary.__get_raw().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
                 (item) => if_true(item.value, item.id),
                 () => if_multiple(dictionary),
                 if_none,
@@ -207,7 +220,7 @@ export const dictionary = <T extends p_di.Value>(
             }
         ) => {
             const temp: { [id: string]: T } = {}
-            dictionary.__get_raw_copy().forEach(($) => {
+            dictionary.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const new_id = get_id(value, id)
@@ -339,7 +352,7 @@ export const dictionary = <T extends p_di.Value>(
                     }
                 )
             }
-            source.__get_raw_copy().forEach(($) => {
+            source.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 inner_resolve(value, id, [id])
@@ -364,7 +377,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => number,
         ): number => {
             let sum = 0
-            dictionary.__get_raw_copy().forEach(($) => {
+            dictionary.__get_raw().forEach(($) => {
                 sum += assign_value($[1])
             })
             return sum
@@ -379,7 +392,7 @@ export const list = <T extends p_di.Value>(
 
         amount_of_items: (
         ): number => {
-            return list.__get_raw_copy().length
+            return list.__get_raw().length
         },
 
         convert_to_dictionary: <NT extends p_di.Value>(
@@ -394,7 +407,7 @@ export const list = <T extends p_di.Value>(
             }
         ): p_di.Dictionary<NT> => {
             const temp: { [id: string]: NT } = {}
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 const id = get_id($)
                 if (temp[id] !== undefined) {
                     abort.duplicate_id(id)
@@ -410,7 +423,7 @@ export const list = <T extends p_di.Value>(
                 item: T,
             ) => boolean
         ): p_di.List<T> => {
-            return lit.list(list.__get_raw_copy().filter(callback))
+            return lit.list(list.__get_raw().filter(callback))
         },
 
         flatten: <NT extends p_di.Value>(
@@ -419,9 +432,9 @@ export const list = <T extends p_di.Value>(
             ) => p_di.List<NT>,
         ): p_di.List<NT> => {
             const out: NT[] = []
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 const innerList = assign_list($)
-                innerList.__get_raw_copy().forEach(($) => {
+                innerList.__get_raw().forEach(($) => {
                     out.push($)
                 })
 
@@ -438,8 +451,8 @@ export const list = <T extends p_di.Value>(
         ) => {
             const out: Result[] = []
             const maxLength = Math.max(
-                list.__get_raw_copy().length,
-                other_list.__get_raw_copy().length
+                list.__get_raw().length,
+                other_list.__get_raw().length
             )
             for (let i = 0; i < maxLength; i++) {
                 out.push(assign_item(
@@ -456,7 +469,7 @@ export const list = <T extends p_di.Value>(
             ) => string,
         ): p_di.Dictionary<p_di.List<T>> => {
             const temp: { [id: string]: T[] } = {}
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 const id = get_id($)
                 if (temp[id] === undefined) {
                     temp[id] = []
@@ -471,7 +484,7 @@ export const list = <T extends p_di.Value>(
         },
 
         is_empty: (): boolean => {
-            return list.__get_raw_copy().length === 0
+            return list.__get_raw().length === 0
         },
 
         join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -483,7 +496,7 @@ export const list = <T extends p_di.Value>(
         ) => {
             const out: Result[] = []
             let index = -1
-            list.__get_raw_copy().forEach(
+            list.__get_raw().forEach(
                 ($) => {
                     index++
                     out.push(assign_item(
@@ -508,7 +521,7 @@ export const list = <T extends p_di.Value>(
             ) => p_di.Optional_Value<New_Type>
         ): p_di.List<New_Type> => {
             const out: New_Type[] = []
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 const result = assign_optional_item($)
                 result.__extract_data(
                     ($) => {
@@ -527,7 +540,7 @@ export const list = <T extends p_di.Value>(
             ) => New_Type,
         ): p_di.List<New_Type> => {
 
-            return lit.list(list.__get_raw_copy().map(($, index) => assign_item($, index)))
+            return lit.list(list.__get_raw().map(($, index) => assign_item($, index)))
         },
 
         map_with_state: <
@@ -564,22 +577,22 @@ export const list = <T extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
         ): RT => list.__deprecated_get_possible_item_at(0).__decide(
-            ($) => if_true($, lit.list(list.__get_raw_copy().slice(1))),
+            ($) => if_true($, lit.list(list.__get_raw().slice(1))),
             () => if_not_true(),
         ),
 
         on_has_items: <RT extends p_di.Value>(
             if_true: ($: p_di.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__get_raw_copy().length !== 0
+        ): RT => list.__get_raw().length !== 0
                 ? if_true(list)
                 : if_not_true(),
 
         on_has_last_item: <RT extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__deprecated_get_possible_item_at(list.__get_raw_copy().length - 1).__decide(
-            ($) => if_true($, lit.list(list.__get_raw_copy().slice(0, -1))),
+        ): RT => list.__deprecated_get_possible_item_at(list.__get_raw().length - 1).__decide(
+            ($) => if_true($, lit.list(list.__get_raw().slice(0, -1))),
             () => if_not_true(),
         ),
 
@@ -590,7 +603,7 @@ export const list = <T extends p_di.Value>(
             test: ($: T) => p_di.Optional_Value<RT>,
             if_no_match: () => RT,
         ): RT => {
-            const raw = list.__get_raw_copy()
+            const raw = list.__get_raw()
             for (let i = 0; i < raw.length; i++) {
                 const item = raw[i]
                 const result = test(item).__get_raw()
@@ -606,7 +619,7 @@ export const list = <T extends p_di.Value>(
             if_multiple: ($: p_di.List<T>) => RT,
             if_none: () => RT,
         ): RT => {
-            return (list.__get_raw_copy().length > 1)
+            return (list.__get_raw().length > 1)
                 ? if_multiple(list)
                 : list.__deprecated_get_possible_item_at(0).__decide(
                     ($) => if_true($),
@@ -620,7 +633,7 @@ export const list = <T extends p_di.Value>(
             ) => number,
         ): number => {
             let sum = 0
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 sum += assign_value($)
             })
             return sum
@@ -634,7 +647,7 @@ export const list = <T extends p_di.Value>(
             ) => boolean,
         ): boolean => {
             let current_state = initial_state
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 current_state = update_state($, current_state)
             })
             return current_state
@@ -648,7 +661,7 @@ export const list = <T extends p_di.Value>(
             ) => number,
         ): number => {
             let current_state = initial_state
-            list.__get_raw_copy().forEach(($) => {
+            list.__get_raw().forEach(($) => {
                 current_state = update_state($, current_state)
             })
             return current_state
@@ -656,14 +669,12 @@ export const list = <T extends p_di.Value>(
 
         reverse: (
         ): p_di.List<T> => {
-            return lit.list(list.__get_raw_copy().slice().reverse())
+            return lit.list(list.__get_raw().slice().reverse())
         },
 
 
     }
 }
-
-
 
 export const number = (
     number: number,
@@ -757,13 +768,6 @@ export const optional = <T extends p_di.Value>(
             if_not_set: () => RT
         ): RT => optional_value.__decide(if_set, if_not_set),
 
-        is_set: (): boolean => {
-            return optional_value.__decide(
-                () => true,
-                () => false
-            )
-        },
-
         map: <New_Type extends p_di.Value>(
             assign_set_value: (
                 value: T
@@ -777,8 +781,6 @@ export const optional = <T extends p_di.Value>(
 
     }
 }
-
-
 
 export const state = <State extends p_di.State>(
     state: State,

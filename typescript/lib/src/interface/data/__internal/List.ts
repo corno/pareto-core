@@ -23,6 +23,6 @@ export interface List<
         }
     ): T
 
-    __get_raw_copy(): readonly T[]
+    __get_raw(): readonly T[]
 
 }
