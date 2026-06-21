@@ -43,19 +43,11 @@ export function list<
 }
 
 export const nested_list = <T extends p_di.Value>(
-    lists: (T[] | p_di.List<T>)[]
+    lists: (p_di.List<T>)[]
 ): p_di.List<T> => {
     const out: T[] = []
     lists.forEach(($) => {
-        if ($ == undefined) {
-            // do nothing
-        } else if ($ instanceof Array) {
-            $.forEach(($) => {
-                out.push($)
-            })
-        } else {
-            out.push(...$.__get_raw_copy())
-        }
+        out.push(...$.__get_raw_copy())
 
     })
     return new List_Class(out)
@@ -77,10 +69,10 @@ export const group_resolve = <Resolved extends p_di.Group>(
     ) => Resolved,
 ): Resolved => assign()
 
-export const nothing = (): symbol =>{
+export const nothing = (): symbol => {
     return Symbol()
 }
 
-export const group_empty = (): symbol =>{
+export const group_empty = (): symbol => {
     return Symbol()
 }
