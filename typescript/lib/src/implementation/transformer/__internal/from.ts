@@ -108,23 +108,28 @@ export const dictionary = <T extends p_di.Value>(
             return if_not_set()
         },
 
-        group: (
+        group: <RT extends p_di.Value>(
             get_id: (
                 value: T,
                 id: string
             ) => string,
-        ): p_di.Dictionary<p_di.Dictionary<T>> => {
-            const temp: { [id: string]: { [id: string]: T } } = {}
+            aggregate: ($: p_di.Dictionary<T>) => RT
+        ): p_di.Dictionary<RT> => {
+            const temp: { [id: string]: [string, T][] } = {}
             dict.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const group_id = get_id(value, id)
                 if (temp[group_id] === undefined) {
-                    temp[group_id] = {}
+                    temp[group_id] = []
                 }
-                temp[group_id][id] = value
+                temp[group_id].push([id, value])
             })
-            return lit.dictionary(temp).__d_map_deprecated(($) => lit.dictionary($))
+            const temp2: { [id: string]: RT } = {}
+            Object.keys(temp).forEach((group_id) => {
+                temp2[group_id] = aggregate(new Dictionary_Class(temp[group_id]))
+            })
+            return lit.dictionary(temp2)
         },
 
         join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -397,11 +402,12 @@ export const list = <T extends p_di.Value>(
             return lit.list(out)
         },
 
-        group: (
+        group: <RT extends p_di.Value>(
             get_id: (
                 item: T
             ) => string,
-        ): p_di.Dictionary<p_di.List<T>> => {
+            aggregate: ($: p_di.List<T>) => RT
+        ): p_di.Dictionary<RT> => {
             const temp: { [id: string]: T[] } = {}
             list.__get_raw().forEach(($) => {
                 const id = get_id($)
@@ -410,9 +416,9 @@ export const list = <T extends p_di.Value>(
                 }
                 temp[id].push($)
             })
-            const temp2: { [id: string]: p_di.List<T> } = {}
+            const temp2: { [id: string]: RT } = {}
             Object.keys(temp).forEach((id) => {
-                temp2[id] = lit.list(temp[id])
+                temp2[id] = aggregate(lit.list(temp[id]))
             })
             return lit.dictionary(temp2)
         },
@@ -423,7 +429,7 @@ export const list = <T extends p_di.Value>(
                 value: T,
                 other_value: p_di.Optional_Value<Other_Type>,
             ) => Result,
-        ) => {
+        ): p_di.List<Result> => {
             const out: Result[] = []
             let index = -1
             list.__get_raw().forEach(
@@ -433,7 +439,8 @@ export const list = <T extends p_di.Value>(
                         $,
                         other_list.__deprecated_get_possible_item_at(index),
                     ))
-                })
+                }
+            )
             return lit.list(out)
         },
 
