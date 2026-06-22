@@ -113,7 +113,7 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => string,
-            aggregate: ($: p_di.Dictionary<T>) => RT
+            aggregate: ($: p_di.Dictionary<T>, group_id: string) => RT
         ): p_di.Dictionary<RT> => {
             const temp: { [id: string]: [string, T][] } = {}
             dict.__get_raw().forEach(($) => {
@@ -127,7 +127,7 @@ export const dictionary = <T extends p_di.Value>(
             })
             const temp2: { [id: string]: RT } = {}
             Object.keys(temp).forEach((group_id) => {
-                temp2[group_id] = aggregate(new Dictionary_Class(temp[group_id]))
+                temp2[group_id] = aggregate(new Dictionary_Class(temp[group_id]), group_id)
             })
             return lit.dictionary(temp2)
         },
@@ -406,7 +406,7 @@ export const list = <T extends p_di.Value>(
             get_id: (
                 item: T
             ) => string,
-            aggregate: ($: p_di.List<T>) => RT
+            aggregate: ($: p_di.List<T>, group_id: string) => RT
         ): p_di.Dictionary<RT> => {
             const temp: { [id: string]: T[] } = {}
             list.__get_raw().forEach(($) => {
@@ -418,7 +418,7 @@ export const list = <T extends p_di.Value>(
             })
             const temp2: { [id: string]: RT } = {}
             Object.keys(temp).forEach((id) => {
-                temp2[id] = aggregate(lit.list(temp[id]))
+                temp2[id] = aggregate(lit.list(temp[id]), id)
             })
             return lit.dictionary(temp2)
         },
