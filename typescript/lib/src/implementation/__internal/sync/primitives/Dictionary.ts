@@ -12,28 +12,6 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
     constructor(source: Dictionary_As_Array<T>) {
         this.source = source
     }
-    public __d_map_deprecated<NT extends p_di.Value>(
-        $v: (entry: T, id: string) => NT
-    ) {
-        return new Dictionary_Class<NT>(this.source.map(($) => {
-            return [
-                $[0],
-                $v($[1], $[0])
-            ]
-        }))
-    }
-
-    __get_entry_raw_deprecated(
-        id: string,
-    ): Raw_Optional_Value<T> {
-        for (let i = 0; i !== this.source.length; i += 1) {
-            const entry = this.source[i]
-            if (entry[0] === id) {
-                return [entry[1]]
-            }
-        }
-        return null
-    }
 
     __get_raw(): readonly [string, T][] {
         return this.source

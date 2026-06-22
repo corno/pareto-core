@@ -162,7 +162,15 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => dict.__d_map_deprecated(assign_entry),
+        ): p_di.Dictionary<New_Type> => {
+
+            return new Dictionary_Class<New_Type>(dict.__get_raw().map(($) => {
+                return [
+                    $[0],
+                    assign_entry($[1], $[0])
+                ]
+            }))
+        },
 
         map_optionally: <New_Type extends p_di.Value>(
             assign_optional_entry: (

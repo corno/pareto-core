@@ -8,9 +8,7 @@ import { Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
  * unmutable and minimal by design
  */
 export interface Dictionary<T extends Value> {
-    __d_map_deprecated<NT extends Value>(
-        assign_entry: (value: T, id: string) => NT,
-    ): Dictionary<NT>
 
     __get_raw(): readonly [string, T][]
+    
 }

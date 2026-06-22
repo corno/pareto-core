@@ -25,9 +25,9 @@ export function dictionary<
 
         create_asynchronous_processes_monitor({
             monitoring_phase: (monitor) => {
-                dictionary.__d_map_deprecated(($, id) => {
+                dictionary.__get_raw().forEach(([id, value]) => {
                     monitor['report_process_started']()
-                    map_entry($, id).__extract_data(
+                    map_entry(value, id).__extract_data(
                         ($) => {
                             results_builder['add entry'](id, $)
                             monitor['report_process_finished']()

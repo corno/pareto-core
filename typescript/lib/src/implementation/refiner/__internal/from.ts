@@ -2,6 +2,7 @@ import * as p_di from "../../../interface/data"
 import * as p_ri from "../../../interface/refiner"
 import { Abort } from "../../../interface/__internal/Abort"
 import * as lit from "../../__internal/sync/literal"
+import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
 
 export const dictionary = <T extends p_di.Value>(
     dict: p_di.Dictionary<T>,
@@ -42,7 +43,15 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => dict.__d_map_deprecated(assign_entry),
+        ): p_di.Dictionary<New_Type> => {
+
+            return new Dictionary_Class<New_Type>(dict.__get_raw().map(($) => {
+                return [
+                    $[0],
+                    assign_entry($[1], $[0])
+                ]
+            }))
+        },
 
         resolve: <Resolved extends p_di.Value>(
             assign_entry: (
