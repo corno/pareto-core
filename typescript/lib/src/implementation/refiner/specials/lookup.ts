@@ -11,7 +11,7 @@ export namespace acyclic {
     })
 
     export const from_resolved_dictionary = <T extends p_di.Value>(
-        dict: p_di.Dictionary<T >,
+        dict: p_di.Dictionary<T>,
     ): p_i.lookup.Acyclic<T> => ({
         get_entry: (id, abort) => from.dictionary(dict).get_entry(
             id,
@@ -19,7 +19,17 @@ export namespace acyclic {
                 no_such_entry: () => abort.no_such_entry(null)
             },
         ),
-        __get_entry_raw: (id, abort) => dict.__get_entry_raw_deprecated(id)
+        __get_entry_raw: (id, abort) => {
+            const raw = dict.__get_raw()
+
+            for (let i = 0; i !== raw.length; i += 1) {
+                const entry = raw[i]
+                if (entry[0] === id) {
+                    return [entry[1]]
+                }
+            }
+            return null
+        }
     })
 
 }

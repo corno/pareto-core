@@ -9,16 +9,6 @@ export const boolean = (
 ) => {
     return {
 
-        convert_to_optional: <T extends p_di.Value>(
-            assign_set: () => T,
-        ): p_di.Optional_Value<T> => {
-            if (boolean_value) {
-                return lit.set<T>(assign_set())
-            } else {
-                return lit.not_set<T>()
-            }
-        },
-
         decide: <RT>(
             if_true: () => RT,
             if_false: () => RT
@@ -137,10 +127,6 @@ export const dictionary = <T extends p_di.Value>(
             return lit.dictionary(temp).__d_map_deprecated(($) => lit.dictionary($))
         },
 
-        is_empty: (): boolean => {
-            return dict.__get_raw().length === 0
-        },
-
         join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
             other_dictionary: p_di.Dictionary<Other_Type>,
             assign_entry: (
@@ -187,16 +173,6 @@ export const dictionary = <T extends p_di.Value>(
                     .map(($) => [$[0], $[1].__get_raw()![0]])
             )
         },
-
-        on_contains_entry: <RT extends p_di.Value>(
-            id: string,
-            if_true: ($: T) => RT,
-            if_not_true: () => RT
-        ): RT => dictionary(dict).get_possible_entry(
-            id,
-            ($) => if_true($),
-            () => if_not_true(),
-        ),
 
         on_has_entries: <RT extends p_di.Value>(
             if_true: ($: p_di.Dictionary<T>) => RT,
@@ -376,29 +352,6 @@ export const list = <T extends p_di.Value>(
             return list.__get_raw().length
         },
 
-        convert_to_dictionary: <NT extends p_di.Value>(
-            get_id: (
-                item: T
-            ) => string,
-            get_value: (
-                item: T
-            ) => NT,
-            abort: {
-                duplicate_id: Abort<string>
-            }
-        ): p_di.Dictionary<NT> => {
-            const temp: { [id: string]: NT } = {}
-            list.__get_raw().forEach(($) => {
-                const id = get_id($)
-                if (temp[id] !== undefined) {
-                    abort.duplicate_id(id)
-                }
-                temp[id] = get_value($)
-            })
-            return lit.dictionary(temp)
-        },
-
-
         filter: (
             callback: (
                 item: T,
@@ -462,10 +415,6 @@ export const list = <T extends p_di.Value>(
                 temp2[id] = lit.list(temp[id])
             })
             return lit.dictionary(temp2)
-        },
-
-        is_empty: (): boolean => {
-            return list.__get_raw().length === 0
         },
 
         join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -665,7 +614,6 @@ export const number = (
 ) => {
     return {
 
-
         /**
          * Performs integer division of two numbers with configurable rounding behavior.
          * 
@@ -725,8 +673,6 @@ export const number = (
                     throw new Error(`Unexpected rounding mode: ${round}`)
             }
         },
-
-
 
         repeat: <T extends p_di.Value>(
             item: T,

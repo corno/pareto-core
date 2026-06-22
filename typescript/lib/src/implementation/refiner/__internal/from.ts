@@ -110,25 +110,28 @@ export const dictionary = <T extends p_di.Value>(
                             id,
                             abort,
                         ) => {
-                            const x = source.__get_entry_raw_deprecated(id)
-                            if (x === null) {
-                                return null
-                            } else {
-                                if (out[id] === undefined) {
-                                    if (entries_started[id] !== undefined) {
-                                        return abort.cycle_detected(lit.list(stack.concat([id])))
-                                    } else {
-                                        inner_resolve(
-                                            x[0],
-                                            id,
-                                            stack.concat([id])
-                                        )
-                                    }
-                                }
-                                // now it must be resolved, otherwise we would have aborted
-                                return [out[id]]
 
+                            const raw = dict.__get_raw()
+
+                            for (let i = 0; i !== raw.length; i += 1) {
+                                const entry = raw[i]
+                                if (entry[0] === id) {
+                                    if (out[id] === undefined) {
+                                        if (entries_started[id] !== undefined) {
+                                            return abort.cycle_detected(lit.list(stack.concat([id])))
+                                        } else {
+                                            inner_resolve(
+                                                entry[1],
+                                                id,
+                                                stack.concat([id])
+                                            )
+                                        }
+                                    }
+                                    // now it must be resolved, otherwise we would have aborted
+                                    return [out[id]]
+                                }
                             }
+                            return null
                         }
                     },
                     {
@@ -311,7 +314,7 @@ export const text = (
 ) => {
     return {
 
-        state: <
+        to_state: <
             State extends p_di.State,
             Context extends p_di.Value,
         >(
