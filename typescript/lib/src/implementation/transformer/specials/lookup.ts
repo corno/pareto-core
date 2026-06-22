@@ -9,7 +9,6 @@ export namespace acyclic {
     export const not_set = <T extends p_di.Value>(
     ): p_i.lookup.Acyclic<T> => ({
         get_entry: (id, exception) => exception.no_context_lookup(null),
-        // __get_entry_raw: (id, exception) => exception.no_context_lookup(null),
     })
 
     export const from_resolved_dictionary = <T extends p_di.Value>(
@@ -54,10 +53,12 @@ export namespace stack {
     ): p_i.lookup.Stack<T> => {
         return ({
             get_entry: (id, exception) => {
-                return item.get_entry(
+                return from.optional(
+                    item.get_entry(
                     id,
                     exception,
-                ).__decide(
+                    )
+                ).decide(
                     ($) => lit.set($),
                     () => stack.get_entry(
                         id,
@@ -67,15 +68,19 @@ export namespace stack {
             },
             get_entry_depth: (id, exception) => {
 
-                return item.get_entry(
+                return from.optional(
+                    item.get_entry(
                     id,
                     exception,
-                ).__decide(
+                    )
+                ).decide(
                     ($) => lit.set(0),
-                    () => stack.get_entry_depth(
+                    () => from.optional(
+                        stack.get_entry_depth(
                         id,
                         exception,
-                    ).__decide(
+                        )
+                    ).decide(
                         ($) => lit.set(1 + $),
                         () => lit.not_set()
                     )

@@ -7,10 +7,6 @@ export interface Generic_Dictionary<T> {
         assign_entry: (value: T, id: string) => NT,
     ): Generic_Dictionary<NT>
 
-    __get_entry_raw_deprecated(
-        id: string
-    ): Raw_Optional_Value<T>
-
     __get_raw(): readonly [string, T][]
 }
 
@@ -33,18 +29,6 @@ export class Generic_Dictionary_Class<T> implements Generic_Dictionary<T> {
                 $v($[1], $[0])
             ]
         }))
-    }
-
-    __get_entry_raw_deprecated(
-        id: string,
-    ): Raw_Optional_Value<T> {
-        for (let i = 0; i !== this.source.length; i += 1) {
-            const entry = this.source[i]
-            if (entry[0] === id) {
-                return [entry[1]]
-            }
-        }
-        return null
     }
 
     __get_raw(): readonly [string, T][] {

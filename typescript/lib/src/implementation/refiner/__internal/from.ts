@@ -257,17 +257,34 @@ export const optional = <T extends p_di.Value>(
         decide: <RT extends p_di.Value>(
             if_set: ($: T) => RT,
             if_not_set: () => RT
-        ): RT => optional_value.__decide(if_set, if_not_set),
+        ): RT => {
+            let result: RT
+            optional_value.__extract_data(
+                ($) => {
+                    result = if_set($)
+                },
+                () => {
+                    result = if_not_set()
+                }
+            )
+            return result!
+        },
 
         map: <New_Type extends p_di.Value>(
             assign_set_value: (
                 value: T
             ) => New_Type,
         ): p_di.Optional_Value<New_Type> => {
-            return optional_value.__decide(
-                (value): p_di.Optional_Value<New_Type> => lit.set<New_Type>(assign_set_value(value)),
-                () => lit.not_set<New_Type>()
+            let result: p_di.Optional_Value<New_Type>
+            optional_value.__extract_data(
+                ($) => {
+                    result = lit.set<New_Type>(assign_set_value($))
+                },
+                () => {
+                    result = lit.not_set<New_Type>()
+                }
             )
+            return result!
         }
 
     }

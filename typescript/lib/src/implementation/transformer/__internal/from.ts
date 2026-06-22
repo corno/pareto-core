@@ -308,30 +308,6 @@ export const dictionary = <T extends p_di.Value>(
                                 return lit.set(out[id])
                             }
                         },
-                        // __get_entry_raw: (
-                        //     id,
-                        //     abort,
-                        // ) => {
-                        //     const x = source.__get_entry_raw(id)
-                        //     if (x === null) {
-                        //         return null
-                        //     } else {
-                        //         if (out[id] === undefined) {
-                        //             if (entries_started[id] !== undefined) {
-                        //                 return abort.cycle_detected(lit.list(stack.concat([id])))
-                        //             } else {
-                        //                 inner_resolve(
-                        //                     x[0],
-                        //                     id,
-                        //                     stack.concat([id])
-                        //                 )
-                        //             }
-                        //         }
-                        //         // now it must be resolved, otherwise we would have aborted
-                        //         return [out[id]]
-
-                        //     }
-                        // }
                     },
                     {
                         get_entry: (
@@ -584,7 +560,7 @@ export const list = <T extends p_di.Value>(
         on_has_first_item: <RT extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__deprecated_get_possible_item_at(0).__decide(
+        ): RT => optional(list.__deprecated_get_possible_item_at(0)).decide(
             ($) => if_true($, lit.list(list.__get_raw().slice(1))),
             () => if_not_true(),
         ),
@@ -599,7 +575,7 @@ export const list = <T extends p_di.Value>(
         on_has_last_item: <RT extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => list.__deprecated_get_possible_item_at(list.__get_raw().length - 1).__decide(
+        ): RT => optional(list.__deprecated_get_possible_item_at(list.__get_raw().length - 1)).decide(
             ($) => if_true($, lit.list(list.__get_raw().slice(0, -1))),
             () => if_not_true(),
         ),
@@ -629,7 +605,7 @@ export const list = <T extends p_di.Value>(
         ): RT => {
             return (list.__get_raw().length > 1)
                 ? if_multiple(list)
-                : list.__deprecated_get_possible_item_at(0).__decide(
+                : optional(list.__deprecated_get_possible_item_at(0)).decide(
                     ($) => if_true($),
                     () => if_none(),
                 )
@@ -774,17 +750,36 @@ export const optional = <T extends p_di.Value>(
         decide: <RT extends p_di.Value>(
             if_set: ($: T) => RT,
             if_not_set: () => RT
-        ): RT => optional_value.__decide(if_set, if_not_set),
+        ): RT => {
+            let result: RT
+            optional_value.__extract_data(
+                ($) => {
+                    result = if_set($)
+                    return undefined
+                },
+                () => {
+                    result = if_not_set()
+                    return undefined
+                }
+            )
+            return result!
+        },
 
         map: <New_Type extends p_di.Value>(
             assign_set_value: (
                 value: T
             ) => New_Type,
         ): p_di.Optional_Value<New_Type> => {
-            return optional_value.__decide(
-                (value): p_di.Optional_Value<New_Type> => lit.set<New_Type>(assign_set_value(value)),
-                () => lit.not_set<New_Type>()
+            let result: p_di.Optional_Value<New_Type>
+            optional_value.__extract_data(
+                ($) => {
+                    result = lit.set<New_Type>(assign_set_value($))
+                },
+                () => {
+                    result = lit.not_set<New_Type>()
+                }
             )
+            return result!
         },
 
     }

@@ -10,15 +10,6 @@ import { Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
  */
 export interface Optional_Value<T extends Value> {
     
-    /**
-     * @param set what to do when the value was set, returns the new type
-     * @param not_set  what to do when the value was not set, returns the new type
-     */
-    __decide<NT extends Value>(
-        set: ($: T) => NT,
-        not_set: () => NT,
-    ): NT
-
     __extract_data(
         set: ($: T) => undefined,
         not_set: () => undefined,

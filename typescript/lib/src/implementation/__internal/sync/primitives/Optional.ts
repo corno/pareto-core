@@ -4,13 +4,6 @@ import { Raw_Optional_Value } from "../../../../interface/__internal/Raw_Optiona
 
 export class Not_Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_Value<T> {
 
-    public __decide<NT>(
-        set: ($: T) => NT,
-        not_set: () => NT,
-    ) {
-        return not_set()
-    }
-
     public __extract_data(
         set: ($: T) => undefined,
         not_set: () => undefined,
@@ -27,13 +20,6 @@ export class Set_Optional_Value<T extends p_di.Value> implements p_di.Optional_V
 
     constructor(source: T) {
         this.value = source
-    }
-
-    public __decide<NT>(
-        set: ($: T) => NT,
-        not_set: () => NT,
-    ) {
-        return set(this.value)
     }
 
     public __extract_data(

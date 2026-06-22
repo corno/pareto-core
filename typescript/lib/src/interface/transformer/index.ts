@@ -32,13 +32,6 @@ export namespace lookup {
                 cycle_detected: Exception_Callback<Type, p_di.List<string>>,
             }
         ) => p_di.Optional_Value<Type>
-        // __get_entry_raw: (
-        //     id: string,
-        //     exception: {
-        //         no_context_lookup: Exception_Callback<Type, null>,
-        //         cycle_detected: Exception_Callback<Type, p_di.List<string>>,
-        //     }
-        // ) => Raw_Optional_Value<p_di.Optional_Value<Type>>
     }
 
     export type Cyclic<Type extends p_di.Value> = {
