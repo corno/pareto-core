@@ -4,7 +4,7 @@ import { Abort } from "../../../interface/__internal/Abort"
 import * as lit from "../../__internal/sync/literal"
 
 export const dictionary = <T extends p_di.Value>(
-    dictionary: p_di.Dictionary<T>,
+    dict: p_di.Dictionary<T>,
 ) => {
     return {
 
@@ -14,7 +14,7 @@ export const dictionary = <T extends p_di.Value>(
                 no_such_entry: Abort<null>,
             }
         ): T {
-            const raw = dictionary.__get_raw()
+            const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
                 const entry = raw[i]
                 if (entry[0] === id) {
@@ -24,12 +24,25 @@ export const dictionary = <T extends p_di.Value>(
             return abort.no_such_entry(null)
         },
 
+        get_possible_entry(
+            id: string,
+        ): p_di.Optional_Value<T> {
+            const raw = dict.__get_raw()
+            for (let i = 0; i !== raw.length; i += 1) {
+                const entry = raw[i]
+                if (entry[0] === id) {
+                    return lit.set(entry[1])
+                }
+            }
+            return lit.not_set()
+        },
+
         map: <New_Type extends p_di.Value>(
             assign_entry: (
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => dictionary.__d_map_deprecated(assign_entry),
+        ): p_di.Dictionary<New_Type> => dict.__d_map_deprecated(assign_entry),
 
         resolve: <Resolved extends p_di.Value>(
             assign_entry: (
@@ -39,7 +52,7 @@ export const dictionary = <T extends p_di.Value>(
                 cyclic_lookup: p_ri.lookup.Cyclic<Resolved>,
             ) => Resolved,
         ): p_di.Dictionary<Resolved> => {
-            const source = dictionary
+            const source = dict
             const out: { [id: string]: Resolved } = {}
 
             const entries_started: { [id: string]: null } = {}
@@ -78,7 +91,7 @@ export const dictionary = <T extends p_di.Value>(
                                     return abort['cycle_detected'](lit.list(stack.concat([id])))
                                 } else {
                                     inner_resolve(
-                                        source.__get_entry_deprecated(
+                                        dictionary(source).get_entry(
                                             id,
                                             {
                                                 no_such_entry: () => abort.no_such_entry(null)
@@ -196,7 +209,10 @@ export const list = <T extends p_di.Value>(
                 item: T,
             ) => New_Type,
         ): p_di.List<New_Type> => {
-            return list.__l_map_deprecated(assign_item)
+
+            return lit.list(list.__get_raw().map((entry) => {
+                return assign_item(entry)
+            }))
         },
 
         map_with_state: <
@@ -220,11 +236,11 @@ export const list = <T extends p_di.Value>(
         ): Result_Type => {
             let current_state = initial_state
             return wrapup(
-                list.__l_map_deprecated(($) => {
+                lit.list(list.__get_raw().map(($) => {
                     const result = assign_item($, current_state)
                     current_state = update_state(result, current_state)
                     return result
-                }),
+                })),
                 current_state
             )
         },

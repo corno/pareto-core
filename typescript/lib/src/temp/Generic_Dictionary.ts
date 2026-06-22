@@ -7,13 +7,6 @@ export interface Generic_Dictionary<T> {
         assign_entry: (value: T, id: string) => NT,
     ): Generic_Dictionary<NT>
 
-    __get_entry_deprecated(
-        id: string,
-        abort: {
-            no_such_entry: Abort<null>,
-        }
-    ): T
-
     __get_entry_raw_deprecated(
         id: string
     ): Raw_Optional_Value<T>
@@ -52,21 +45,6 @@ export class Generic_Dictionary_Class<T> implements Generic_Dictionary<T> {
             }
         }
         return null
-    }
-
-    __get_entry_deprecated(
-        id: string,
-        abort: {
-            no_such_entry: Abort<null>,
-        }
-    ): T {
-        for (let i = 0; i !== this.source.length; i += 1) {
-            const entry = this.source[i]
-            if (entry[0] === id) {
-                return entry[1]
-            }
-        }
-        return abort.no_such_entry(null)
     }
 
     __get_raw(): readonly [string, T][] {

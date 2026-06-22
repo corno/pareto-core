@@ -29,13 +29,13 @@ export const boolean = (
 }
 
 export const dictionary = <T extends p_di.Value>(
-    dictionary: p_di.Dictionary<T>,
+    dict: p_di.Dictionary<T>,
 ) => {
     return {
 
         amount_of_entries: (
         ): number => {
-            return dictionary.__get_raw().length
+            return dict.__get_raw().length
         },
 
         convert_to_list: <New_Type extends p_di.Value>(
@@ -44,7 +44,7 @@ export const dictionary = <T extends p_di.Value>(
                 id: string
             ) => New_Type
         ): p_di.List<New_Type> => {
-            return lit.list(dictionary.__get_raw().map(($) => assign_item($[1], $[0])))
+            return lit.list(dict.__get_raw().map(($) => assign_item($[1], $[0])))
         },
 
         filter: (
@@ -52,7 +52,7 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => boolean
-        ): p_di.Dictionary<T> => new Dictionary_Class(dictionary.__get_raw().filter(($) => callback($[1], $[0]))),
+        ): p_di.Dictionary<T> => new Dictionary_Class(dict.__get_raw().filter(($) => callback($[1], $[0]))),
 
         flatten: <New_Type extends p_di.Value>(
             get_child_dictionary: (
@@ -68,7 +68,7 @@ export const dictionary = <T extends p_di.Value>(
         ) => {
             const out: { [id: string]: New_Type } = {}
 
-            dictionary.__get_raw().forEach(($) => {
+            dict.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const child_dictionary = get_child_dictionary(value)
@@ -92,7 +92,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => p_di.List<NT>,
         ): p_di.List<NT> => {
             const out: NT[] = []
-            dictionary.__get_raw().forEach(($) => {
+            dict.__get_raw().forEach(($) => {
                 const entry = $
                 const innerList = assign_item(entry[1], entry[0])
                 innerList.__get_raw().forEach(($) => {
@@ -103,18 +103,19 @@ export const dictionary = <T extends p_di.Value>(
             return lit.list(out)
         },
 
-
-        get_possible_entry(
+        get_possible_entry<RT extends p_di.Value>(
             id: string,
-        ): p_di.Optional_Value<T> {
-            const raw = dictionary.__get_raw()
+            if_set: ($: T) => RT,
+            if_not_set: () => RT
+        ): RT {
+            const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
                 const entry = raw[i]
                 if (entry[0] === id) {
-                    return lit.set(entry[1])
+                    return if_set(entry[1])
                 }
             }
-            return lit.not_set()
+            return if_not_set()
         },
 
         group: (
@@ -124,7 +125,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => string,
         ): p_di.Dictionary<p_di.Dictionary<T>> => {
             const temp: { [id: string]: { [id: string]: T } } = {}
-            dictionary.__get_raw().forEach(($) => {
+            dict.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const group_id = get_id(value, id)
@@ -137,7 +138,7 @@ export const dictionary = <T extends p_di.Value>(
         },
 
         is_empty: (): boolean => {
-            return dictionary.__get_raw().length === 0
+            return dict.__get_raw().length === 0
         },
 
         join: <Other_Type extends p_di.Value, Result extends p_di.Value>(
@@ -149,13 +150,15 @@ export const dictionary = <T extends p_di.Value>(
             ) => Result,
         ) => {
             const out: { [id: string]: Result } = {}
-            dictionary.__get_raw().forEach(($) => {
+            dict.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 out[id] = assign_entry(
                     value,
-                    other_dictionary.__get_possible_entry_deprecated(
+                    dictionary(other_dictionary).get_possible_entry(
                         id,
+                        (x) => lit.set(x),
+                        () => lit.not_set()
                     ),
                     id
                 )
@@ -168,7 +171,7 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => dictionary.__d_map_deprecated(assign_entry),
+        ): p_di.Dictionary<New_Type> => dict.__d_map_deprecated(assign_entry),
 
         map_optionally: <New_Type extends p_di.Value>(
             assign_optional_entry: (
@@ -177,7 +180,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => p_di.Optional_Value<New_Type>
         ): p_di.Dictionary<New_Type> => {
             return new Dictionary_Class(
-                dictionary
+                dict
                     .__get_raw()
                     .map(($) => [$[0], assign_optional_entry($[1], $[0])] as [string, p_di.Optional_Value<New_Type>])
                     .filter(($) => $[1].__get_raw() !== null)
@@ -189,7 +192,8 @@ export const dictionary = <T extends p_di.Value>(
             id: string,
             if_true: ($: T) => RT,
             if_not_true: () => RT
-        ): RT => dictionary.__get_possible_entry_deprecated(id).__decide(
+        ): RT => dictionary(dict).get_possible_entry(
+            id,
             ($) => if_true($),
             () => if_not_true(),
         ),
@@ -197,8 +201,8 @@ export const dictionary = <T extends p_di.Value>(
         on_has_entries: <RT extends p_di.Value>(
             if_true: ($: p_di.Dictionary<T>) => RT,
             if_not_true: () => RT
-        ): RT => dictionary.__get_raw().length !== 0
-                ? if_true(dictionary)
+        ): RT => dict.__get_raw().length !== 0
+                ? if_true(dict)
                 : if_not_true(),
 
         on_has_single_entry: <RT extends p_di.Value>(
@@ -206,9 +210,9 @@ export const dictionary = <T extends p_di.Value>(
             if_multiple: ($: p_di.Dictionary<T>) => RT,
             if_none: () => RT,
         ): RT => {
-            return list(lit.list(dictionary.__get_raw().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
+            return list(lit.list(dict.__get_raw().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
                 (item) => if_true(item.value, item.id),
-                () => if_multiple(dictionary),
+                () => if_multiple(dict),
                 if_none,
             )
         },
@@ -220,7 +224,7 @@ export const dictionary = <T extends p_di.Value>(
             }
         ) => {
             const temp: { [id: string]: T } = {}
-            dictionary.__get_raw().forEach(($) => {
+            dict.__get_raw().forEach(($) => {
                 const id = $[0]
                 const value = $[1]
                 const new_id = get_id(value, id)
@@ -240,7 +244,7 @@ export const dictionary = <T extends p_di.Value>(
                 cyclic_lookup: p_ti.lookup.Cyclic<Resolved>,
             ) => Resolved,
         ): p_di.Dictionary<Resolved> => {
-            const source = dictionary
+            const source = dict
             const out: { [id: string]: Resolved } = {}
 
             const entries_started: { [id: string]: null } = {}
@@ -278,9 +282,8 @@ export const dictionary = <T extends p_di.Value>(
                                 if (entries_started[id] !== undefined) {
                                     return exception['cycle_detected'](lit.list(stack.concat([id])))
                                 } else {
-                                    source.__get_possible_entry_deprecated(
-                                        id
-                                    ).__extract_data(
+                                    dictionary(source).get_possible_entry(
+                                        id,
                                         ($) => {
                                             inner_resolve(
                                                 $,
@@ -288,9 +291,11 @@ export const dictionary = <T extends p_di.Value>(
                                                 stack.concat([id])
                                             )
                                             no_such_entry = false
+                                            return null
                                         },
                                         () => {
                                             no_such_entry = true
+                                            return null
                                         }
                                     )
                                 }
@@ -377,7 +382,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => number,
         ): number => {
             let sum = 0
-            dictionary.__get_raw().forEach(($) => {
+            dict.__get_raw().forEach(($) => {
                 sum += assign_value($[1])
             })
             return sum
@@ -512,7 +517,10 @@ export const list = <T extends p_di.Value>(
                 item: T,
             ) => New_Type,
         ): p_di.List<New_Type> => {
-            return list.__l_map_deprecated(assign_item)
+
+            return lit.list(list.__get_raw().map((entry) => {
+                return assign_item(entry)
+            }))
         },
 
         map_optionally: <New_Type extends p_di.Value>(
@@ -564,11 +572,11 @@ export const list = <T extends p_di.Value>(
         ): Result_Type => {
             let current_state = initial_state
             return wrapup(
-                list.__l_map_deprecated(($) => {
+                lit.list(list.__get_raw().map(($) => {
                     const result = assign_item($, current_state)
                     current_state = update_state(result, current_state)
                     return result
-                }),
+                })),
                 current_state
             )
         },

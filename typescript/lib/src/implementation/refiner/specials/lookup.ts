@@ -1,5 +1,6 @@
 import * as p_di from "../../../interface/data"
 import * as p_i from "../../../interface/refiner"
+import * as from from "../__internal/from"
 
 export namespace acyclic {
 
@@ -12,7 +13,7 @@ export namespace acyclic {
     export const from_resolved_dictionary = <T extends p_di.Value>(
         dict: p_di.Dictionary<T >,
     ): p_i.lookup.Acyclic<T> => ({
-        get_entry: (id, abort) => dict.__get_entry_deprecated(
+        get_entry: (id, abort) => from.dictionary(dict).get_entry(
             id,
             {
                 no_such_entry: () => abort.no_such_entry(null)

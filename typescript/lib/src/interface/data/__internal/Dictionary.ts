@@ -12,17 +12,6 @@ export interface Dictionary<T extends Value> {
         assign_entry: (value: T, id: string) => NT,
     ): Dictionary<NT>
 
-    __get_possible_entry_deprecated(
-        id: string
-    ): Optional_Value<T>
-
-    __get_entry_deprecated(
-        id: string,
-        abort: {
-            no_such_entry: Abort<null>,
-        }
-    ): T
-
     __get_entry_raw_deprecated(
         id: string
     ): Raw_Optional_Value<T>

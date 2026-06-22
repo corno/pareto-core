@@ -23,18 +23,6 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
         }))
     }
 
-    __get_possible_entry_deprecated(
-        id: string,
-    ): p_di.Optional_Value<T> {
-        for (let i = 0; i !== this.source.length; i += 1) {
-            const entry = this.source[i]
-            if (entry[0] === id) {
-                return new optional.Set_Optional_Value(entry[1])
-            }
-        }
-        return new optional.Not_Set_Optional_Value()
-    }
-
     __get_entry_raw_deprecated(
         id: string,
     ): Raw_Optional_Value<T> {
@@ -45,21 +33,6 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
             }
         }
         return null
-    }
-
-    __get_entry_deprecated(
-        id: string,
-        abort: {
-            no_such_entry: Abort<null>,
-        }
-    ): T {
-        for (let i = 0; i !== this.source.length; i += 1) {
-            const entry = this.source[i]
-            if (entry[0] === id) {
-                return entry[1]
-            }
-        }
-        return abort.no_such_entry(null)
     }
 
     __get_raw(): readonly [string, T][] {
