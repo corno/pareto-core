@@ -10,6 +10,8 @@ export interface List<
     T extends Value
 > {
 
+    __list: true
+
     __deprecated_get_possible_item_at(index: number): Optional_Value<T>
 
     __deprecated_get_item_at(

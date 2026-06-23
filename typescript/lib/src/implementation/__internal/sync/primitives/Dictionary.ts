@@ -13,6 +13,8 @@ export class Dictionary_Class<T extends p_di.Value> implements p_di.Dictionary<T
         this.source = source
     }
 
+    readonly __dictionary = true
+
     __get_raw(): readonly [string, T][] {
         return this.source
     }

@@ -8,6 +8,8 @@ export class List_Class<T extends p_di.Value> implements p_di.List<T> {
         this.data = data
     }
 
+    readonly __list = true
+
     __deprecated_get_possible_item_at(index: number) {
         if (index < 0 || index >= this.data.length) {
             return new optional.Not_Set_Optional_Value<T>()

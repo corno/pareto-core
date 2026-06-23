@@ -9,6 +9,8 @@ import { Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
  * this 'Optional_Value' type makes it possible to have recursive optional types like this: Optional_Value<Optional_Value<number>>
  */
 export interface Optional_Value<T extends Value> {
+
+    __optional_value: true
     
     __extract_data(
         set: ($: T) => undefined,
