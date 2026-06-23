@@ -17,9 +17,9 @@ export const dictionary = <T extends p_di.Value>(
         ): T {
             const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
-                const entry = raw[i]
-                if (entry[0] === id) {
-                    return entry[1]
+                const [entry_id, entry_value] = raw[i]
+                if (entry_id === id) {
+                    return entry_value
                 }
             }
             return abort.no_such_entry(null)
@@ -30,9 +30,9 @@ export const dictionary = <T extends p_di.Value>(
         ): p_di.Optional_Value<T> {
             const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
-                const entry = raw[i]
-                if (entry[0] === id) {
-                    return lit.set(entry[1])
+                const [entry_id, entry_value] = raw[i]
+                if (entry_id === id) {
+                    return lit.set(entry_value)
                 }
             }
             return lit.not_set()
@@ -48,10 +48,10 @@ export const dictionary = <T extends p_di.Value>(
             const temp_d_map = <NT extends p_di.Value>(
                 mapper: (value: T, id: string) => NT
             ): p_di.Dictionary<NT> => {
-                return new Dictionary_Class<NT>(dict.__get_raw().map(($) => {
+                return new Dictionary_Class<NT>(dict.__get_raw().map(([id, value]) => {
                     return [
-                        $[0],
-                        mapper($[1], $[0])
+                        id,
+                        mapper(value, id)
                     ]
                 }))
             }
@@ -129,14 +129,14 @@ export const dictionary = <T extends p_di.Value>(
                             const raw = dict.__get_raw()
 
                             for (let i = 0; i !== raw.length; i += 1) {
-                                const entry = raw[i]
-                                if (entry[0] === id) {
+                                const [entry_id, entry_value] = raw[i]
+                                if (entry_id === id) {
                                     if (out[id] === undefined) {
                                         if (entries_started[id] !== undefined) {
                                             return abort.cycle_detected(lit.list(stack.concat([id])))
                                         } else {
                                             inner_resolve(
-                                                entry[1],
+                                                entry_value,
                                                 id,
                                                 stack.concat([id])
                                             )
@@ -173,9 +173,7 @@ export const dictionary = <T extends p_di.Value>(
                     }
                 )
             }
-            source.__get_raw().forEach(($) => {
-                const id = $[0]
-                const value = $[1]
+            source.__get_raw().forEach(([id, value]) => {
                 inner_resolve(value, id, [id])
             })
 

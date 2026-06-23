@@ -34,7 +34,7 @@ export const dictionary = <T extends p_di.Value>(
                 id: string
             ) => New_Type
         ): p_di.List<New_Type> => {
-            return lit.list(dict.__get_raw().map(($) => assign_item($[1], $[0])))
+            return lit.list(dict.__get_raw().map(([id, value]) => assign_item(value, id)))
         },
 
         filter: (
@@ -42,7 +42,7 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => boolean
-        ): p_di.Dictionary<T> => new Dictionary_Class(dict.__get_raw().filter(($) => callback($[1], $[0]))),
+        ): p_di.Dictionary<T> => new Dictionary_Class(dict.__get_raw().filter(([id, value]) => callback(value, id))),
 
         flatten: <New_Type extends p_di.Value>(
             get_child_dictionary: (
@@ -58,13 +58,9 @@ export const dictionary = <T extends p_di.Value>(
         ) => {
             const out: { [id: string]: New_Type } = {}
 
-            dict.__get_raw().forEach(($) => {
-                const id = $[0]
-                const value = $[1]
+            dict.__get_raw().forEach(([id, value]) => {
                 const child_dictionary = get_child_dictionary(value)
-                child_dictionary.__get_raw().forEach(($) => {
-                    const child_id = $[0]
-                    const child_value = $[1]
+                child_dictionary.__get_raw().forEach(([child_id, child_value]) => {
                     const combined_id = get_id(id, child_id)
                     if (out[combined_id] !== undefined) {
                         abort.duplicate_id(combined_id)
@@ -82,9 +78,8 @@ export const dictionary = <T extends p_di.Value>(
             ) => p_di.List<NT>,
         ): p_di.List<NT> => {
             const out: NT[] = []
-            dict.__get_raw().forEach(($) => {
-                const entry = $
-                const innerList = assign_item(entry[1], entry[0])
+            dict.__get_raw().forEach(([id, value]) => {
+                const innerList = assign_item(value, id)
                 innerList.__get_raw().forEach(($) => {
                     out.push($)
                 })
@@ -100,9 +95,9 @@ export const dictionary = <T extends p_di.Value>(
         ): RT {
             const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
-                const entry = raw[i]
-                if (entry[0] === id) {
-                    return if_set(entry[1])
+                const [entry_id, entry_value] = raw[i]
+                if (entry_id === id) {
+                    return if_set(entry_value)
                 }
             }
             return if_not_set()
@@ -116,9 +111,7 @@ export const dictionary = <T extends p_di.Value>(
             aggregate: ($: p_di.Dictionary<T>, group_id: string) => RT
         ): p_di.Dictionary<RT> => {
             const temp: { [id: string]: [string, T][] } = {}
-            dict.__get_raw().forEach(($) => {
-                const id = $[0]
-                const value = $[1]
+            dict.__get_raw().forEach(([id, value]) => {
                 const group_id = get_id(value, id)
                 if (temp[group_id] === undefined) {
                     temp[group_id] = []
@@ -141,9 +134,7 @@ export const dictionary = <T extends p_di.Value>(
             ) => Result,
         ) => {
             const out: { [id: string]: Result } = {}
-            dict.__get_raw().forEach(($) => {
-                const id = $[0]
-                const value = $[1]
+            dict.__get_raw().forEach(([id, value]) => {
                 out[id] = assign_entry(
                     value,
                     dictionary(other_dictionary).get_possible_entry(
@@ -162,12 +153,22 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => new Dictionary_Class<New_Type>(dict.__get_raw().map(
-            ($) => [
-                $[0],
-                assign_entry($[1], $[0])
-            ]
-        )),
+        ): p_di.Dictionary<New_Type> => {
+
+            //this local function helps with type inference
+            const temp_d_map = <NT extends p_di.Value>(
+                mapper: (value: T, id: string) => NT
+            ): p_di.Dictionary<NT> => {
+                return new Dictionary_Class<NT>(dict.__get_raw().map(([id, value]) => {
+                    return [
+                        id,
+                        mapper(value, id)
+                    ]
+                }))
+            }
+
+            return temp_d_map(assign_entry)
+        },
 
         map_optionally: <New_Type extends p_di.Value>(
             assign_optional_entry: (
@@ -177,9 +178,9 @@ export const dictionary = <T extends p_di.Value>(
         ): p_di.Dictionary<New_Type> => new Dictionary_Class(
             dict
                 .__get_raw()
-                .map(($) => [$[0], assign_optional_entry($[1], $[0])] as [string, p_di.Optional_Value<New_Type>])
-                .filter(($) => $[1].__get_raw() !== null)
-                .map(($) => [$[0], $[1].__get_raw()![0]])
+                .map(([id, value]): [string, p_di.Optional_Value<New_Type>] => [id, assign_optional_entry(value, id)])
+                .filter(([_, optional]) => optional.__get_raw() !== null)
+                .map(([id, optional]) => [id, optional.__get_raw()![0]])
         ),
 
         on_has_entries: <RT extends p_di.Value>(
@@ -193,7 +194,7 @@ export const dictionary = <T extends p_di.Value>(
             if_true: ($: T, id: string) => RT,
             if_multiple: ($: p_di.Dictionary<T>) => RT,
             if_none: () => RT,
-        ): RT => list(lit.list(dict.__get_raw().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
+        ): RT => list(lit.list(dict.__get_raw().map(([id, value]) => ({ 'id': id, 'value': value })))).on_has_single_item(
             (item) => if_true(item.value, item.id),
             () => if_multiple(dict),
             if_none,
@@ -206,9 +207,7 @@ export const dictionary = <T extends p_di.Value>(
             }
         ): p_di.Dictionary<T> => {
             const temp: { [id: string]: T } = {}
-            dict.__get_raw().forEach(($) => {
-                const id = $[0]
-                const value = $[1]
+            dict.__get_raw().forEach(([id, value]) => {
                 const new_id = get_id(value, id)
                 if (temp[new_id] !== undefined) {
                     abort.duplicate_id(value, new_id)
@@ -315,9 +314,7 @@ export const dictionary = <T extends p_di.Value>(
                     }
                 )
             }
-            source.__get_raw().forEach(($) => {
-                const id = $[0]
-                const value = $[1]
+            source.__get_raw().forEach(([id, value]) => {
                 inner_resolve(value, id, [id])
             })
 
@@ -340,8 +337,8 @@ export const dictionary = <T extends p_di.Value>(
             ) => number,
         ): number => {
             let sum = 0
-            dict.__get_raw().forEach(($) => {
-                sum += assign_value($[1])
+            dict.__get_raw().forEach(([id, value]) => {
+                sum += assign_value(value)
             })
             return sum
         },
