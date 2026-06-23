@@ -43,15 +43,12 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => {
-
-            return new Dictionary_Class<New_Type>(dict.__get_raw().map(($) => {
-                return [
-                    $[0],
-                    assign_entry($[1], $[0])
-                ]
-            }))
-        },
+        ): p_di.Dictionary<New_Type> => new Dictionary_Class<New_Type>(dict.__get_raw().map(
+            ($) => [
+                $[0],
+                assign_entry($[1], $[0])
+            ]
+        )),
 
         resolve: <Resolved extends p_di.Value>(
             assign_entry: (

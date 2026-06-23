@@ -162,30 +162,25 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => {
-
-            return new Dictionary_Class<New_Type>(dict.__get_raw().map(($) => {
-                return [
-                    $[0],
-                    assign_entry($[1], $[0])
-                ]
-            }))
-        },
+        ): p_di.Dictionary<New_Type> => new Dictionary_Class<New_Type>(dict.__get_raw().map(
+            ($) => [
+                $[0],
+                assign_entry($[1], $[0])
+            ]
+        )),
 
         map_optionally: <New_Type extends p_di.Value>(
             assign_optional_entry: (
                 value: T,
                 id: string
             ) => p_di.Optional_Value<New_Type>
-        ): p_di.Dictionary<New_Type> => {
-            return new Dictionary_Class(
-                dict
-                    .__get_raw()
-                    .map(($) => [$[0], assign_optional_entry($[1], $[0])] as [string, p_di.Optional_Value<New_Type>])
-                    .filter(($) => $[1].__get_raw() !== null)
-                    .map(($) => [$[0], $[1].__get_raw()![0]])
-            )
-        },
+        ): p_di.Dictionary<New_Type> => new Dictionary_Class(
+            dict
+                .__get_raw()
+                .map(($) => [$[0], assign_optional_entry($[1], $[0])] as [string, p_di.Optional_Value<New_Type>])
+                .filter(($) => $[1].__get_raw() !== null)
+                .map(($) => [$[0], $[1].__get_raw()![0]])
+        ),
 
         on_has_entries: <RT extends p_di.Value>(
             if_true: ($: p_di.Dictionary<T>) => RT,
@@ -198,20 +193,18 @@ export const dictionary = <T extends p_di.Value>(
             if_true: ($: T, id: string) => RT,
             if_multiple: ($: p_di.Dictionary<T>) => RT,
             if_none: () => RT,
-        ): RT => {
-            return list(lit.list(dict.__get_raw().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
-                (item) => if_true(item.value, item.id),
-                () => if_multiple(dict),
-                if_none,
-            )
-        },
+        ): RT => list(lit.list(dict.__get_raw().map(($) => ({ 'id': $[0], 'value': $[1] })))).on_has_single_item(
+            (item) => if_true(item.value, item.id),
+            () => if_multiple(dict),
+            if_none,
+        ),
 
         re_id: (
             get_id: ($: T, key: string) => string,
             abort: {
                 duplicate_id: (value: T, id: string) => never
             }
-        ) => {
+        ): p_di.Dictionary<T> => {
             const temp: { [id: string]: T } = {}
             dict.__get_raw().forEach(($) => {
                 const id = $[0]
