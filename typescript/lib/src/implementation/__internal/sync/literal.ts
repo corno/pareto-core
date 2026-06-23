@@ -23,6 +23,28 @@ export function dictionary<T extends p_di.Value>(
     )
 }
 
+export function optionals_dictionary<T extends p_di.Value>(
+    source: { readonly [id: string]: p_di.Optional_Value<T> }
+): p_di.Dictionary<T> {
+
+    function create_dictionary_as_array<X extends p_di.Value>(
+        source: { readonly [id: string]: p_di.Optional_Value<X> }
+    ): Dictionary_As_Array<X> {
+        const imp: ID_Value_Pair<X>[] = []
+        Object.keys(source).forEach((id) => {
+            const raw = source[id].__get_raw()
+            if (raw !== null) {
+                imp.push([id, raw[0]])
+            }
+        })
+        return imp
+    }
+
+    return new Dictionary_Class(
+        create_dictionary_as_array(source)
+    )
+}
+
 
 export function list<
     T extends p_di.Value
