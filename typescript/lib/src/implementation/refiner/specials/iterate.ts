@@ -9,12 +9,12 @@ export default function iterate<
     End_Info extends p_di.Value,
     Return_Type extends p_di.Value
 >(
-    $: p_di.List<Item>,
+    list: p_di.List<Item>,
     end_info: End_Info,
     assign: ($iter: p_pi.Iterator<Item, End_Info>) => Return_Type,
 ): Return_Type {
 
-    const raw = $.__get_raw()
+    const raw = list.__get_raw()
 
     const length = raw.length
 
@@ -42,18 +42,16 @@ export default function iterate<
             assign,
             no_item,
         ) => {
+            const this_list_raw = list.__get_raw()
             const currentx = look_raw()
             if (currentx === null) {
                 return no_item()
             }
-            const current = $.__deprecated_get_item_at(
-                position,
-                {
-                    out_of_bounds: () => { throw new Error("just checked that position is in bounds") },
-                }
-            )
+            if (position > this_list_raw.length - 1) {
+                throw new Error("just checked that position is in bounds")
+            }
             position += 1
-            return assign(current)
+            return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
         },
         discard: <T>(
             assign: () => T

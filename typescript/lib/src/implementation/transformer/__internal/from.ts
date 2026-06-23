@@ -386,16 +386,24 @@ export const list = <T extends p_di.Value>(
                 other_value: p_di.Optional_Value<Other_Type>,
             ) => Result,
         ) => {
+            const this_list_raw = list.__get_raw()
+            const other_list_raw = other_list.__get_raw()
             const out: Result[] = []
             const maxLength = Math.max(
-                list.__get_raw().length,
-                other_list.__get_raw().length
+                this_list_raw.length,
+                other_list_raw.length
             )
             for (let i = 0; i < maxLength; i++) {
-                out.push(assign_item(
-                    list.__deprecated_get_possible_item_at(i),
-                    other_list.__deprecated_get_possible_item_at(i),
-                ))
+                out.push(
+                    assign_item(
+                        i < this_list_raw.length
+                            ? lit.set(this_list_raw[i])
+                            : lit.not_set(),
+                        i < other_list_raw.length
+                            ? lit.set(other_list_raw[i])
+                            : lit.not_set()
+                    )
+                )
             }
             return lit.list(out)
         },
@@ -429,13 +437,16 @@ export const list = <T extends p_di.Value>(
             ) => Result,
         ): p_di.List<Result> => {
             const out: Result[] = []
+            const other_list_raw = other_list.__get_raw()
             let index = -1
             list.__get_raw().forEach(
                 ($) => {
                     index++
                     out.push(assign_item(
                         $,
-                        other_list.__deprecated_get_possible_item_at(index),
+                        index < other_list_raw.length
+                            ? lit.set(other_list_raw[index])
+                            : lit.not_set(),
                     ))
                 }
             )
@@ -514,10 +525,17 @@ export const list = <T extends p_di.Value>(
         on_has_first_item: <RT extends p_di.Value>(
             if_true: ($: T, rest: p_di.List<T>) => RT,
             if_not_true: () => RT
-        ): RT => optional(list.__deprecated_get_possible_item_at(0)).decide(
-            ($) => if_true($, lit.list(list.__get_raw().slice(1))),
-            () => if_not_true(),
-        ),
+        ): RT => {
+            const list_raw = list.__get_raw()
+            if (list_raw.length === 0) {
+                return if_not_true()
+            } else {
+                return if_true(
+                    list_raw[0],
+                    lit.list(list_raw.slice(1))
+                )
+            }
+        },
 
         on_has_items: <RT extends p_di.Value>(
             if_true: ($: p_di.List<T>) => RT,
@@ -527,12 +545,22 @@ export const list = <T extends p_di.Value>(
                 : if_not_true(),
 
         on_has_last_item: <RT extends p_di.Value>(
-            if_true: ($: T, rest: p_di.List<T>) => RT,
+            if_true: (
+                $: T,
+                rest: p_di.List<T>
+            ) => RT,
             if_not_true: () => RT
-        ): RT => optional(list.__deprecated_get_possible_item_at(list.__get_raw().length - 1)).decide(
-            ($) => if_true($, lit.list(list.__get_raw().slice(0, -1))),
-            () => if_not_true(),
-        ),
+        ): RT => {
+            const list_raw = list.__get_raw()
+            if (list_raw.length === 0) {
+                return if_not_true()
+            } else {
+                return if_true(
+                    list_raw[list_raw.length - 1],
+                    lit.list(list_raw.slice(0, -1))
+                )
+            }
+        },
 
         /**
          * sequentially tests each item in the list with the provided test function. If a match is found, it returns the result of the test function. If no match is found, it returns the result of the if_no_match function.
@@ -557,12 +585,14 @@ export const list = <T extends p_di.Value>(
             if_multiple: ($: p_di.List<T>) => RT,
             if_none: () => RT,
         ): RT => {
-            return (list.__get_raw().length > 1)
-                ? if_multiple(list)
-                : optional(list.__deprecated_get_possible_item_at(0)).decide(
-                    ($) => if_true($),
-                    () => if_none(),
-                )
+            const list_raw = list.__get_raw()
+            if (list_raw.length === 0) {
+                return if_none()
+            } else if (list_raw.length === 1) {
+                return if_true(list_raw[0])
+            } else {
+                return if_multiple(list)
+            }
         },
 
         sum: (
