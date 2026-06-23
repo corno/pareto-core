@@ -43,12 +43,21 @@ export const dictionary = <T extends p_di.Value>(
                 value: T,
                 id: string
             ) => New_Type,
-        ): p_di.Dictionary<New_Type> => new Dictionary_Class<New_Type>(dict.__get_raw().map(
-            ($) => [
-                $[0],
-                assign_entry($[1], $[0])
-            ]
-        )),
+        ): p_di.Dictionary<New_Type> => {
+            //this local function helps with type inference
+            const temp_d_map = <NT extends p_di.Value>(
+                mapper: (value: T, id: string) => NT
+            ): p_di.Dictionary<NT> => {
+                return new Dictionary_Class<NT>(dict.__get_raw().map(($) => {
+                    return [
+                        $[0],
+                        mapper($[1], $[0])
+                    ]
+                }))
+            }
+
+            return temp_d_map(assign_entry)
+        },
 
         resolve: <Resolved extends p_di.Value>(
             assign_entry: (
