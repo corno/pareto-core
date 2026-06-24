@@ -5,25 +5,29 @@ import { Abort } from "../../../interface/__internal/Abort"
 import * as from from "../__internal/from"
 
 import { Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
-import { Create_Expect_Error } from "../../../interface/production/__internal/Iterator"
+import { Create_Expectation_Error } from "../../../interface/production/__internal/Iterator"
 
 
 export default function iterate<
-    Item extends p_di.Value,
+    Return_Type extends p_di.Value,
     Error extends p_di.Value,
-    Expected_Item extends p_di.Value,
+    Expected extends p_di.Value,
+    Item extends p_di.Value,
     End_Info extends p_di.Value,
-    Return_Type extends p_di.Value
->(
+>($$: {
     list: p_di.List<Item>,
     end_info: End_Info,
-    not_finised_error: ($: Item) => p_di.Optional_Value<Error>,
     abort: Abort<Error>,
-    create_expect_error: Create_Expect_Error<Item, End_Info, Error, Expected_Item>,
-    assign: ($iter: p_pi.Iterator<Item, End_Info, Error, Expected_Item>) => Return_Type,
-): Return_Type {
+    create_dangling_item_error: ($: Item) => p_di.Optional_Value<Error>,
+    create_expectation_error: Create_Expectation_Error<
+        Error,
+        Expected,
+        Item,
+        End_Info>,
+    assign: ($iter: p_pi.Iterator<Item, End_Info, Error, Expected>) => Return_Type,
+}): Return_Type {
 
-    const raw = list.__get_raw()
+    const raw = $$.list.__get_raw()
 
     const length = raw.length
 
@@ -38,46 +42,57 @@ export default function iterate<
 
     const create_iterator = <
         The_Error extends p_di.Value,
-        The_Expected_Item extends p_di.Value
+        The_Expected extends p_di.Value
     >(
         transform_the_error: ($: The_Error) => Error,
-        create_expect_error: Create_Expect_Error<Item, End_Info, The_Error, The_Expected_Item>
-    ): p_pi.Iterator<Item, End_Info, The_Error, The_Expected_Item> => {
+        create_expectation_error: Create_Expectation_Error<
+            The_Error,
+            The_Expected,
+            Item,
+            End_Info
+        >
+    ): p_pi.Iterator<Item,
+        End_Info,
+        The_Error,
+        The_Expected
+    > => {
         return {
-            abort: ($) => abort(transform_the_error($)),
+            abort: ($) => $$.abort(transform_the_error($)),
             expect: (
                 $i,
             ) => {
                 const next = look_raw()
                 if (next === null) {
-                    return abort(transform_the_error(create_expect_error(
-                        lit.not_set(),
+                    return $$.abort(transform_the_error(create_expectation_error(
                         $i.expected,
-                        end_info
+                        ['end', $$.end_info],
                     )))
                 }
-                const result = $i.item(
+                return $i.item(
                     next[0],
-                )
-                return from.optional(result).decide(
-                    ($) => $,
-                    () => abort(
-                        transform_the_error(create_expect_error(
-                            lit.set(next[0]),
-                            $i.expected,
-                            end_info
-                        )),
+                    ($) => $$.abort(
+                        transform_the_error(
+                            create_expectation_error(
+                                $i.expected,
+                                ['item', next[0]],
+                            )
+                        )
                     )
                 )
             },
             to_new_iterator: <
                 New_Error extends p_di.Value,
-                New_Expected_Item extends p_di.Value
+                New_Expected extends p_di.Value
             >(
                 transform_error: ($: New_Error) => The_Error,
-                cee: Create_Expect_Error<Item, End_Info, New_Error, New_Expected_Item>
+                cee: Create_Expectation_Error<
+                    New_Error,
+                    New_Expected,
+                    Item,
+                    End_Info
+                >
             ) => {
-                return create_iterator<New_Error, New_Expected_Item>(
+                return create_iterator<New_Error, New_Expected>(
                     ($) => transform_the_error(transform_error($)),
                     cee
                 )
@@ -88,7 +103,7 @@ export default function iterate<
                 assign,
                 no_item,
             ) => {
-                const this_list_raw = list.__get_raw()
+                const this_list_raw = $$.list.__get_raw()
                 const currentx = look_raw()
                 if (currentx === null) {
                     return no_item()
@@ -103,7 +118,7 @@ export default function iterate<
                 assign: () => T
             ) => {
                 position += 1
-                assign()
+                return assign()
             },
             list: <List_Item extends p_di.Value>($x: {
                 has_more_items: ($: Item) => boolean,
@@ -126,7 +141,7 @@ export default function iterate<
             look: (item, no_item) => {
                 const next = look_raw()
                 if (next === null) {
-                    return no_item(end_info)
+                    return no_item($$.end_info)
                 }
                 return item(next[0])
             },
@@ -162,16 +177,16 @@ export default function iterate<
         }
     }
 
-    const result = assign(
-        create_iterator<Error, Expected_Item>(
+    const result = $$.assign(
+        create_iterator<Error, Expected>(
             ($) => $,
-            create_expect_error,
+            $$.create_expectation_error,
         )
     )
-    if (position < length) {
-        not_finised_error(raw[position]).__extract_data(
+    if (position < length - 1) {
+        $$.create_dangling_item_error(raw[position]).__extract_data(
             ($) => {
-                abort($)
+                $$.abort($)
             },
             () => {
                 // do nothing

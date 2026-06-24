@@ -10,7 +10,7 @@ export interface Safe_Iterator<
         callback: (token: Item) => T,
         no_item: () => T,
     ) => T
-    discard: <T extends p_di.Value>(callback: () => T) => undefined
+    discard: <T extends p_di.Value>(callback: () => T) => T
     list: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: ($: Item) => List_Item,

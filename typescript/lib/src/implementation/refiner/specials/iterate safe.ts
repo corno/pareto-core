@@ -6,9 +6,9 @@ import { Abort } from "../../../interface/__internal/Abort"
 import { Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
 
 export default function iterate_safe<
+    Return_Type extends p_di.Value,
     Item extends p_di.Value,
     End_Info extends p_di.Value,
-    Return_Type extends p_di.Value
 >(
     list: p_di.List<Item>,
     end_info: End_Info,
@@ -29,16 +29,6 @@ export default function iterate_safe<
     }
 
     const result = assign({
-        // assert_finished: (
-        //     assign,
-        //     abort
-        // ) => {
-        //     const result = assign()
-        //     if (position < length) {
-        //         return abort.not_finished(null)
-        //     }
-        //     return result
-        // },
         consume: (
             assign,
             no_item,
@@ -58,18 +48,8 @@ export default function iterate_safe<
             assign: () => T
         ) => {
             position += 1
-            assign()
+            return assign()
         },
-        // discard_after: <T>(
-        //     assign: () => T
-        // ) => {
-        //     const value = assign()
-        //     position += 1
-        //     return value
-        // },
-        // get_position: () => {
-        //     return position
-        // },
         list: <List_Item extends p_di.Value>($x: {
             has_more_items: ($: Item) => boolean,
             handle: ($: Item) => List_Item,
