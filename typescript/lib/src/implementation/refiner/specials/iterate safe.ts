@@ -5,17 +5,14 @@ import { Abort } from "../../../interface/__internal/Abort"
 
 import { Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
 
-export default function iterate<
+export default function iterate_safe<
     Item extends p_di.Value,
-    Error extends p_di.Value,
     End_Info extends p_di.Value,
     Return_Type extends p_di.Value
 >(
     list: p_di.List<Item>,
     end_info: End_Info,
-    not_finised_error: p_di.Optional_Value<Error>,
-    abort: Abort<Error>,
-    assign: ($iter: p_pi.Iterator<Item, End_Info, Error>) => Return_Type,
+    assign: ($iter: p_pi.Safe_Iterator<Item, End_Info>) => Return_Type,
 ): Return_Type {
 
     const raw = list.__get_raw()
@@ -62,20 +59,6 @@ export default function iterate<
         ) => {
             position += 1
             assign()
-        },
-        expect: (
-            $i,
-        ) => {
-            const next = look_raw()
-            if (next === null) {
-                return abort($i.get_error(lit.not_set()))
-            }
-            return $i.item(
-                next[0],
-                () => abort(
-                    $i.get_error(lit.set(next[0])),
-                )
-            )
         },
         get_end_info: () => end_info,
         // discard_after: <T>(
@@ -143,15 +126,5 @@ export default function iterate<
             return result
         },
     })
-    if (position < length) {
-        not_finised_error.__extract_data(
-            ($) => {
-                abort($)
-            },
-            () => {
-                // do nothing
-            }
-        )
-    }
     return result
 }

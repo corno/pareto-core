@@ -1,8 +1,10 @@
 import { Abort } from "../__internal/Abort"
 import { Iterator } from "./__internal/Iterator"
+import { Safe_Iterator } from "./__internal/Safe_Iterator"
 import * as p_di from "../data"
 
 export { Iterator } from "./__internal/Iterator"
+export { Safe_Iterator } from "./__internal/Safe_Iterator"
 
 export type Production<
     Result extends p_di.Value,
@@ -10,8 +12,10 @@ export type Production<
     Iterator_Item extends p_di.Value,
     End_Info extends p_di.Value
 > = (
-    iterator: Iterator<Iterator_Item,
-        End_Info
+    iterator: Iterator<
+        Iterator_Item,
+        End_Info,
+        Error
     >,
 
     abort: Abort<Error>,
@@ -27,7 +31,8 @@ export type Production_With_Parameter<
 > = (
     iterator: Iterator<
         Iterator_Item,
-        End_Info
+        End_Info,
+        Error
     >,
 
     abort: Abort<Error>,
@@ -41,7 +46,7 @@ export type Production_Without_Error<
     Iterator_Item extends p_di.Value,
     End_Info extends p_di.Value
 > = (
-    iterator: Iterator<
+    iterator: Safe_Iterator<
         Iterator_Item,
         End_Info
     >,
@@ -54,7 +59,7 @@ export type Production_Without_Error_With_Parameter<
     End_Info extends p_di.Value,
     Parameter extends p_di.Value
 > = (
-    iterator: Iterator<
+    iterator: Safe_Iterator<
         Iterator_Item,
         End_Info
     >,
