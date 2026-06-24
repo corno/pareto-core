@@ -2,12 +2,16 @@ import * as p_di from "../../../interface/data"
 import * as p_pi from "../../../interface/production"
 import * as lit from "../../__internal/sync/literal"
 import { Abort } from "../../../interface/__internal/Abort"
+import * as from from "../__internal/from"
 
 import { Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
+import { Create_Expect_Error } from "../../../interface/production/__internal/Iterator"
+
 
 export default function iterate<
     Item extends p_di.Value,
     Error extends p_di.Value,
+    Expected_Item extends p_di.Value,
     End_Info extends p_di.Value,
     Return_Type extends p_di.Value
 >(
@@ -15,7 +19,8 @@ export default function iterate<
     end_info: End_Info,
     not_finised_error: ($: Item) => p_di.Optional_Value<Error>,
     abort: Abort<Error>,
-    assign: ($iter: p_pi.Iterator<Item, End_Info, Error>) => Return_Type,
+    create_expect_error: Create_Expect_Error<Item, End_Info, Error, Expected_Item>,
+    assign: ($iter: p_pi.Iterator<Item, End_Info, Error, Expected_Item>) => Return_Type,
 ): Return_Type {
 
     const raw = list.__get_raw()
@@ -31,9 +36,13 @@ export default function iterate<
         return [raw[position]]
     }
 
-    const create_iterator = <The_Error extends p_di.Value>(
-        transform_the_error: ($: The_Error) => Error
-    ): p_pi.Iterator<Item, End_Info, The_Error> => {
+    const create_iterator = <
+        The_Error extends p_di.Value,
+        The_Expected_Item extends p_di.Value
+    >(
+        transform_the_error: ($: The_Error) => Error,
+        create_expect_error: Create_Expect_Error<Item, End_Info, The_Error, The_Expected_Item>
+    ): p_pi.Iterator<Item, End_Info, The_Error, The_Expected_Item> => {
         return {
             abort: ($) => abort(transform_the_error($)),
             expect: (
@@ -41,25 +50,37 @@ export default function iterate<
             ) => {
                 const next = look_raw()
                 if (next === null) {
-                    return abort(transform_the_error($i.get_error(
+                    return abort(transform_the_error(create_expect_error(
                         lit.not_set(),
+                        $i.expected,
                         end_info
                     )))
                 }
-                return $i.item(
+                const result = $i.item(
                     next[0],
+                )
+                return from.optional(result).decide(
+                    ($) => $,
                     () => abort(
-                        transform_the_error($i.get_error(
+                        transform_the_error(create_expect_error(
                             lit.set(next[0]),
+                            $i.expected,
                             end_info
                         )),
                     )
                 )
             },
-            to_new_iterator: <New_Error extends p_di.Value>(
-                transform_error: ($: New_Error) => The_Error
+            to_new_iterator: <
+                New_Error extends p_di.Value,
+                New_Expected_Item extends p_di.Value
+            >(
+                transform_error: ($: New_Error) => The_Error,
+                cee: Create_Expect_Error<Item, End_Info, New_Error, New_Expected_Item>
             ) => {
-                return create_iterator<New_Error>(($) => transform_the_error(transform_error($)))
+                return create_iterator<New_Error, New_Expected_Item>(
+                    ($) => transform_the_error(transform_error($)),
+                    cee
+                )
             },
 
             //methods inherited from Safe_Iterator
@@ -141,9 +162,12 @@ export default function iterate<
         }
     }
 
-    const result = assign(create_iterator<Error>(
-        ($) => $
-    ))
+    const result = assign(
+        create_iterator<Error, Expected_Item>(
+            ($) => $,
+            create_expect_error,
+        )
+    )
     if (position < length) {
         not_finised_error(raw[position]).__extract_data(
             ($) => {

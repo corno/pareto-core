@@ -8,19 +8,22 @@ export { Safe_Iterator } from "./__internal/Safe_Iterator"
 export type Production<
     Result extends p_di.Value,
     Error extends p_di.Value,
+    Expected_Item extends p_di.Value,
     Iterator_Item extends p_di.Value,
     End_Info extends p_di.Value
 > = (
     iterator: Iterator<
         Iterator_Item,
         End_Info,
-        Error
+        Error,
+        Expected_Item
     >,
 ) => Result
 
 export type Production_With_Parameter<
     Result extends p_di.Value,
     Error extends p_di.Value,
+    Expected_Item extends p_di.Value,
     Iterator_Item extends p_di.Value,
     End_Info extends p_di.Value,
     Parameter extends p_di.Value
@@ -28,7 +31,8 @@ export type Production_With_Parameter<
     iterator: Iterator<
         Iterator_Item,
         End_Info,
-        Error
+        Error,
+        Expected_Item
     >,
     $p: Parameter,
 
