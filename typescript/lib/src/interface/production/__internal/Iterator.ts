@@ -27,6 +27,7 @@ export interface Iterator<
         T extends p_di.Value,
     >($: {
         expected: Expected,
+        discard: boolean,
         item: (token: Item, abort: Abort<null>) => T,
     }) => T
     to_new_iterator: <

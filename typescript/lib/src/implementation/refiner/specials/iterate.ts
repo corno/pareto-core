@@ -68,6 +68,9 @@ export default function iterate<
                         ['end', $$.end_info],
                     )))
                 }
+                if ($i.discard) {
+                    position += 1
+                }
                 return $i.item(
                     next[0],
                     ($) => $$.abort(
