@@ -1,4 +1,3 @@
-import { Abort } from "../__internal/Abort"
 import { Iterator } from "./__internal/Iterator"
 import { Safe_Iterator } from "./__internal/Safe_Iterator"
 import * as p_di from "../data"
@@ -17,9 +16,6 @@ export type Production<
         End_Info,
         Error
     >,
-
-    abort: Abort<Error>,
-
 ) => Result
 
 export type Production_With_Parameter<
@@ -34,9 +30,6 @@ export type Production_With_Parameter<
         End_Info,
         Error
     >,
-
-    abort: Abort<Error>,
-
     $p: Parameter,
 
 ) => Result

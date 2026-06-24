@@ -2,16 +2,15 @@ import * as p_di from "../../data"
 import { Abort } from "../../__internal/Abort"
 import { Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
 
-export type Safe_Iterator<
+export interface Safe_Iterator<
     Item extends p_di.Value,
     End_Info extends p_di.Value
-> = {
+> {
     consume: <T extends p_di.Value>(
         callback: (token: Item) => T,
         no_item: () => T,
     ) => T
     discard: <T extends p_di.Value>(callback: () => T) => undefined
-    get_end_info: () => End_Info
     list: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: ($: Item) => List_Item,

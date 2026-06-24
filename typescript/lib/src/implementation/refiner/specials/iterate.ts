@@ -13,7 +13,7 @@ export default function iterate<
 >(
     list: p_di.List<Item>,
     end_info: End_Info,
-    not_finised_error: p_di.Optional_Value<Error>,
+    not_finised_error: ($: Item) => p_di.Optional_Value<Error>,
     abort: Abort<Error>,
     assign: ($iter: p_pi.Iterator<Item, End_Info, Error>) => Return_Type,
 ): Return_Type {
@@ -31,120 +31,121 @@ export default function iterate<
         return [raw[position]]
     }
 
-    const result = assign({
-        // assert_finished: (
-        //     assign,
-        //     abort
-        // ) => {
-        //     const result = assign()
-        //     if (position < length) {
-        //         return abort.not_finished(null)
-        //     }
-        //     return result
-        // },
-        consume: (
-            assign,
-            no_item,
-        ) => {
-            const this_list_raw = list.__get_raw()
-            const currentx = look_raw()
-            if (currentx === null) {
-                return no_item()
-            }
-            if (position > this_list_raw.length - 1) {
-                throw new Error("just checked that position is in bounds")
-            }
-            position += 1
-            return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
-        },
-        discard: <T>(
-            assign: () => T
-        ) => {
-            position += 1
-            assign()
-        },
-        expect: (
-            $i,
-        ) => {
-            const next = look_raw()
-            if (next === null) {
-                return abort($i.get_error(lit.not_set()))
-            }
-            return $i.item(
-                next[0],
-                () => abort(
-                    $i.get_error(lit.set(next[0])),
-                )
-            )
-        },
-        get_end_info: () => end_info,
-        // discard_after: <T>(
-        //     assign: () => T
-        // ) => {
-        //     const value = assign()
-        //     position += 1
-        //     return value
-        // },
-        // get_position: () => {
-        //     return position
-        // },
-        list: <List_Item extends p_di.Value>($x: {
-            has_more_items: ($: Item) => boolean,
-            handle: ($: Item) => List_Item,
-        }): p_di.List<List_Item> => {
-            const raw: List_Item[] = []
-
-            while (true) {
-                const next_element = look_raw()
-                if (next_element === null) {
-                    break
-                } else if (!$x.has_more_items(next_element[0])) {
-                    break
-                } else {
-                    raw.push($x.handle(next_element[0]))
+    const create_iterator = <The_Error extends p_di.Value>(
+        transform_the_error: ($: The_Error) => Error
+    ): p_pi.Iterator<Item, End_Info, The_Error> => {
+        return {
+            abort: ($) => abort(transform_the_error($)),
+            expect: (
+                $i,
+            ) => {
+                const next = look_raw()
+                if (next === null) {
+                    return abort(transform_the_error($i.get_error(
+                        lit.not_set(),
+                        end_info
+                    )))
                 }
-            }
-            return lit.list(raw)
-        },
-        look: (item, no_item) => {
-            const next = look_raw()
-            if (next === null) {
-                return no_item(end_info)
-            }
-            return item(next[0])
-        },
-        look_raw: () => {
-            if (position < 0 || position >= raw.length) {
-                return null
-            }
-            return [raw[position]]
-        },
-        look_ahead_raw: (offset: number) => {
-            if (position + offset < 0 || position + offset >= raw.length) {
-                return null
-            }
-            return [raw[position + offset]]
-        },
-        optional: (
-            $i,
-        ) => {
-            const next = look_raw()
-            if (next === null) {
-                return lit.not_set()
-            }
-            return $i.item(
-                next[0],
-            )
+                return $i.item(
+                    next[0],
+                    () => abort(
+                        transform_the_error($i.get_error(
+                            lit.set(next[0]),
+                            end_info
+                        )),
+                    )
+                )
+            },
+            to_new_iterator: <New_Error extends p_di.Value>(
+                transform_error: ($: New_Error) => The_Error
+            ) => {
+                return create_iterator<New_Error>(($) => transform_the_error(transform_error($)))
+            },
 
-        },
-        wrap_up: (callback, post) => {
-            const result = callback()
-            post()
-            return result
-        },
-    })
+            //methods inherited from Safe_Iterator
+            consume: (
+                assign,
+                no_item,
+            ) => {
+                const this_list_raw = list.__get_raw()
+                const currentx = look_raw()
+                if (currentx === null) {
+                    return no_item()
+                }
+                if (position > this_list_raw.length - 1) {
+                    throw new Error("just checked that position is in bounds")
+                }
+                position += 1
+                return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
+            },
+            discard: <T>(
+                assign: () => T
+            ) => {
+                position += 1
+                assign()
+            },
+            list: <List_Item extends p_di.Value>($x: {
+                has_more_items: ($: Item) => boolean,
+                handle: ($: Item) => List_Item,
+            }): p_di.List<List_Item> => {
+                const raw: List_Item[] = []
+
+                while (true) {
+                    const next_element = look_raw()
+                    if (next_element === null) {
+                        break
+                    } else if (!$x.has_more_items(next_element[0])) {
+                        break
+                    } else {
+                        raw.push($x.handle(next_element[0]))
+                    }
+                }
+                return lit.list(raw)
+            },
+            look: (item, no_item) => {
+                const next = look_raw()
+                if (next === null) {
+                    return no_item(end_info)
+                }
+                return item(next[0])
+            },
+            look_raw: () => {
+                if (position < 0 || position >= raw.length) {
+                    return null
+                }
+                return [raw[position]]
+            },
+            look_ahead_raw: (offset: number) => {
+                if (position + offset < 0 || position + offset >= raw.length) {
+                    return null
+                }
+                return [raw[position + offset]]
+            },
+            optional: (
+                $i,
+            ) => {
+                const next = look_raw()
+                if (next === null) {
+                    return lit.not_set()
+                }
+                return $i.item(
+                    next[0],
+                )
+
+            },
+            wrap_up: (callback, post) => {
+                const result = callback()
+                post()
+                return result
+            },
+        }
+    }
+
+    const result = assign(create_iterator<Error>(
+        ($) => $
+    ))
     if (position < length) {
-        not_finised_error.__extract_data(
+        not_finised_error(raw[position]).__extract_data(
             ($) => {
                 abort($)
             },

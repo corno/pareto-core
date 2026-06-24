@@ -60,7 +60,6 @@ export default function iterate_safe<
             position += 1
             assign()
         },
-        get_end_info: () => end_info,
         // discard_after: <T>(
         //     assign: () => T
         // ) => {
