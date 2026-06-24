@@ -1,9 +1,9 @@
 import { Iterator } from "./__internal/Iterator"
-import { Safe_Iterator } from "./__internal/Safe_Iterator"
+import { Guaranteed_Value_Iterator } from "./__internal/Guaranteed_Value_Iterator"
 import * as p_di from "../data"
 
 export { Iterator } from "./__internal/Iterator"
-export { Safe_Iterator } from "./__internal/Safe_Iterator"
+export { Guaranteed_Value_Iterator as Safe_Iterator } from "./__internal/Guaranteed_Value_Iterator"
 
 export type Production<
     Result extends p_di.Value,
@@ -43,7 +43,7 @@ export type Production_Without_Error<
     Iterator_Item extends p_di.Value,
     End_Info extends p_di.Value
 > = (
-    iterator: Safe_Iterator<
+    iterator: Guaranteed_Value_Iterator<
         Iterator_Item,
         End_Info
     >,
@@ -56,7 +56,7 @@ export type Production_Without_Error_With_Parameter<
     End_Info extends p_di.Value,
     Parameter extends p_di.Value
 > = (
-    iterator: Safe_Iterator<
+    iterator: Guaranteed_Value_Iterator<
         Iterator_Item,
         End_Info
     >,

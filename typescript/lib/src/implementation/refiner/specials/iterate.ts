@@ -29,8 +29,6 @@ export default function iterate<
 
     const raw = $$.list.__get_raw()
 
-    const length = raw.length
-
     let position = 0
 
     const look_raw = (): Raw_Optional_Value<Item> => {
@@ -83,6 +81,56 @@ export default function iterate<
                     )
                 )
             },
+            unguaranteed_optional_value: (
+                $i,
+            ) => {
+                const next = look_raw()
+                if (next === null) {
+                    return $$.abort(transform_the_error(create_expectation_error(
+                        $i.expected,
+                        ['end', $$.end_info],
+                    )))
+                }
+                if ($i.discard) {
+                    position += 1
+                }
+                return $i.item(
+                    next[0],
+                    ($) => $$.abort(
+                        transform_the_error(
+                            create_expectation_error(
+                                $i.expected,
+                                ['item', next[0]],
+                            )
+                        )
+                    )
+                )
+            },
+            unguaranteed_state: (
+                $i,
+            ) => {
+                const next = look_raw()
+                if (next === null) {
+                    return $$.abort(transform_the_error(create_expectation_error(
+                        $i.expected,
+                        ['end', $$.end_info],
+                    )))
+                }
+                if ($i.discard) {
+                    position += 1
+                }
+                return $i.item(
+                    next[0],
+                    ($) => $$.abort(
+                        transform_the_error(
+                            create_expectation_error(
+                                $i.expected,
+                                ['item', next[0]],
+                            )
+                        )
+                    )
+                )
+            },
             to_new_iterator: <
                 New_Error extends p_di.Value,
                 New_Expected extends p_di.Value
@@ -102,6 +150,36 @@ export default function iterate<
             },
 
             //methods inherited from Safe_Iterator
+            text: (
+                assign,
+                no_item,
+            ) => {
+                const this_list_raw = $$.list.__get_raw()
+                const currentx = look_raw()
+                if (currentx === null) {
+                    return no_item()
+                }
+                if (position > this_list_raw.length - 1) {
+                    throw new Error("just checked that position is in bounds")
+                }
+                position += 1
+                return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
+            },
+            number: (
+                assign,
+                no_item,
+            ) => {
+                const this_list_raw = $$.list.__get_raw()
+                const currentx = look_raw()
+                if (currentx === null) {
+                    return no_item()
+                }
+                if (position > this_list_raw.length - 1) {
+                    throw new Error("just checked that position is in bounds")
+                }
+                position += 1
+                return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
+            },
             consume: (
                 assign,
                 no_item,
@@ -117,7 +195,7 @@ export default function iterate<
                 position += 1
                 return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
             },
-            discard: <T>(
+            discard_non_value_item: <T>(
                 assign: () => T
             ) => {
                 position += 1
@@ -148,13 +226,13 @@ export default function iterate<
                 }
                 return item(next[0])
             },
-            look_raw: () => {
+            deprecated_look_raw: () => {
                 if (position < 0 || position >= raw.length) {
                     return null
                 }
                 return [raw[position]]
             },
-            look_ahead_raw: (offset: number) => {
+            deprecated_look_ahead_raw: (offset: number) => {
                 if (position + offset < 0 || position + offset >= raw.length) {
                     return null
                 }
@@ -186,7 +264,7 @@ export default function iterate<
             $$.create_expectation_error,
         )
     )
-    if (position < length - 1) {
+    if (position < raw.length - 1) {
         $$.create_dangling_item_error(raw[position]).__extract_data(
             ($) => {
                 $$.abort($)

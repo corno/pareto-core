@@ -1,6 +1,6 @@
 import * as p_di from "../../data"
 import { Abort } from "../../__internal/Abort"
-import { Safe_Iterator } from "./Safe_Iterator"
+import { Guaranteed_Value_Iterator } from "./Guaranteed_Value_Iterator"
 
 
 
@@ -21,7 +21,7 @@ export interface Iterator<
     End_Info extends p_di.Value,
     Error extends p_di.Value,
     Expected extends p_di.Value
-> extends Safe_Iterator<Item, End_Info> {
+> extends Guaranteed_Value_Iterator<Item, End_Info> {
     abort: Abort<Error>
     expect: <
         T extends p_di.Value,
@@ -30,6 +30,20 @@ export interface Iterator<
         discard: boolean,
         item: (token: Item, abort: Abort<null>) => T,
     }) => T
+    unguaranteed_optional_value: <
+        T extends p_di.Value,
+    >($: {
+        expected: Expected,
+        discard: boolean,
+        item: (token: Item, abort: Abort<null>) => p_di.Optional_Value<T>,
+    }) => p_di.Optional_Value<T>
+    unguaranteed_state: <
+        State extends p_di.State,
+    >($: {
+        expected: Expected,
+        discard: boolean,
+        item: (token: Item, abort: Abort<null>) => State,
+    }) => State
     to_new_iterator: <
         New_Error extends p_di.Value,
         New_Expected extends p_di.Value

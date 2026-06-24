@@ -17,8 +17,6 @@ export default function iterate_safe<
 
     const raw = list.__get_raw()
 
-    const length = raw.length
-
     let position = 0
 
     const look_raw = (): Raw_Optional_Value<Item> => {
@@ -29,6 +27,36 @@ export default function iterate_safe<
     }
 
     const result = assign({
+        text: (
+            assign,
+            no_item,
+        ) => {
+            const this_list_raw = list.__get_raw()
+            const currentx = look_raw()
+            if (currentx === null) {
+                return no_item()
+            }
+            if (position > this_list_raw.length - 1) {
+                throw new Error("just checked that position is in bounds")
+            }
+            position += 1
+            return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
+        },
+        number: (
+            assign,
+            no_item,
+        ) => {
+            const this_list_raw = list.__get_raw()
+            const currentx = look_raw()
+            if (currentx === null) {
+                return no_item()
+            }
+            if (position > this_list_raw.length - 1) {
+                throw new Error("just checked that position is in bounds")
+            }
+            position += 1
+            return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
+        },
         consume: (
             assign,
             no_item,
@@ -44,7 +72,7 @@ export default function iterate_safe<
             position += 1
             return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
         },
-        discard: <T>(
+        discard_non_value_item: <T>(
             assign: () => T
         ) => {
             position += 1
@@ -75,13 +103,13 @@ export default function iterate_safe<
             }
             return item(next[0])
         },
-        look_raw: () => {
+        deprecated_look_raw: () => {
             if (position < 0 || position >= raw.length) {
                 return null
             }
             return [raw[position]]
         },
-        look_ahead_raw: (offset: number) => {
+        deprecated_look_ahead_raw: (offset: number) => {
             if (position + offset < 0 || position + offset >= raw.length) {
                 return null
             }
