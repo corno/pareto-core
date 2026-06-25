@@ -1,7 +1,5 @@
 import * as p_di from "../../data"
 import { Abort } from "../../__internal/Abort"
-import { Guaranteed_Value_Iterator } from "./Guaranteed_Value_Iterator"
-
 
 
 export type Create_Expectation_Error<
@@ -21,27 +19,58 @@ export interface Iterator<
     End_Info extends p_di.Value,
     Error extends p_di.Value,
     Expected extends p_di.Value
-> extends Guaranteed_Value_Iterator<Item, End_Info> {
-    abort: Abort<Error>
-    expect: <
-        T extends p_di.Value,
-    >($: {
-        expected: Expected,
-        discard: boolean,
-        item: (token: Item, abort: Abort<null>) => T,
-    }) => T
-    unguaranteed_optional_value: <
-        T extends p_di.Value,
-    >($: {
-        expected: Expected,
-        discard: boolean,
-        item: (token: Item, abort: Abort<null>) => p_di.Optional_Value<T>,
-    }) => p_di.Optional_Value<T>
-    unguaranteed_state: <
+> {
+
+    consume: {
+        boolean: (
+            callback: (token: Item, abort: Abort<Error>) => boolean,
+            no_item: (end_info: End_Info, abort: Abort<Error>) => boolean,
+        ) => boolean
+        list: <T extends p_di.Value>(
+            callback: (token: Item, abort: Abort<Error>) => p_di.List<T>,
+            no_item: (end_info: End_Info, abort: Abort<Error>) => p_di.List<T>,
+        ) => p_di.List<T>
+        nothing: (
+            callback: (token: Item, abort: Abort<Error>) => null,
+            no_item: (end_info: End_Info, abort: Abort<Error>) => null,
+        ) => null
+        number: (
+            callback: (token: Item, abort: Abort<Error>) => number,
+            no_item: (end_info: End_Info, abort: Abort<Error>) => number,
+        ) => number
+        optional: <T extends p_di.Value>($: {
+            item: (token: Item) => p_di.Optional_Value<T>,
+        }) => p_di.Optional_Value<T>
+        state: <State extends p_di.State>(
+            callback: (token: Item, abort: Abort<Error>) => State,
+            no_item: (end_info: End_Info, abort: Abort<Error>) => State,
+        ) => State
+        text: (
+            callback: (token: Item, abort: Abort<Error>) => string,
+            no_item: (end_info: End_Info, abort: Abort<Error>) => string,
+        ) => string
+    }
+    build_list: <List_Item extends p_di.Value>($: {
+        has_more_items: ($: Item) => boolean,
+        handle: () => List_Item,
+    }) => p_di.List<List_Item>,
+    build_list_with_segments: <List_Item extends p_di.Value>($: {
+        has_more_items: ($: Item) => boolean,
+        handle: () => p_di.List<List_Item>,
+    }) => p_di.List<List_Item>,
+    peek: <T extends p_di.Value>(
+        item: (token: Item, abort: Abort<Error>) => T,
+        no_item: (end_info: End_Info, abort: Abort<Error>) => T,
+    ) => T
+    peek_ahead: <T extends p_di.Value>(
+        offset: number,
+        item: (token: Item, abort: Abort<Error>) => T,
+        no_item: (end_info: End_Info, abort: Abort<Error>) => T,
+    ) => T
+    state_based_on_strategy: <
         State extends p_di.State,
     >($: {
         expected: Expected,
-        discard: boolean,
         item: (token: Item, abort: Abort<null>) => State,
     }) => State
     to_new_iterator: <

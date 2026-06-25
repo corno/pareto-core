@@ -18,24 +18,28 @@ export default function iterate<
     list: p_di.List<Item>,
     end_info: End_Info,
     abort: Abort<Error>,
-    create_dangling_item_error: ($: Item) => p_di.Optional_Value<Error>,
+    on_dangling_item: null | Abort<Item>,
     create_expectation_error: Create_Expectation_Error<
         Error,
         Expected,
         Item,
         End_Info>,
-    assign: ($iter: p_pi.Iterator<Item, End_Info, Error, Expected>) => Return_Type,
+    assign: (
+        $iter: p_pi.Iterator<Item, End_Info, Error, Expected>,
+        abort: Abort<Error>
+    ) => Return_Type,
 }): Return_Type {
 
     const raw = $$.list.__get_raw()
 
     let position = 0
 
-    const look_raw = (): Raw_Optional_Value<Item> => {
-        if (position < 0 || position >= raw.length) {
+    const look_raw = (ahead?: number): Raw_Optional_Value<Item> => {
+        const pos = position + (ahead ?? 0)
+        if (pos < 0 || pos >= raw.length) {
             return null
         }
-        return [raw[position]]
+        return [raw[pos]]
     }
 
     const create_iterator = <
@@ -55,8 +59,187 @@ export default function iterate<
         The_Expected
     > => {
         return {
-            abort: ($) => $$.abort(transform_the_error($)),
-            expect: (
+
+            consume: {
+
+                boolean: (
+                    assign,
+                    no_item,
+                ) => {
+                    const currentx = look_raw()
+                    if (currentx === null) {
+                        return no_item(
+                            $$.end_info,
+                            ($) => $$.abort(transform_the_error($))
+                        )
+                    }
+                    position += 1
+                    return assign(
+                        currentx[0],
+                        ($) => $$.abort(transform_the_error($))
+                    )
+                },
+
+                list: (
+                    assign,
+                    no_item,
+                ) => {
+                    const currentx = look_raw()
+                    if (currentx === null) {
+                        return no_item(
+                            $$.end_info,
+                            ($) => $$.abort(transform_the_error($))
+                        )
+                    }
+                    position += 1
+                    return assign(
+                        currentx[0],
+                        ($) => $$.abort(transform_the_error($))
+                    )
+                },
+
+                nothing: (
+                    assign,
+                    no_item,
+                ) => {
+                    const currentx = look_raw()
+                    if (currentx === null) {
+                        return no_item(
+                            $$.end_info,
+                            ($) => $$.abort(transform_the_error($))
+                        )
+                    }
+                    position += 1
+                    return assign(
+                        currentx[0],
+                        ($) => $$.abort(transform_the_error($))
+                    )
+                },
+
+                number: (
+                    assign,
+                    no_item,
+                ) => {
+                    const currentx = look_raw()
+                    if (currentx === null) {
+                        return no_item(
+                            $$.end_info,
+                            ($) => $$.abort(transform_the_error($))
+                        )
+                    }
+                    position += 1
+                    return assign(
+                        currentx[0],
+                        ($) => $$.abort(transform_the_error($))
+                    )
+                },
+
+                optional: (
+                    $i,
+                ) => {
+                    const next = look_raw()
+                    if (next === null) {
+                        return lit.not_set()
+                    }
+                    return $i.item(
+                        next[0],
+                    )
+
+                },
+
+                state: (
+                    assign,
+                    no_item,
+                ) => {
+                    const currentx = look_raw()
+                    if (currentx === null) {
+                        return no_item(
+                            $$.end_info,
+                            ($) => $$.abort(transform_the_error($))
+                        )
+                    }
+                    position += 1
+                    return assign(
+                        currentx[0],
+                        ($) => $$.abort(transform_the_error($))
+                    )
+                },
+
+                text: (
+                    assign,
+                    no_item,
+                ) => {
+                    const currentx = look_raw()
+                    if (currentx === null) {
+                        return no_item(
+                            $$.end_info,
+                            ($) => $$.abort(transform_the_error($))
+                        )
+                    }
+                    position += 1
+                    return assign(
+                        currentx[0],
+                        ($) => $$.abort(transform_the_error($))
+                    )
+                },
+
+            },
+
+            build_list: <List_Item extends p_di.Value>($x: {
+                has_more_items: ($: Item) => boolean,
+                handle: () => List_Item,
+            }): p_di.List<List_Item> => {
+                const raw: List_Item[] = []
+
+                while (true) {
+                    const next_element = look_raw()
+                    if (next_element === null) {
+                        break
+                    } else if (!$x.has_more_items(next_element[0])) {
+                        break
+                    } else {
+                        raw.push($x.handle())
+                    }
+                }
+                return lit.list(raw)
+            },
+
+            build_list_with_segments: <List_Item extends p_di.Value>($x: {
+                has_more_items: ($: Item) => boolean,
+                handle: () => p_di.List<List_Item>,
+            }): p_di.List<List_Item> => {
+                const raw: List_Item[] = []
+
+                while (true) {
+                    const next_element = look_raw()
+                    if (next_element === null) {
+                        break
+                    } else if (!$x.has_more_items(next_element[0])) {
+                        break
+                    } else {
+                        raw.push(...$x.handle().__get_raw())
+                    }
+                }
+                return lit.list(raw)
+            },
+
+            peek: (item, no_item) => {
+                const next = look_raw()
+                if (next === null) {
+                    return no_item($$.end_info, ($) => $$.abort(transform_the_error($)))
+                }
+                return item(next[0], ($) => $$.abort(transform_the_error($)))
+            },
+
+            peek_ahead: (offset, item, no_item) => {
+                const next = look_raw(offset)
+                if (next === null) {
+                    return no_item($$.end_info, ($) => $$.abort(transform_the_error($)))
+                }
+                return item(next[0], ($) => $$.abort(transform_the_error($)))
+            },
+
+            state_based_on_strategy: (
                 $i,
             ) => {
                 const next = look_raw()
@@ -65,9 +248,6 @@ export default function iterate<
                         $i.expected,
                         ['end', $$.end_info],
                     )))
-                }
-                if ($i.discard) {
-                    position += 1
                 }
                 return $i.item(
                     next[0],
@@ -81,56 +261,7 @@ export default function iterate<
                     )
                 )
             },
-            unguaranteed_optional_value: (
-                $i,
-            ) => {
-                const next = look_raw()
-                if (next === null) {
-                    return $$.abort(transform_the_error(create_expectation_error(
-                        $i.expected,
-                        ['end', $$.end_info],
-                    )))
-                }
-                if ($i.discard) {
-                    position += 1
-                }
-                return $i.item(
-                    next[0],
-                    ($) => $$.abort(
-                        transform_the_error(
-                            create_expectation_error(
-                                $i.expected,
-                                ['item', next[0]],
-                            )
-                        )
-                    )
-                )
-            },
-            unguaranteed_state: (
-                $i,
-            ) => {
-                const next = look_raw()
-                if (next === null) {
-                    return $$.abort(transform_the_error(create_expectation_error(
-                        $i.expected,
-                        ['end', $$.end_info],
-                    )))
-                }
-                if ($i.discard) {
-                    position += 1
-                }
-                return $i.item(
-                    next[0],
-                    ($) => $$.abort(
-                        transform_the_error(
-                            create_expectation_error(
-                                $i.expected,
-                                ['item', next[0]],
-                            )
-                        )
-                    )
-                )
-            },
+
             to_new_iterator: <
                 New_Error extends p_di.Value,
                 New_Expected extends p_di.Value
@@ -148,113 +279,6 @@ export default function iterate<
                     cee
                 )
             },
-
-            //methods inherited from Safe_Iterator
-            text: (
-                assign,
-                no_item,
-            ) => {
-                const this_list_raw = $$.list.__get_raw()
-                const currentx = look_raw()
-                if (currentx === null) {
-                    return no_item()
-                }
-                if (position > this_list_raw.length - 1) {
-                    throw new Error("just checked that position is in bounds")
-                }
-                position += 1
-                return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
-            },
-            number: (
-                assign,
-                no_item,
-            ) => {
-                const this_list_raw = $$.list.__get_raw()
-                const currentx = look_raw()
-                if (currentx === null) {
-                    return no_item()
-                }
-                if (position > this_list_raw.length - 1) {
-                    throw new Error("just checked that position is in bounds")
-                }
-                position += 1
-                return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
-            },
-            consume: (
-                assign,
-                no_item,
-            ) => {
-                const this_list_raw = $$.list.__get_raw()
-                const currentx = look_raw()
-                if (currentx === null) {
-                    return no_item()
-                }
-                if (position > this_list_raw.length - 1) {
-                    throw new Error("just checked that position is in bounds")
-                }
-                position += 1
-                return assign(this_list_raw[position - 1]) // position was already incremented, so we need to return the previous item
-            },
-            discard_non_value_item: <T>(
-                assign: () => T
-            ) => {
-                position += 1
-                return assign()
-            },
-            list: <List_Item extends p_di.Value>($x: {
-                has_more_items: ($: Item) => boolean,
-                handle: ($: Item) => List_Item,
-            }): p_di.List<List_Item> => {
-                const raw: List_Item[] = []
-
-                while (true) {
-                    const next_element = look_raw()
-                    if (next_element === null) {
-                        break
-                    } else if (!$x.has_more_items(next_element[0])) {
-                        break
-                    } else {
-                        raw.push($x.handle(next_element[0]))
-                    }
-                }
-                return lit.list(raw)
-            },
-            look: (item, no_item) => {
-                const next = look_raw()
-                if (next === null) {
-                    return no_item($$.end_info)
-                }
-                return item(next[0])
-            },
-            deprecated_look_raw: () => {
-                if (position < 0 || position >= raw.length) {
-                    return null
-                }
-                return [raw[position]]
-            },
-            deprecated_look_ahead_raw: (offset: number) => {
-                if (position + offset < 0 || position + offset >= raw.length) {
-                    return null
-                }
-                return [raw[position + offset]]
-            },
-            optional: (
-                $i,
-            ) => {
-                const next = look_raw()
-                if (next === null) {
-                    return lit.not_set()
-                }
-                return $i.item(
-                    next[0],
-                )
-
-            },
-            wrap_up: (callback, post) => {
-                const result = callback()
-                post()
-                return result
-            },
         }
     }
 
@@ -262,17 +286,13 @@ export default function iterate<
         create_iterator<Error, Expected>(
             ($) => $,
             $$.create_expectation_error,
-        )
+        ),
+        ($) => $$.abort($)
     )
-    if (position < raw.length - 1) {
-        $$.create_dangling_item_error(raw[position]).__extract_data(
-            ($) => {
-                $$.abort($)
-            },
-            () => {
-                // do nothing
-            }
-        )
+    if ($$.on_dangling_item !== null) {
+        if (position < raw.length - 1) {
+            $$.on_dangling_item(raw[position])
+        }
     }
     return result
 }
