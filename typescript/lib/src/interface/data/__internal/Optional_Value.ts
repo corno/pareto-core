@@ -12,7 +12,7 @@ export interface Optional_Value<T extends Value> {
 
     __optional_value: true
     
-    __extract_data(
+    __deprecated_extract_data(
         set: ($: T) => undefined,
         not_set: () => undefined,
     ): undefined

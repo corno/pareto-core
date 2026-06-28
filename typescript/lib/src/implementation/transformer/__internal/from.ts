@@ -472,7 +472,7 @@ export const list = <T extends p_di.Value>(
             const out: New_Type[] = []
             list.__get_raw().forEach(($) => {
                 const result = assign_optional_item($)
-                result.__extract_data(
+                result.__deprecated_extract_data(
                     ($) => {
                         out.push($)
                     },
@@ -733,7 +733,7 @@ export const optional = <T extends p_di.Value>(
             if_not_set: () => RT
         ): RT => {
             let result: RT
-            optional_value.__extract_data(
+            optional_value.__deprecated_extract_data(
                 ($) => {
                     result = if_set($)
                     return undefined
@@ -752,7 +752,7 @@ export const optional = <T extends p_di.Value>(
             ) => New_Type,
         ): p_di.Optional_Value<New_Type> => {
             let result: p_di.Optional_Value<New_Type>
-            optional_value.__extract_data(
+            optional_value.__deprecated_extract_data(
                 ($) => {
                     result = lit.set<New_Type>(assign_set_value($))
                 },

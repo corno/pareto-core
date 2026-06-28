@@ -15,7 +15,7 @@ export default function assert<
     assign: () => Return_Type
 ): Return_Type {
     const test_result = tester()
-    test_result.__extract_data(
+    test_result.__deprecated_extract_data(
         ($) => {
             abort($)
         },

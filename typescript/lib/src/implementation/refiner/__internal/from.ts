@@ -275,7 +275,7 @@ export const optional = <T extends p_di.Value>(
             if_not_set: () => RT
         ): RT => {
             let result: RT
-            optional_value.__extract_data(
+            optional_value.__deprecated_extract_data(
                 ($) => {
                     result = if_set($)
                 },
@@ -292,7 +292,7 @@ export const optional = <T extends p_di.Value>(
             ) => New_Type,
         ): p_di.Optional_Value<New_Type> => {
             let result: p_di.Optional_Value<New_Type>
-            optional_value.__extract_data(
+            optional_value.__deprecated_extract_data(
                 ($) => {
                     result = lit.set<New_Type>(assign_set_value($))
                 },
