@@ -14,14 +14,8 @@ export default function assert<
     tester: () => p_di.Optional_Value<Error>,
     assign: () => Return_Type
 ): Return_Type {
-    const test_result = tester()
-    test_result.__deprecated_extract_data(
-        ($) => {
-            abort($)
-        },
-        () => {
-
-        }
-    )
-    return assign()
+    const raw = tester().__get_raw()
+    return raw === null
+        ? assign()
+        : abort(raw[0])
 }

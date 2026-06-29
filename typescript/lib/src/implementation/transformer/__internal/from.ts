@@ -471,13 +471,10 @@ export const list = <T extends p_di.Value>(
         ): p_di.List<New_Type> => {
             const out: New_Type[] = []
             list.__get_raw().forEach(($) => {
-                const result = assign_optional_item($)
-                result.__deprecated_extract_data(
-                    ($) => {
-                        out.push($)
-                    },
-                    () => { }
-                )
+                const raw = assign_optional_item($).__get_raw()
+                if (raw !== null) {
+                    out.push(raw[0])
+                }
             })
             return lit.list(out)
         },
@@ -732,18 +729,10 @@ export const optional = <T extends p_di.Value>(
             if_set: ($: T) => RT,
             if_not_set: () => RT
         ): RT => {
-            let result: RT
-            optional_value.__deprecated_extract_data(
-                ($) => {
-                    result = if_set($)
-                    return undefined
-                },
-                () => {
-                    result = if_not_set()
-                    return undefined
-                }
-            )
-            return result!
+            const raw = optional_value.__get_raw()
+            return raw === null
+                ? if_not_set()
+                : if_set(raw[0])
         },
 
         map: <New_Type extends p_di.Value>(
@@ -751,16 +740,10 @@ export const optional = <T extends p_di.Value>(
                 value: T
             ) => New_Type,
         ): p_di.Optional_Value<New_Type> => {
-            let result: p_di.Optional_Value<New_Type>
-            optional_value.__deprecated_extract_data(
-                ($) => {
-                    result = lit.set<New_Type>(assign_set_value($))
-                },
-                () => {
-                    result = lit.not_set<New_Type>()
-                }
-            )
-            return result!
+            const raw = optional_value.__get_raw()
+            return raw === null
+                ? lit.not_set()
+                : lit.set(assign_set_value(raw[0]))
         },
 
     }

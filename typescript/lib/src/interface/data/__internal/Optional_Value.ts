@@ -11,11 +11,6 @@ import { Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
 export interface Optional_Value<T extends Value> {
 
     __optional_value: true
-    
-    __deprecated_extract_data(
-        set: ($: T) => undefined,
-        not_set: () => undefined,
-    ): undefined
 
     __get_raw(
     ): Raw_Optional_Value<T>
