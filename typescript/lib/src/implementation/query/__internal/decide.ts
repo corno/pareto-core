@@ -4,7 +4,16 @@ import * as p_qi from "../../../interface/query"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 
+/**
+ * @deprecated use 'option' instead
+ */
 export function ss<T extends p_di.Value, RT extends p_qi.Query_Result<any, any>>(
+    option: Option<T>,
+    $c: ($: T) => RT): RT {
+    return $c(option[1])
+}
+
+export function option<T extends p_di.Value, RT extends p_qi.Query_Result<any, any>>(
     option: Option<T>,
     $c: ($: T) => RT): RT {
     return $c(option[1])

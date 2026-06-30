@@ -7,7 +7,20 @@ import handle_command_block from "./handle_command_block"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 
+/**
+ * @deprecated use 'option' instead
+ */
 export function ss<
+    T extends p_di.Value,
+    Error extends p_di.Value
+>(
+    option: Option<T>,
+    $c: ($: T) => Command_Block<Error>
+): Command_Block<Error> {
+    return $c(option[1])
+}
+
+export function option<
     T extends p_di.Value,
     Error extends p_di.Value
 >(

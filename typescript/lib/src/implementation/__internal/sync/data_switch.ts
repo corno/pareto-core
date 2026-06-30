@@ -17,8 +17,14 @@ export type Option<T extends p_di.Value> = readonly [string, T]
  *          return ss($.state, ($) => null)
  *     default: return au($.state[0])
  * }
+ * @deprecated use 'option' instead
  */
 export function ss<T extends p_di.Value, RT extends p_di.Value>(
+    option: Option<T>,
+    $c: ($: T) => RT): RT {
+    return $c(option[1])
+}
+export function option<T extends p_di.Value, RT extends p_di.Value>(
     option: Option<T>,
     $c: ($: T) => RT): RT {
     return $c(option[1])
