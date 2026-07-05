@@ -2,13 +2,13 @@
 export class Unreachable_Code_Path_Error {
     constructor(
         message: string,
-        stack? : string,
+        stack : string | undefined,
     ) {
         this.message = message
         this.stack = stack
     }
     message: string
-    stack?: string
+    stack: string | undefined
 }
 
 export default function unreachable_code_path(explanation: string): never {

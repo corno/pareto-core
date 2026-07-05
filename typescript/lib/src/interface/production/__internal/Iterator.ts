@@ -1,4 +1,5 @@
 import * as p_di from "../../data"
+import { Abort } from "../../__internal/Abort"
 
 export interface Iterator<
     Item extends p_di.Value,
@@ -8,10 +9,12 @@ export interface Iterator<
     build_list: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: () => List_Item,
+        on_no_progression: Abort<null>,
     }) => p_di.List<List_Item>,
     build_list_with_segments: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: () => p_di.List<List_Item>,
+        on_no_progression: Abort<null>,
     }) => p_di.List<List_Item>,
 
     consume: <T extends p_di.Value>(

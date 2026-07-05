@@ -41,6 +41,7 @@ export default function iterate<
             build_list: <List_Item extends p_di.Value>($x: {
                 has_more_items: ($: Item) => boolean,
                 handle: () => List_Item,
+                on_no_progression: Abort<null>,
             }): p_di.List<List_Item> => {
                 const raw: List_Item[] = []
 
@@ -51,7 +52,12 @@ export default function iterate<
                     } else if (!$x.has_more_items(next_element[0])) {
                         break
                     } else {
-                        raw.push($x.handle())
+                        const position_before = position
+                        const result = $x.handle()
+                        if (position === position_before) {
+                            return $x.on_no_progression(null)
+                        }
+                        raw.push(result)
                     }
                 }
                 return lit.list(raw)
@@ -60,6 +66,7 @@ export default function iterate<
             build_list_with_segments: <List_Item extends p_di.Value>($x: {
                 has_more_items: ($: Item) => boolean,
                 handle: () => p_di.List<List_Item>,
+                on_no_progression: Abort<null>,
             }): p_di.List<List_Item> => {
                 const raw: List_Item[] = []
 
@@ -70,7 +77,12 @@ export default function iterate<
                     } else if (!$x.has_more_items(next_element[0])) {
                         break
                     } else {
-                        raw.push(...$x.handle().__get_raw())
+                        const position_before = position
+                        const result = $x.handle()
+                        if (position === position_before) {
+                            return $x.on_no_progression(null)
+                        }
+                        raw.push(...result.__get_raw())
                     }
                 }
                 return lit.list(raw)
