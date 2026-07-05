@@ -1,8 +1,8 @@
-import * as p_i from "../../../interface/transformer"
-import * as p_di from "../../../interface/data"
+import * as p_i from "../../../interface/transformer/index.js"
+import * as p_di from "../../../interface/data/index.js"
 
-import * as lit from "../../__internal/sync/literal"
-import * as from from "../__internal/from"
+import * as lit from "../../__internal/sync/literal.js"
+import * as from from "../__internal/from.js"
 
 export namespace acyclic {
 

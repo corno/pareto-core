@@ -5,7 +5,7 @@
         "declaration": true,
         "forceConsistentCasingInFileNames": true,
         "inlineSourceMap": true,
-        "module": "esnext",
+        "module": "nodenext",
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noPropertyAccessFromIndexSignature": true,

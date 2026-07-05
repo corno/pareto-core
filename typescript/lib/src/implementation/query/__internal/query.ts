@@ -1,7 +1,7 @@
-import * as p_i from "../../../interface/query"
-import * as p_di from "../../../interface/data"
+import * as p_i from "../../../interface/query/index.js"
+import * as p_di from "../../../interface/data/index.js"
 
-import query_result from "./query_result"
+import query_result from "./query_result.js"
 
 
 export type Query_Callback<

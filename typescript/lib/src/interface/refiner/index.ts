@@ -1,6 +1,6 @@
-import { type Abort } from "../__internal/Abort"
-import { type Raw_Optional_Value } from "../__internal/Raw_Optional_Value"
-import * as p_di from "../data"
+import { type Abort } from "../__internal/Abort.js"
+import { type Raw_Optional_Value } from "../__internal/Raw_Optional_Value.js"
+import * as p_di from "../data/index.js"
 
 export type Refiner<
     Result extends p_di.Value,

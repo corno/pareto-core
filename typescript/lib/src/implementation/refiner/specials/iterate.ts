@@ -1,9 +1,9 @@
-import * as p_di from "../../../interface/data"
-import * as p_pi from "../../../interface/production"
-import * as lit from "../../__internal/sync/literal"
-import { type Abort } from "../../../interface/__internal/Abort"
+import * as p_di from "../../../interface/data/index.js"
+import * as p_pi from "../../../interface/production/index.js"
+import * as lit from "../../__internal/sync/literal.js"
+import { type Abort } from "../../../interface/__internal/Abort.js"
 
-import { type Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
+import { type Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value.js"
 
 
 export default function iterate<

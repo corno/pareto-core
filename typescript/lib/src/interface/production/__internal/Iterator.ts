@@ -1,5 +1,5 @@
-import * as p_di from "../../data"
-import { type Abort } from "../../__internal/Abort"
+import * as p_di from "../../data/index.js"
+import { type Abort } from "../../__internal/Abort.js"
 
 export interface Iterator<
     Item extends p_di.Value,

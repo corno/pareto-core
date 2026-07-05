@@ -1,7 +1,7 @@
-import * as p_ci from "../../../interface/command"
-import * as p_di from "../../../interface/data"
-import command_promise from "./command_promise"
-import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import * as p_ci from "../../../interface/command/index.js"
+import * as p_di from "../../../interface/data/index.js"
+import command_promise from "./command_promise.js"
+import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise.js"
 
 export default function command<
     Error extends p_di.Value,

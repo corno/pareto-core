@@ -1,4 +1,4 @@
-import * as p_di from "../../data"
+import * as p_di from "../../data/index.js"
 
 export type Command_Promise<
 Error extends p_di.Value

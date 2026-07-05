@@ -1,8 +1,8 @@
-import * as p_di from "../../../interface/data"
+import * as p_di from "../../../interface/data/index.js"
 
-import { type Dictionary_As_Array, Dictionary_Class, type ID_Value_Pair } from "./primitives/Dictionary"
-import { List_Class } from "./primitives/List"
-import { Set_Optional_Value, Not_Set_Optional_Value } from "./primitives/Optional"
+import { type Dictionary_As_Array, Dictionary_Class, type ID_Value_Pair } from "./primitives/Dictionary.js"
+import { List_Class } from "./primitives/List.js"
+import { Set_Optional_Value, Not_Set_Optional_Value } from "./primitives/Optional.js"
 
 export function dictionary<T extends p_di.Value>(
     source: { readonly [id: string]: T }

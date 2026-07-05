@@ -1,11 +1,11 @@
-import * as p_qi from "../../../interface/query"
-import * as p_ti from "../../../interface/transformer"
-import * as p_di from "../../../interface/data"
-import query_result from "./query_result"
-import create_asynchronous_dictionary_builder from "../../__internal/async/asynchronous_dictionary_builder"
-import create_asynchronous_processes_monitor from "../../__internal/async/create_asynchronous_processes_monitor"
-import { type Abort } from "../../../interface/__internal/Abort"
-import create_refinement_context from "../../__internal/sync/create_refinement_context"
+import * as p_qi from "../../../interface/query/index.js"
+import * as p_ti from "../../../interface/transformer/index.js"
+import * as p_di from "../../../interface/data/index.js"
+import query_result from "./query_result.js"
+import create_asynchronous_dictionary_builder from "../../__internal/async/asynchronous_dictionary_builder.js"
+import create_asynchronous_processes_monitor from "../../__internal/async/create_asynchronous_processes_monitor.js"
+import { type Abort } from "../../../interface/__internal/Abort.js"
+import create_refinement_context from "../../__internal/sync/create_refinement_context.js"
 
 export function dictionary<
     Entry extends p_di.Value,

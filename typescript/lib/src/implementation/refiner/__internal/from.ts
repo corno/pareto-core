@@ -1,8 +1,8 @@
-import * as p_di from "../../../interface/data"
-import * as p_ri from "../../../interface/refiner"
-import { type Abort } from "../../../interface/__internal/Abort"
-import * as lit from "../../__internal/sync/literal"
-import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
+import * as p_di from "../../../interface/data/index.js"
+import * as p_ri from "../../../interface/refiner/index.js"
+import { type Abort } from "../../../interface/__internal/Abort.js"
+import * as lit from "../../__internal/sync/literal.js"
+import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary.js"
 
 export const dictionary = <T extends p_di.Value>(
     dict: p_di.Dictionary<T>,

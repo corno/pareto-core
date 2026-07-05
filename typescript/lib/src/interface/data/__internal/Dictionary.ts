@@ -1,5 +1,5 @@
 
-import { type Value } from "./Value"
+import { type Value } from "./Value.js"
 
 /**
  * A dictionary for Pareto.

@@ -1,12 +1,12 @@
 
-export * as literal from "../__internal/sync/literal"
-export * as e from "./__internal/query_expressions"
-export * from "./__internal/query_function"
-export * from "./__internal/query_result"
-export * from "./__internal/query"
-export * from "./__internal/decide"
+export * as literal from "../__internal/sync/literal.js"
+export * as e from "./__internal/query_expressions.js"
+export * from "./__internal/query_function.js"
+export * from "./__internal/query_result.js"
+export * from "./__internal/query.js"
+export * from "./__internal/decide.js"
 
-import query_function from "./__internal/query_function"
+import query_function from "./__internal/query_function.js"
 
 export {
     query_function,

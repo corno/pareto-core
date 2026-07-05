@@ -1,9 +1,9 @@
-import * as p_di from "../../../interface/data"
-import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import * as p_di from "../../../interface/data/index.js"
+import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise.js"
 
-import { type Command_Block } from "./Command_Block"
-import command_promise from "./command_promise"
-import handle_command_block from "./handle_command_block"
+import { type Command_Block } from "./Command_Block.js"
+import command_promise from "./command_promise.js"
+import handle_command_block from "./handle_command_block.js"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 

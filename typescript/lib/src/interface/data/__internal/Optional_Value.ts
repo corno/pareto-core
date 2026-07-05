@@ -1,5 +1,5 @@
-import { type Value } from "./Value"
-import { type Raw_Optional_Value } from "../../__internal/Raw_Optional_Value"
+import { type Value } from "./Value.js"
+import { type Raw_Optional_Value } from "../../__internal/Raw_Optional_Value.js"
 
 
 /**

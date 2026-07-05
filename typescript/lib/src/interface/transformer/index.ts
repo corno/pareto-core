@@ -1,4 +1,4 @@
-import * as p_di from "../data"
+import * as p_di from "../data/index.js"
 
 export type Transformer<
     Input extends p_di.Value,

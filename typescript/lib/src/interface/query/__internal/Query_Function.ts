@@ -1,6 +1,6 @@
 
-import * as p_di from "../../data"
-import { type Query } from "./Query"
+import * as p_di from "../../data/index.js"
+import { type Query } from "./Query.js"
 
 export type Query_Function<
     My_Query extends Query<any, any, any>,

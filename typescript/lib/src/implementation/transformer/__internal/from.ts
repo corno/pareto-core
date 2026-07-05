@@ -1,8 +1,8 @@
-import * as p_di from "../../../interface/data"
-import * as p_ti from "../../../interface/transformer"
-import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
-import { type Abort } from "../../../interface/__internal/Abort"
-import * as lit from "../../__internal/sync/literal"
+import * as p_di from "../../../interface/data/index.js"
+import * as p_ti from "../../../interface/transformer/index.js"
+import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary.js"
+import { type Abort } from "../../../interface/__internal/Abort.js"
+import * as lit from "../../__internal/sync/literal.js"
 
 export const boolean = (
     boolean_value: boolean,

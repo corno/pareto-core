@@ -1,4 +1,4 @@
-import * as p_di from "../../../../interface/data"
+import * as p_di from "../../../../interface/data/index.js"
 
 export type ID_Value_Pair<T> = [string, T]
 

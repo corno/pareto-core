@@ -1,3 +1,3 @@
-export * from "./__internal/Query_Result"
-export * from "./__internal/Query_Function"
-export * from "./__internal/Query"
+export * from "./__internal/Query_Result.js"
+export * from "./__internal/Query_Function.js"
+export * from "./__internal/Query.js"

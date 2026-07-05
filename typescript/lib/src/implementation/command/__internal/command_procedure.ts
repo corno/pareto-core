@@ -1,10 +1,10 @@
-import * as p_di from "../../../interface/data"
-import * as p_qi from "../../../interface/query"
-import * as p_ci from "../../../interface/command"
+import * as p_di from "../../../interface/data/index.js"
+import * as p_qi from "../../../interface/query/index.js"
+import * as p_ci from "../../../interface/command/index.js"
 
-import { type Command_Block } from "./Command_Block"
-import command_promise from "./command_promise"
-import handle_command_block from "./handle_command_block"
+import { type Command_Block } from "./Command_Block.js"
+import command_promise from "./command_promise.js"
+import handle_command_block from "./handle_command_block.js"
 
 export default function command_procedure<
     Error extends p_di.Value,

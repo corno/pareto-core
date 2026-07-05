@@ -1,5 +1,5 @@
-import * as p_di from "../../../interface/data"
-import { List_Class } from "../sync/primitives/List"
+import * as p_di from "../../../interface/data/index.js"
+import { List_Class } from "../sync/primitives/List.js"
 
 
 export type Asynchronous_List_Builder<

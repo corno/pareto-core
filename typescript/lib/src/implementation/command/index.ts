@@ -1,14 +1,14 @@
 
 
-export * as literal from "../__internal/sync/literal"
+export * as literal from "../__internal/sync/literal.js"
 
-export * from "./__internal/command_procedure"
-export * as s from "./__internal/command_statements"
-export * from "./__internal/Command_Block"
-export * from "./__internal/decide"
+export * from "./__internal/command_procedure.js"
+export * as s from "./__internal/command_statements.js"
+export * from "./__internal/Command_Block.js"
+export * from "./__internal/decide.js"
 
 
-import command_procedure from "./__internal/command_procedure"
+import command_procedure from "./__internal/command_procedure.js"
 
 export {
     command_procedure,

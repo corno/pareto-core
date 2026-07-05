@@ -1,7 +1,7 @@
-import { type List } from "./List"
-import { type Dictionary } from "./Dictionary"
-import { type Optional_Value } from "./Optional_Value"
-import { type Circular_Dependency } from "./Circular_Dependency"
+import { type List } from "./List.js"
+import { type Dictionary } from "./Dictionary.js"
+import { type Optional_Value } from "./Optional_Value.js"
+import { type Circular_Dependency } from "./Circular_Dependency.js"
 
 export type Value =
     | symbol

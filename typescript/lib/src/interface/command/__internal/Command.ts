@@ -1,6 +1,6 @@
-import * as p_di from "../../data"
-import * as p_ti from "../../transformer"
-import { type Command_Promise } from "./Command_Promise"
+import * as p_di from "../../data/index.js"
+import * as p_ti from "../../transformer/index.js"
+import { type Command_Promise } from "./Command_Promise.js"
 
 export type Command<
     Error extends p_di.Value,

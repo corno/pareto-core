@@ -1,7 +1,7 @@
-import * as p_qi from "../../query"
-import * as p_di from "../../data"
+import * as p_qi from "../../query/index.js"
+import * as p_di from "../../data/index.js"
 
-import { type Command } from "./Command"
+import { type Command } from "./Command.js"
 
 export type Command_Procedure<
     My_Command extends Command<any, any>,

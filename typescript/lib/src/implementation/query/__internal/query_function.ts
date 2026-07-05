@@ -1,7 +1,7 @@
-import * as p_qi from "../../../interface/query"
-import * as p_di from "../../../interface/data"
+import * as p_qi from "../../../interface/query/index.js"
+import * as p_di from "../../../interface/data/index.js"
 
-import query_result from "./query_result"
+import query_result from "./query_result.js"
 
 export default function query_function<
     Result extends p_di.Value,

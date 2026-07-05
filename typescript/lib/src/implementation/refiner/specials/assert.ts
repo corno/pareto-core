@@ -1,5 +1,5 @@
-import { type Abort } from "../../../interface/__internal/Abort"
-import * as p_di from "../../../interface/data"
+import { type Abort } from "../../../interface/__internal/Abort.js"
+import * as p_di from "../../../interface/data/index.js"
 /**
  * 
  * asserts for a condition, and if the condition is not met, aborts with the given error.

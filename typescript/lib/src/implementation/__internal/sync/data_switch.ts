@@ -1,4 +1,4 @@
-import * as p_di from "../../../interface/data"
+import * as p_di from "../../../interface/data/index.js"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 /**

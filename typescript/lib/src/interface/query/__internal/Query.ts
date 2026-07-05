@@ -1,6 +1,6 @@
-import * as p_ti from "../../transformer"
-import * as p_di from "../../data"
-import { type Query_Result } from "./Query_Result"
+import * as p_ti from "../../transformer/index.js"
+import * as p_di from "../../data/index.js"
+import { type Query_Result } from "./Query_Result.js"
 
 export type Query<
     Output extends p_di.Value,
