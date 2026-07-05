@@ -1,6 +1,6 @@
 import * as p_di from "../../../interface/data"
 
-import { Dictionary_As_Array, Dictionary_Class, ID_Value_Pair } from "./primitives/Dictionary"
+import { type Dictionary_As_Array, Dictionary_Class, type ID_Value_Pair } from "./primitives/Dictionary"
 import { List_Class } from "./primitives/List"
 import { Set_Optional_Value, Not_Set_Optional_Value } from "./primitives/Optional"
 
@@ -13,7 +13,7 @@ export function dictionary<T extends p_di.Value>(
     ): Dictionary_As_Array<X> {
         const imp: ID_Value_Pair<X>[] = []
         Object.keys(source).forEach((id) => {
-            imp.push([id, source[id]])
+            imp.push([id, source[id]!])
         })
         return imp
     }
@@ -32,7 +32,7 @@ export function optionals_dictionary<T extends p_di.Value>(
     ): Dictionary_As_Array<X> {
         const imp: ID_Value_Pair<X>[] = []
         Object.keys(source).forEach((id) => {
-            const raw = source[id].__get_raw()
+            const raw = source[id]!.__get_raw()
             if (raw !== null) {
                 imp.push([id, raw[0]])
             }

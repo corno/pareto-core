@@ -1,4 +1,4 @@
-import { Value } from "./Value";
+import { type Value } from "./Value";
 
 /**
  * A circular dependency is a function without parameters returning the specified type

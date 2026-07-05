@@ -1,4 +1,4 @@
-import { Abort } from "../../../interface/__internal/Abort"
+import { type Abort } from "../../../interface/__internal/Abort"
 import * as p_di from "../../../interface/data"
 /**
  * 

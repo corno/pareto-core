@@ -4,7 +4,7 @@ import * as p_di from "../../../interface/data"
 import query_result from "./query_result"
 import create_asynchronous_dictionary_builder from "../../__internal/async/asynchronous_dictionary_builder"
 import create_asynchronous_processes_monitor from "../../__internal/async/create_asynchronous_processes_monitor"
-import { Abort } from "../../../interface/__internal/Abort"
+import { type Abort } from "../../../interface/__internal/Abort"
 import create_refinement_context from "../../__internal/sync/create_refinement_context"
 
 export function dictionary<

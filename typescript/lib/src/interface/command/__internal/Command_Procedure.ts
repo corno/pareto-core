@@ -1,7 +1,7 @@
 import * as p_qi from "../../query"
 import * as p_di from "../../data"
 
-import { Command } from "./Command"
+import { type Command } from "./Command"
 
 export type Command_Procedure<
     My_Command extends Command<any, any>,

@@ -1,6 +1,6 @@
 import * as p_di from "../../../interface/data"
 import * as p_ri from "../../../interface/refiner"
-import { Abort } from "../../../interface/__internal/Abort"
+import { type Abort } from "../../../interface/__internal/Abort"
 import * as lit from "../../__internal/sync/literal"
 import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
 
@@ -17,9 +17,9 @@ export const dictionary = <T extends p_di.Value>(
         ): T {
             const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
-                const [entry_id, entry_value] = raw[i]
-                if (entry_id === id) {
-                    return entry_value
+                const raw_entry = raw[i]!
+                if (raw_entry[0] === id) {
+                    return raw_entry[1]
                 }
             }
             return abort.no_such_entry(null)
@@ -30,9 +30,9 @@ export const dictionary = <T extends p_di.Value>(
         ): p_di.Optional_Value<T> {
             const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
-                const [entry_id, entry_value] = raw[i]
-                if (entry_id === id) {
-                    return lit.set(entry_value)
+                const raw_entry = raw[i]!
+                if (raw_entry[0] === id) {
+                    return lit.set(raw_entry[1])
                 }
             }
             return lit.not_set()
@@ -119,7 +119,7 @@ export const dictionary = <T extends p_di.Value>(
 
                             }
                             // now it must be resolved, otherwise we would have aborted
-                            return out[id]
+                            return out[id]!
                         },
                         __get_entry_raw: (
                             id,
@@ -129,21 +129,21 @@ export const dictionary = <T extends p_di.Value>(
                             const raw = dict.__get_raw()
 
                             for (let i = 0; i !== raw.length; i += 1) {
-                                const [entry_id, entry_value] = raw[i]
-                                if (entry_id === id) {
+                                const raw_entry = raw[i]!
+                                if (raw_entry[0] === id) {
                                     if (out[id] === undefined) {
                                         if (entries_started[id] !== undefined) {
                                             return abort.cycle_detected(lit.list(stack.concat([id])))
                                         } else {
                                             inner_resolve(
-                                                entry_value,
+                                                raw_entry[1],
                                                 id,
                                                 stack.concat([id])
                                             )
                                         }
                                     }
                                     // now it must be resolved, otherwise we would have aborted
-                                    return [out[id]]
+                                    return [out[id]!]
                                 }
                             }
                             return null

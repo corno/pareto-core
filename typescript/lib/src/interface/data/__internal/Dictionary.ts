@@ -1,5 +1,5 @@
 
-import { Value } from "./Value"
+import { type Value } from "./Value"
 
 /**
  * A dictionary for Pareto.

@@ -1,5 +1,5 @@
 import * as p_di from "../../../interface/data"
-import { Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise"
 
 
 /**

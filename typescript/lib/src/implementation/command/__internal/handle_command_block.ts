@@ -1,7 +1,7 @@
 import * as p_di from "../../../interface/data"
 import command_promise from "./command_promise"
-import { Command_Block } from './Command_Block'
-import { Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import { type Command_Block } from './Command_Block'
+import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise"
 
 export default function handle_command_block<
 Error extends p_di.Value
@@ -20,7 +20,7 @@ Error extends p_di.Value
                     on_success()
                     return
                 }
-                block[index].__start(
+                block[index]!.__start(
                     () => {
                         runStep(index + 1)
                     },

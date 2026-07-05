@@ -1,7 +1,7 @@
 import * as p_di from "../../../interface/data"
 import * as p_ti from "../../../interface/transformer"
 import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary"
-import { Abort } from "../../../interface/__internal/Abort"
+import { type Abort } from "../../../interface/__internal/Abort"
 import * as lit from "../../__internal/sync/literal"
 
 export const boolean = (
@@ -95,9 +95,9 @@ export const dictionary = <T extends p_di.Value>(
         ): RT {
             const raw = dict.__get_raw()
             for (let i = 0; i !== raw.length; i += 1) {
-                const [entry_id, entry_value] = raw[i]
-                if (entry_id === id) {
-                    return if_set(entry_value)
+                const raw_entry = raw[i]!
+                if (raw_entry[0] === id) {
+                    return if_set(raw_entry[1])
                 }
             }
             return if_not_set()
@@ -120,7 +120,7 @@ export const dictionary = <T extends p_di.Value>(
             })
             const temp2: { [id: string]: RT } = {}
             Object.keys(temp).forEach((group_id) => {
-                temp2[group_id] = aggregate(new Dictionary_Class(temp[group_id]), group_id)
+                temp2[group_id] = aggregate(new Dictionary_Class(temp[group_id]!), group_id)
             })
             return lit.dictionary(temp2)
         },
@@ -286,7 +286,7 @@ export const dictionary = <T extends p_di.Value>(
                             if (no_such_entry) {
                                 return lit.not_set()
                             } else {
-                                return lit.set(out[id])
+                                return lit.set(out[id]!)
                             }
                         },
                     },
@@ -397,10 +397,10 @@ export const list = <T extends p_di.Value>(
                 out.push(
                     assign_item(
                         i < this_list_raw.length
-                            ? lit.set(this_list_raw[i])
+                            ? lit.set(this_list_raw[i]!)
                             : lit.not_set(),
                         i < other_list_raw.length
-                            ? lit.set(other_list_raw[i])
+                            ? lit.set(other_list_raw[i]!)
                             : lit.not_set()
                     )
                 )
@@ -424,7 +424,7 @@ export const list = <T extends p_di.Value>(
             })
             const temp2: { [id: string]: RT } = {}
             Object.keys(temp).forEach((id) => {
-                temp2[id] = aggregate(lit.list(temp[id]), id)
+                temp2[id] = aggregate(lit.list(temp[id]!), id)
             })
             return lit.dictionary(temp2)
         },
@@ -445,7 +445,7 @@ export const list = <T extends p_di.Value>(
                     out.push(assign_item(
                         $,
                         index < other_list_raw.length
-                            ? lit.set(other_list_raw[index])
+                            ? lit.set(other_list_raw[index]!)
                             : lit.not_set(),
                     ))
                 }
@@ -528,7 +528,7 @@ export const list = <T extends p_di.Value>(
                 return if_not_true()
             } else {
                 return if_true(
-                    list_raw[0],
+                    list_raw[0]!,
                     lit.list(list_raw.slice(1))
                 )
             }
@@ -553,7 +553,7 @@ export const list = <T extends p_di.Value>(
                 return if_not_true()
             } else {
                 return if_true(
-                    list_raw[list_raw.length - 1],
+                    list_raw[list_raw.length - 1]!,
                     lit.list(list_raw.slice(0, -1))
                 )
             }
@@ -568,7 +568,7 @@ export const list = <T extends p_di.Value>(
         ): RT => {
             const raw = list.__get_raw()
             for (let i = 0; i < raw.length; i++) {
-                const item = raw[i]
+                const item = raw[i]!
                 const result = test(item).__get_raw()
                 if (result !== null) {
                     return result[0]
@@ -586,7 +586,7 @@ export const list = <T extends p_di.Value>(
             if (list_raw.length === 0) {
                 return if_none()
             } else if (list_raw.length === 1) {
-                return if_true(list_raw[0])
+                return if_true(list_raw[0]!)
             } else {
                 return if_multiple(list)
             }

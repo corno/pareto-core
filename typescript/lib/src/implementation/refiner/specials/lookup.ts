@@ -23,7 +23,7 @@ export namespace acyclic {
             const raw = dict.__get_raw()
 
             for (let i = 0; i !== raw.length; i += 1) {
-                const entry = raw[i]
+                const entry = raw[i]!
                 if (entry[0] === id) {
                     return [entry[1]]
                 }

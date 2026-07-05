@@ -2,7 +2,7 @@ import * as p_di from "../../../interface/data"
 import * as p_qi from "../../../interface/query"
 import * as p_ci from "../../../interface/command"
 
-import { Command_Block } from "./Command_Block"
+import { type Command_Block } from "./Command_Block"
 import command_promise from "./command_promise"
 import handle_command_block from "./handle_command_block"
 

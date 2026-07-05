@@ -1,9 +1,9 @@
 import * as p_di from "../../../interface/data"
 import * as p_pi from "../../../interface/production"
 import * as lit from "../../__internal/sync/literal"
-import { Abort } from "../../../interface/__internal/Abort"
+import { type Abort } from "../../../interface/__internal/Abort"
 
-import { Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
+import { type Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value"
 
 
 export default function iterate<
@@ -28,7 +28,7 @@ export default function iterate<
         if (pos < 0 || pos >= raw.length) {
             return null
         }
-        return [raw[pos]]
+        return [raw[pos]!]
     }
 
     const create_iterator = (
@@ -180,7 +180,7 @@ export default function iterate<
     )
     if ($$.on_dangling_item !== null) {
         if (position < raw.length) {
-            $$.on_dangling_item(raw[position])
+            $$.on_dangling_item(raw[position]!)
         }
     }
     return result

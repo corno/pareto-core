@@ -1,6 +1,6 @@
 
 import * as p_di from "../../data"
-import { Query } from "./Query"
+import { type Query } from "./Query"
 
 export type Query_Function<
     My_Query extends Query<any, any, any>,

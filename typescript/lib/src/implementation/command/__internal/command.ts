@@ -1,7 +1,7 @@
 import * as p_ci from "../../../interface/command"
 import * as p_di from "../../../interface/data"
 import command_promise from "./command_promise"
-import { Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise"
 
 export default function command<
     Error extends p_di.Value,

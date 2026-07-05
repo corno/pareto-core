@@ -1,7 +1,7 @@
 import * as p_di from "../../../interface/data"
-import { Command_Promise } from "../../../interface/command/__internal/Command_Promise"
+import { type Command_Promise } from "../../../interface/command/__internal/Command_Promise"
 
-import { Command_Block } from "./Command_Block"
+import { type Command_Block } from "./Command_Block"
 import command_promise from "./command_promise"
 import handle_command_block from "./handle_command_block"
 

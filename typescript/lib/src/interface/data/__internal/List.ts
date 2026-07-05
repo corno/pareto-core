@@ -1,6 +1,6 @@
-import { Abort } from "../../__internal/Abort"
-import { Optional_Value } from "./Optional_Value"
-import { Value } from "./Value"
+import { type Abort } from "../../__internal/Abort"
+import { type Optional_Value } from "./Optional_Value"
+import { type Value } from "./Value"
 
 /**
  * A List for Pareto.
