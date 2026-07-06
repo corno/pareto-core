@@ -1,4 +1,4 @@
-import * as p_di from "../data/index.js"
+import * as p_di from "../data.js"
 
 export type Abort<
     Error extends p_di.Value

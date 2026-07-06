@@ -1,4 +1,4 @@
-import * as p_di from "../../../interface/data/index.js"
+import * as p_di from "../../../interface/data.js"
 
 import { type Dictionary_As_Array, Dictionary_Class, type ID_Value_Pair } from "./primitives/Dictionary.js"
 import { List_Class } from "./primitives/List.js"

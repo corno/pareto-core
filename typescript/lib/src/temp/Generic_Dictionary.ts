@@ -1,5 +1,5 @@
 
-import * as p_di from "../interface/data/index.js"
+import * as p_di from "../interface/data.js"
 
 export interface Generic_Dictionary<T> {
 

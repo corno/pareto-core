@@ -1,4 +1,4 @@
-import * as p_di from "../../../interface/data/index.js"
+import * as p_di from "../../../interface/data.js"
 
 import { List_Class } from "../../__internal/sync/primitives/List.js"
 

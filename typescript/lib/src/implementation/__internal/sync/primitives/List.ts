@@ -1,4 +1,4 @@
-import * as p_di from "../../../../interface/data/index.js"
+import * as p_di from "../../../../interface/data.js"
 import * as optional from "./Optional.js"
 import { type Abort } from "../../../../interface/__internal/Abort.js"
 

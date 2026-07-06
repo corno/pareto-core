@@ -1,5 +1,5 @@
 import { type Abort } from "../../../interface/__internal/Abort.js"
-import * as p_di from "../../../interface/data/index.js"
+import * as p_di from "../../../interface/data.js"
 
 export type Refinement_Result<Output, Error> = {
 

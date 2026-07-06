@@ -1,8 +1,8 @@
-import * as p_i from "../../../interface/refiner/index.js"
-import * as p_di from "../../../interface/data/index.js"
+import * as p_i from "../../../interface/refiner.js"
+import * as p_di from "../../../interface/data.js"
 import * as lit from "../../__internal/sync/literal.js"
 import { type Abort } from "../../../interface/__internal/Abort.js"
-import { type Iterator } from "../../../interface/refiner/__internal/Iterator.js"
+import { type Iterator } from "../../../interface/__internal/refiner/Iterator.js"
 import { type Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value.js"
 
 

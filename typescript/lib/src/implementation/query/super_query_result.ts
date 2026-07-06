@@ -1,6 +1,6 @@
-import * as p_ti from "../../interface/transformer/index.js"
-import * as p_di from "../../interface/data/index.js"
-import * as p_qi from "../../interface/query/index.js"
+import * as p_ti from "../../interface/transformer.js"
+import * as p_di from "../../interface/data.js"
+import * as p_qi from "../../interface/query.js"
 import create_refinement_context from "../__internal/sync/create_refinement_context.js"
 import { type Abort } from "../../interface/__internal/Abort.js"
 

@@ -1,4 +1,4 @@
-import * as p_di from "../../../../interface/data/index.js"
+import * as p_di from "../../../../interface/data.js"
 import { type Raw_Optional_Value } from "../../../../interface/__internal/Raw_Optional_Value.js"
 
 

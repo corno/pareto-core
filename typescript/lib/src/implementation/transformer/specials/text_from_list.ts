@@ -1,4 +1,4 @@
-import * as p_di from "../../../interface/data/index.js"
+import * as p_di from "../../../interface/data.js"
 
 export default function text_from_list <T extends p_di.Value>(
     list: p_di.List<T>,

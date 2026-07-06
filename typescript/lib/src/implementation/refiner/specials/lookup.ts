@@ -1,6 +1,6 @@
-import * as p_di from "../../../interface/data/index.js"
-import * as p_i from "../../../interface/refiner/index.js"
-import * as from from "../__internal/from.js"
+import * as p_di from "../../../interface/data.js"
+import * as p_i from "../../../interface/refiner.js"
+import * as from from "../../__internal/refiner/from.js"
 
 export namespace acyclic {
 
