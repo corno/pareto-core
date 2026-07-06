@@ -1,5 +1,6 @@
 import { type Abort } from "./__internal/Abort.js"
 import { type Raw_Optional_Value } from "./__internal/Raw_Optional_Value.js"
+import { type Iterator } from "./__internal/refiner/Iterator.js"
 import * as p_di from "./data.js"
 
 export type Refiner<
