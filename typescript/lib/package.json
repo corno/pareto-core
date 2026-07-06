@@ -1,6 +1,6 @@
 {
   "name": "pareto-core",
-  "version": "0.1.238",
+  "version": "0.1.239",
   "license": "Apache-2.0",
   "author": "Corno",
   "description": "the core language constructs for the Pareto programming language (in TypeScript)",
@@ -23,61 +23,41 @@
   ],
   "type": "module",
   "exports": {
-    "./globals": {
-      "types": "./dist/globals.d.ts",
-      "default": "./dist/globals.js"
-    },
     "./implementation/command": {
-      "types": "./dist/implementation/command/index.d.ts",
       "default": "./dist/implementation/command/index.js"
     },
     "./implementation/production": {
-      "types": "./dist/implementation/production/index.d.ts",
       "default": "./dist/implementation/production/index.js"
     },
-    "./implementation/query": {
-      "types": "./dist/implementation/query/index.d.ts",
-      "default": "./dist/implementation/query/index.js"
-    },
     "./implementation/refiner": {
-      "types": "./dist/implementation/refiner/index.d.ts",
       "default": "./dist/implementation/refiner/index.js"
     },
     "./implementation/transformer": {
-      "types": "./dist/implementation/transformer/index.d.ts",
       "default": "./dist/implementation/transformer/index.js"
     },
     "./implementation/*": {
-      "types": "./dist/implementation/*.d.ts",
       "default": "./dist/implementation/*.js"
     },
     "./interface/command": {
-      "types": "./dist/interface/command/index.d.ts",
-      "default": "./dist/interface/command/index.js"
+      "types": "./dist/interface/command/index.d.ts"
     },
     "./interface/data": {
-      "types": "./dist/interface/data/index.d.ts",
-      "default": "./dist/interface/data/index.js"
+      "types": "./dist/interface/data/index.d.ts"
     },
     "./interface/production": {
-      "types": "./dist/interface/production/index.d.ts",
-      "default": "./dist/interface/production/index.js"
+      "types": "./dist/interface/production/index.d.ts"
     },
     "./interface/query": {
-      "types": "./dist/interface/query/index.d.ts",
-      "default": "./dist/interface/query/index.js"
+      "types": "./dist/interface/query/index.d.ts"
     },
     "./interface/refiner": {
-      "types": "./dist/interface/refiner/index.d.ts",
-      "default": "./dist/interface/refiner/index.js"
+      "types": "./dist/interface/refiner/index.d.ts"
     },
     "./interface/transformer": {
-      "types": "./dist/interface/transformer/index.d.ts",
-      "default": "./dist/interface/transformer/index.js"
+      "types": "./dist/interface/transformer/index.d.ts"
     },
     "./interface/*": {
-      "types": "./dist/interface/*.d.ts",
-      "default": "./dist/interface/*.js"
+      "types": "./dist/interface/*.d.ts"
     },
     "./temp/*": {
       "types": "./dist/temp/*.d.ts",

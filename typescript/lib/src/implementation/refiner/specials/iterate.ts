@@ -1,8 +1,8 @@
+import * as p_i from "../../../interface/refiner/index.js"
 import * as p_di from "../../../interface/data/index.js"
-import * as p_pi from "../../../interface/production/index.js"
 import * as lit from "../../__internal/sync/literal.js"
 import { type Abort } from "../../../interface/__internal/Abort.js"
-
+import { type Iterator } from "../../../interface/refiner/__internal/Iterator.js"
 import { type Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value.js"
 
 
@@ -15,7 +15,7 @@ export default function iterate<
     end_info: End_Info,
     on_dangling_item: null | Abort<Item>,
     assign: (
-        $iter: p_pi.Iterator<Item, End_Info>,
+        $iter: Iterator<Item, End_Info>,
     ) => Return_Type,
 }): Return_Type {
 
@@ -32,7 +32,7 @@ export default function iterate<
     }
 
     const create_iterator = (
-    ): p_pi.Iterator<
+    ): Iterator<
         Item,
         End_Info
     > => {
