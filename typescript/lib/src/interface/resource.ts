@@ -1,10 +1,7 @@
 import { type Command } from './command.js'
 import { type Query } from './query.js'
 
-export type Resource<
-    Commands extends Record<string, Command<any, any>>,
-    Queries extends Record<string, Query<any, any, any>>,
-> = {
-    'commands': Commands,
-    'queries': Queries,
+export type Resource = {
+    'commands': Record<string, Command<any, any>>,
+    'queries': Record<string, Query<any, any, any>>,
 }
