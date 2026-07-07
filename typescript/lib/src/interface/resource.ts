@@ -2,6 +2,9 @@ import { type Command } from './command.js'
 import { type Query } from './query.js'
 
 export type Resource = {
-    'commands': { [key:string]: Command<any, any> },
-    'queries': { [key:string]: Query<any, any, any> },
+    'commands': Commands,
+    'queries': Queries,
 }
+
+export type Commands = { [key:string]: Command<any, any> }
+export type Queries = { [key:string]: Query<any, any, any> }
