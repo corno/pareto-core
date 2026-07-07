@@ -8,6 +8,8 @@ import p_query_result from "./__internal/query/query_result.js"
 import p_command from "./__internal/command/command.js"
 import p_command_promise from "./__internal/command/command_promise.js"
 
+export * as literal from "./__internal/sync/literal.js"
+
 export const query = <
     Result extends p_id.Value,
     Error extends p_id.Value,
