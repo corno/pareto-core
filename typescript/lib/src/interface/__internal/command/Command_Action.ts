@@ -2,7 +2,7 @@ import * as p_di from "../../data.js"
 import * as p_ti from "../../transformer.js"
 import { type Command_Promise } from "./Command_Promise.js"
 
-export type Command<
+export type Command_Action<
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value
 > = {

@@ -1,27 +1,51 @@
-import * as p_i from "../../../interface/query.js"
 import * as p_di from "../../../interface/data.js"
+
+import { type Query_Action } from "../../../interface/__internal/query/Query_Action.js"
+import { type Query_Function } from "../../../interface/__internal/query/Query_Function.js"
+import { type Query_Result } from "../../../interface/__internal/query/Query_Result.js"
 
 import query_result from "./query_result.js"
 
-export default function query<
+export default function query_function<
     Result extends p_di.Value,
     Error extends p_di.Value,
-    Dynamic_Parameters extends p_di.Value
+    Dynamic_Parameters extends p_di.Value,
+    Static_Parameters extends p_di.Value,
+    Query_Resources extends null | { [key: string]: Query_Action<any, any, any> },
 >(
     handler: (
-        $: Dynamic_Parameters,
-    ) => p_i.Query_Result<Result, Error>,
-): p_i.Query<
-    Result,
-    Error,
-    Dynamic_Parameters
+        $d: Dynamic_Parameters,
+        $s: Static_Parameters,
+        $q: Query_Resources,
+    ) => Query_Result<
+        Result,
+        Error
+    >
+): Query_Function<
+    Query_Action<
+        Result,
+        Error,
+        Dynamic_Parameters
+    >,
+    Static_Parameters,
+    Query_Resources
 > {
-    return (parameters, error_transformer) => query_result((on_success, on_error) => {
-        handler(parameters).__extract_data(
-            on_success,
-            (e) => {
-                on_error(error_transformer(e))
-            },
+    return ($s, $q) => (
+        $d,
+        error_transformer
+    ) => {
+        return query_result(
+            (
+                on_success,
+                on_error
+            ) => {
+                handler($d, $s, $q).__extract_data(
+                    on_success,
+                    (e) => {
+                        on_error(error_transformer(e))
+                    },
+                )
+            }
         )
-    })
+    }
 }

@@ -5,6 +5,7 @@ import * as p_ci from "../../../interface/command.js"
 
 import { type Abort } from "../../../interface/__internal/Abort.js"
 import { type Command_Block } from "./Command_Block.js"
+import { type Command_Action } from "../../../interface/__internal/command/Command_Action.js"
 import command_promise from "./command_promise.js"
 import handle_command_block from "./handle_command_block.js"
 import create_refinement_context from "../sync/create_refinement_context.js"
@@ -17,7 +18,7 @@ export function execute<
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value
 >(
-    command: p_ci.Command<Error, Dynamic_Parameters>,
+    command: Command_Action<Error, Dynamic_Parameters>,
     $d: Dynamic_Parameters,
     error_transformer: p_ti.Transformer<Error, Error>,
 ): Command_Promise<Error> {
