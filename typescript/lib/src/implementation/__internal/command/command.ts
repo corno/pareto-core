@@ -2,7 +2,7 @@ import * as p_di from "../../../interface/data.js"
 
 import { type Command_Action } from "../../../interface/__internal/command/Command_Action.js"
 import { type Command_Block } from "./Command_Block.js"
-import { type Command_Procedure } from "../../../interface/__internal/command/Command_Procedure.js"
+import { type Command } from "../../../interface/__internal/command/Command.js"
 import { type Query_Action } from "../../../interface/__internal/query/Query_Action.js"
 import command_promise from "./command_promise.js"
 import handle_command_block from "./handle_command_block.js"
@@ -20,7 +20,7 @@ export default function command_procedure<
         $qr: Query_Resources,
         $cr: Command_Resources,
     ) => Command_Block<Error>,
-): Command_Procedure<
+): Command<
     Command_Action<
         Error,
         Dynamic_Parameters

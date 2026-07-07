@@ -1,7 +1,7 @@
 import * as p_di from "../../../interface/data.js"
 
 import { type Query_Action } from "../../../interface/__internal/query/Query_Action.js"
-import { type Query_Function } from "../../../interface/__internal/query/Query_Function.js"
+import { type Query } from "../../../interface/__internal/query/Query.js"
 import { type Query_Result } from "../../../interface/__internal/query/Query_Result.js"
 
 import query_result from "./query_result.js"
@@ -21,7 +21,7 @@ export default function query_function<
         Result,
         Error
     >
-): Query_Function<
+): Query<
     Query_Action<
         Result,
         Error,
