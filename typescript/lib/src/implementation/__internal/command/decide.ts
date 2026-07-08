@@ -30,7 +30,19 @@ export function option<
     return $c(option[1])
 }
 
+/**
+ * 
+ * @deprecated use exhaustive instead
+ */
 export function au<
+    Error extends p_di.Value
+>(
+    _x: never
+): Command_Block<Error> {
+    throw new Error("unreachable")
+}
+
+export function exhaustive<
     Error extends p_di.Value
 >(
     _x: never

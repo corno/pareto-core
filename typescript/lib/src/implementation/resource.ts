@@ -16,16 +16,16 @@ export * as literal from "./__internal/sync/literal.js"
 export const query = <
     Result extends p_id.Value,
     Error extends p_id.Value,
-    Parameter extends p_id.Value
+    Dynamic_Parameter extends p_id.Value
 >(
-    bla: (
-        $: Parameter,
+    callback: (
+        $d: Dynamic_Parameter,
         on_result: ($: Result) => undefined,
         on_error: ($: Error) => undefined
     ) => undefined
-): Query_Action<Result, Error, Parameter> => {
+): Query_Action<Result, Error, Dynamic_Parameter> => {
     return p_query(($) => p_query_result((on_result, on_error) => {
-        bla($, on_result, on_error)
+        callback($, on_result, on_error)
     }))
 }
 

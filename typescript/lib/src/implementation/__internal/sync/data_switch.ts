@@ -43,8 +43,15 @@ export function option<T extends p_di.Value, RT extends p_di.Value>(
  * }
  * 
  * @param _x 
+ * @deprecated use exhaustive instead
  */
 export function au<RT>(
+    _x: never
+): RT {
+    throw new Error("unreachable")
+}
+
+export function exhaustive<RT>(
     _x: never
 ): RT {
     throw new Error("unreachable")

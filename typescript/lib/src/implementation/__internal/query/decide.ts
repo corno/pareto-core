@@ -19,7 +19,17 @@ export function option<T extends p_di.Value, RT extends p_qi.Query_Result<any, a
     return $c(option[1])
 }
 
+/**
+ * 
+ * @deprecated use exhaustive instead
+ */
 export function au<RT extends p_qi.Query_Result<any, any>>(
+    _x: never
+): RT {
+    throw new Error("unreachable")
+}
+
+export function exhaustive<RT extends p_qi.Query_Result<any, any>>(
     _x: never
 ): RT {
     throw new Error("unreachable")
