@@ -1,9 +1,8 @@
 import * as p_ti from "../../interface/transformer.js"
 import * as p_di from "../../interface/data.js"
-import * as p_qi from "../../interface/query_implementation.js"
 import create_refinement_context from "../__internal/sync/create_refinement_context.js"
 import { type Abort } from "../../interface/__internal/Abort.js"
-
+import { type Query_Result } from "../../interface/__internal/query/Query_Result.js"
 
 export type Query_Callback<
     Output extends p_di.Value,
@@ -11,7 +10,7 @@ export type Query_Callback<
     Input extends p_di.Value
 > = (
     $: Input,
-) => p_qi.Query_Result<Output, Error>
+) => Query_Result<Output, Error>
 
 /**
  * this function contains the body in which the async value or error is executed
@@ -109,7 +108,7 @@ export default function <
     T extends p_di.Value,
     E extends p_di.Value
 >(
-    query_result: p_qi.Query_Result<T, E>,
+    query_result: Query_Result<T, E>,
 ): Super_Query_Result_Class<T, E> {
     return new Super_Query_Result_Class<T, E>(query_result.__extract_data)
 

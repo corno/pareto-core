@@ -1,11 +1,10 @@
 import * as p_di from "../../../interface/data.js"
 import * as p_ti from "../../../interface/transformer.js"
-import * as p_qi from "../../../interface/query_implementation.js"
-import * as p_ci from "../../../interface/command_implementation.js"
 
 import { type Abort } from "../../../interface/__internal/Abort.js"
 import { type Command_Block } from "./Command_Block.js"
 import { type Command_Interface } from "../../../interface/__internal/command/Command_Interface.js"
+import { type Query_Result } from "../../../interface/__internal/query/Query_Result.js"
 import command_promise from "./command_promise.js"
 import handle_command_block from "./handle_command_block.js"
 import create_refinement_context from "../sync/create_refinement_context.js"
@@ -137,7 +136,7 @@ export function query<
     Error extends p_di.Value,
     Query_Output extends p_di.Value
 >(
-    query_result: p_qi.Query_Result<Query_Output, Error>,
+    query_result: Query_Result<Query_Output, Error>,
     parametrized_command_block: ($v: Query_Output) => Command_Block<Error>,
 ): Command_Promise<Error> {
     return command_promise({

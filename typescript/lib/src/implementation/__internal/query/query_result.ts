@@ -1,5 +1,5 @@
-import * as p_qi from "../../../interface/query_implementation.js"
 import * as p_di from "../../../interface/data.js"
+import { type Query_Result } from "../../../interface/__internal/query/Query_Result.js"
 
 /**
  * this function contains the body in which the async value or error is executed
@@ -18,7 +18,7 @@ type Executer<
 class Query_Result_Class<
     Output extends p_di.Value,
     Error extends p_di.Value
-> implements p_qi.Query_Result<Output, Error> {
+> implements Query_Result<Output, Error> {
 
     public __extract_data: Executer<Output, Error>
     constructor(executer: Executer<Output, Error>) {
@@ -31,7 +31,7 @@ export default function <
     E extends p_di.Value
 >(
     executer: Executer<T, E>,
-): p_qi.Query_Result<T, E> {
+): Query_Result<T, E> {
     return new Query_Result_Class<T, E>(executer)
 
 }

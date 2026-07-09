@@ -5,6 +5,7 @@ import query_result from "./query_result.js"
 import create_asynchronous_dictionary_builder from "../async/asynchronous_dictionary_builder.js"
 import create_asynchronous_processes_monitor from "../async/create_asynchronous_processes_monitor.js"
 import { type Abort } from "../../../interface/__internal/Abort.js"
+import { type Query_Result } from "../../../interface/__internal/query/Query_Result.js"
 import create_refinement_context from "../sync/create_refinement_context.js"
 
 export function dictionary<
@@ -14,10 +15,10 @@ export function dictionary<
     Entry_Error extends p_di.Value
 >(
     dictionary: p_di.Dictionary<Entry>,
-    map_entry: ($: Entry, id: string) => p_qi.Query_Result<Result, Entry_Error>,
+    map_entry: ($: Entry, id: string) => Query_Result<Result, Entry_Error>,
     aggregate_errors: p_ti.Transformer<p_di.Dictionary<Entry_Error>, Error>,
 
-): p_qi.Query_Result<p_di.Dictionary<Result>, Error> {
+): Query_Result<p_di.Dictionary<Result>, Error> {
     return query_result((on_success, on_error) => {
         let has_errors = false
         const errors_builder = create_asynchronous_dictionary_builder<Entry_Error>()
@@ -57,7 +58,7 @@ export function direct_result<
     Error extends p_di.Value
 >(
     result: Result,
-): p_qi.Query_Result<Result, Error> {
+): Query_Result<Result, Error> {
     return query_result((on_success, on_error) => {
         on_success(result)
     })
@@ -68,7 +69,7 @@ export function direct_error<
     E extends p_di.Value
 >(
     $: E
-): p_qi.Query_Result<T, E> {
+): Query_Result<T, E> {
     return query_result((on_value, on_error) => {
         on_error($)
     })
@@ -81,7 +82,7 @@ export function refine<
     callback: (
         abort: Abort<E>
     ) => T
-): p_qi.Query_Result<T, E> {
+): Query_Result<T, E> {
     return query_result((on_value, on_error) => {
         create_refinement_context<T, E>(
             (abort) => callback(abort),
@@ -98,7 +99,7 @@ export function transform<
 >(
     callback: (
     ) => T
-): p_qi.Query_Result<T, E> {
+): Query_Result<T, E> {
     return query_result((on_value, on_error) => {
         on_value(callback())
     })
@@ -113,12 +114,12 @@ export function observe_behavior<
     Target_Outcome extends p_di.Value,
     Target_Error extends p_di.Value
 >(
-    result: p_qi.Query_Result<Preparation_Result, Preparation_Error>,
+    result: Query_Result<Preparation_Result, Preparation_Error>,
     handlers: {
-        success: (result: Preparation_Result) => p_qi.Query_Result<Target_Outcome, Target_Error>,
-        error: (error: Preparation_Error) => p_qi.Query_Result<Target_Outcome, Target_Error>,
+        success: (result: Preparation_Result) => Query_Result<Target_Outcome, Target_Error>,
+        error: (error: Preparation_Error) => Query_Result<Target_Outcome, Target_Error>,
     },
-): p_qi.Query_Result<Target_Outcome, Target_Error> {
+): Query_Result<Target_Outcome, Target_Error> {
     return query_result<Target_Outcome, Target_Error>((onResult, onError) => {
         result.__extract_data(
             (r) => {
