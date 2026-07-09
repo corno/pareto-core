@@ -1,5 +1,5 @@
 
-export default function variables<RT>(
+export default function <RT>(
     assign: () => RT
 ): RT {
     return assign()

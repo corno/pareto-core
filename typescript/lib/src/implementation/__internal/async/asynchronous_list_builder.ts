@@ -10,7 +10,7 @@ export type Asynchronous_List_Builder<
     'get list': () => p_di.List<Item>,
 }
 
-export default function create_asynchronous_list_builder<
+export default function <
     Item extends p_di.Value
 >(): Asynchronous_List_Builder<Item> {
     const items: Item[] = []

@@ -1,11 +1,11 @@
 import * as p_di from "../../../interface/data.js"
 import * as p_ti from "../../../interface/transformer.js"
-import * as p_qi from "../../../interface/query.js"
-import * as p_ci from "../../../interface/command.js"
+import * as p_qi from "../../../interface/query_implementation.js"
+import * as p_ci from "../../../interface/command_implementation.js"
 
 import { type Abort } from "../../../interface/__internal/Abort.js"
 import { type Command_Block } from "./Command_Block.js"
-import { type Command_Action } from "../../../interface/__internal/command/Command_Action.js"
+import { type Command_Interface } from "../../../interface/__internal/command/Command_Interface.js"
 import command_promise from "./command_promise.js"
 import handle_command_block from "./handle_command_block.js"
 import create_refinement_context from "../sync/create_refinement_context.js"
@@ -18,7 +18,7 @@ export function execute<
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value
 >(
-    command: Command_Action<Error, Dynamic_Parameters>,
+    command: Command_Interface<Error, Dynamic_Parameters>,
     $d: Dynamic_Parameters,
     error_transformer: p_ti.Transformer<Error, Error>,
 ): Command_Promise<Error> {

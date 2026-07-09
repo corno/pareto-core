@@ -1,17 +1,17 @@
 import * as p_di from "../../../interface/data.js"
 
-import { type Query_Action } from "../../../interface/__internal/query/Query_Action.js"
-import { type Query } from "../../../interface/__internal/query/Query.js"
+import { type Query_Interface } from "../../../interface/__internal/query/Query_Interface.js"
+import { type Query_Implementation } from "../../../interface/__internal/query/Query_Implementation.js"
 import { type Query_Result } from "../../../interface/__internal/query/Query_Result.js"
 
 import query_result from "./query_result.js"
 
-export default function query_function<
+export default function <
     Result extends p_di.Value,
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value,
     Static_Parameters extends p_di.Value,
-    Query_Resources extends null | { [key: string]: Query_Action<any, any, any> },
+    Query_Resources extends null | { [key: string]: Query_Interface<any, any, any> },
 >(
     handler: (
         $d: Dynamic_Parameters,
@@ -21,8 +21,8 @@ export default function query_function<
         Result,
         Error
     >
-): Query<
-    Query_Action<
+): Query_Implementation<
+    Query_Interface<
         Result,
         Error,
         Dynamic_Parameters

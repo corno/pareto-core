@@ -1,6 +1,6 @@
 import * as p_di from "../../../interface/data.js"
 
-export default function text_from_list <T extends p_di.Value>(
+export default function <T extends p_di.Value>(
     list: p_di.List<T>,
     assign_character: (item: T) => number,
 ) {

@@ -3,7 +3,7 @@ import command_promise from "./command_promise.js"
 import { type Command_Block } from "./Command_Block.js"
 import { type Command_Promise } from "../../../interface/__internal/command/Command_Promise.js"
 
-export default function handle_command_block<
+export default function <
 Error extends p_di.Value
 >(
     block: Command_Block<Error>,

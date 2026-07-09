@@ -1,18 +1,18 @@
 import * as p_di from "../../../interface/data.js"
 
-import { type Command_Action } from "../../../interface/__internal/command/Command_Action.js"
+import { type Command_Interface } from "../../../interface/__internal/command/Command_Interface.js"
 import { type Command_Block } from "./Command_Block.js"
-import { type Command } from "../../../interface/__internal/command/Command.js"
-import { type Query_Action } from "../../../interface/__internal/query/Query_Action.js"
+import { type Command_Implementation } from "../../../interface/__internal/command/Command_Implementation.js"
+import { type Query_Interface } from "../../../interface/__internal/query/Query_Interface.js"
 import command_promise from "./command_promise.js"
 import handle_command_block from "./handle_command_block.js"
 
-export default function command_procedure<
+export default function <
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value,
     Static_Parameters extends p_di.Value,
-    Query_Resources extends null | { [key: string]: Query_Action<any, any, any> },
-    Command_Resources extends null | { [key: string]: Command_Action<any, any> },
+    Query_Resources extends null | { [key: string]: Query_Interface<any, any, any> },
+    Command_Resources extends null | { [key: string]: Command_Interface<any, any> },
 >(
     execution_handler: (
         $d: Dynamic_Parameters,
@@ -20,8 +20,8 @@ export default function command_procedure<
         $qr: Query_Resources,
         $cr: Command_Resources,
     ) => Command_Block<Error>,
-): Command<
-    Command_Action<
+): Command_Implementation<
+    Command_Interface<
         Error,
         Dynamic_Parameters
     >,

@@ -34,7 +34,7 @@ class Command_Promise_Class<E extends p_di.Value> implements Command_Promise<E> 
  * @param executer the function that produces the eventual value
  * @returns 
  */
-export default function command_promise<E extends p_di.Value>(
+export default function <E extends p_di.Value>(
     executer: Executer<E>,
 ): Command_Promise<E> {
     return new Command_Promise_Class<E>(executer)

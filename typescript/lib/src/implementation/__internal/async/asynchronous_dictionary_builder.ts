@@ -5,7 +5,7 @@ export type Asynchronous_Dictionary_Builder<Entry extends p_di.Value> = {
     'get dictionary': () => p_di.Dictionary<Entry>,
 }
 
-export default function create_asynchronous_dictionary_builder<Entry extends p_di.Value>(): Asynchronous_Dictionary_Builder<Entry> {
+export default function <Entry extends p_di.Value>(): Asynchronous_Dictionary_Builder<Entry> {
     const entries: { [id: string]: Entry } = {}
 
     return {

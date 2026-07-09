@@ -1,4 +1,4 @@
-import * as p_qi from "../../../interface/query.js"
+import * as p_qi from "../../../interface/query_implementation.js"
 import * as p_ti from "../../../interface/transformer.js"
 import * as p_di from "../../../interface/data.js"
 import query_result from "./query_result.js"

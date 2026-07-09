@@ -1,14 +1,14 @@
 import * as p_di from "../../../interface/data.js"
 import command_promise from "./command_promise.js"
 import { type Command_Promise } from "../../../interface/__internal/command/Command_Promise.js"
-import { type Command_Action } from "../../../interface/__internal/command/Command_Action.js"
+import { type Command_Interface } from "../../../interface/__internal/command/Command_Interface.js"
 
-export default function command<
+export default function <
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value
 >(
     handler: ($: Dynamic_Parameters) => Command_Promise<Error>,
-): Command_Action<
+): Command_Interface<
     Error,
     Dynamic_Parameters
 > {

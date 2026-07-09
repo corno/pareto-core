@@ -1,11 +1,11 @@
-import * as p_i from "../../../interface/query.js"
+import * as p_i from "../../../interface/query_implementation.js"
 import * as p_di from "../../../interface/data.js"
 
-import { type Query_Action } from "../../../interface/__internal/query/Query_Action.js"
+import { type Query_Interface } from "../../../interface/__internal/query/Query_Interface.js"
 
 import query_result from "./query_result.js"
 
-export default function query<
+export default function <
     Result extends p_di.Value,
     Error extends p_di.Value,
     Dynamic_Parameters extends p_di.Value
@@ -13,7 +13,7 @@ export default function query<
     handler: (
         $: Dynamic_Parameters,
     ) => p_i.Query_Result<Result, Error>,
-): Query_Action<
+): Query_Interface<
     Result,
     Error,
     Dynamic_Parameters

@@ -6,7 +6,7 @@ type List_Builder<T extends p_di.Value> = {
     'add list': ($: p_di.List<T>) => undefined
 }
 
-export default function list_build_deprecated<T extends p_di.Value>(
+export default function <T extends p_di.Value>(
     callback: (
         $i: List_Builder<T>
     ) => undefined

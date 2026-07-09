@@ -1,6 +1,6 @@
 import * as p_ti from "../../interface/transformer.js"
 import * as p_di from "../../interface/data.js"
-import * as p_qi from "../../interface/query.js"
+import * as p_qi from "../../interface/query_implementation.js"
 import create_refinement_context from "../__internal/sync/create_refinement_context.js"
 import { type Abort } from "../../interface/__internal/Abort.js"
 
@@ -105,7 +105,7 @@ class Super_Query_Result_Class<
 }
 
 
-export default function super_query_result<
+export default function <
     T extends p_di.Value,
     E extends p_di.Value
 >(

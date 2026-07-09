@@ -15,7 +15,7 @@
  * @param assign 
  * @returns 
  */
-export default function p_change_context<T, Value>(
+export default function <T, Value>(
     context: T,
     assign: (context: T) => Value
 ): Value {

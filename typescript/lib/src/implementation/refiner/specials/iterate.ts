@@ -1,4 +1,3 @@
-import * as p_i from "../../../interface/refiner.js"
 import * as p_di from "../../../interface/data.js"
 import * as lit from "../../__internal/sync/literal.js"
 import { type Abort } from "../../../interface/__internal/Abort.js"
@@ -6,7 +5,7 @@ import { type Iterator } from "../../../interface/__internal/refiner/Iterator.js
 import { type Raw_Optional_Value } from "../../../interface/__internal/Raw_Optional_Value.js"
 
 
-export default function iterate<
+export default function <
     Return_Type extends p_di.Value,
     Item extends p_di.Value,
     End_Info extends p_di.Value,

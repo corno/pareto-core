@@ -1,6 +1,6 @@
 
 import * as p_di from "../../../interface/data.js"
-import * as p_qi from "../../../interface/query.js"
+import * as p_qi from "../../../interface/query_implementation.js"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
 

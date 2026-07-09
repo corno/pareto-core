@@ -2,7 +2,7 @@ import * as p_ti from "../../transformer.js"
 import * as p_di from "../../data.js"
 import { type Query_Result } from "./Query_Result.js"
 
-export type Query_Action<
+export type Query_Interface<
     Output extends p_di.Value,
     Error extends p_di.Value,
     Input extends p_di.Value

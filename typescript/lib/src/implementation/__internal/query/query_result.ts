@@ -1,4 +1,4 @@
-import * as p_qi from "../../../interface/query.js"
+import * as p_qi from "../../../interface/query_implementation.js"
 import * as p_di from "../../../interface/data.js"
 
 /**
@@ -26,7 +26,7 @@ class Query_Result_Class<
     }
 }
 
-export default function query_result<
+export default function <
     T extends p_di.Value,
     E extends p_di.Value
 >(

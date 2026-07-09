@@ -1,10 +1,10 @@
-import { type Command_Action } from './command_action.js'
-import { type Query_Action } from './query_action.js'
+import { type Command_Interface } from './command_interface.js'
+import { type Query_Interface } from './query_interface.js'
 
 export type Resource = {
     'commands': Commands,
     'queries': Queries,
 }
 
-export type Commands = { [key:string]: Command_Action<any, any> }
-export type Queries = { [key:string]: Query_Action<any, any, any> }
+export type Commands = { [key:string]: Command_Interface<any, any> }
+export type Queries = { [key:string]: Query_Interface<any, any, any> }

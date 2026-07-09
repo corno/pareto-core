@@ -6,7 +6,7 @@ import * as p_di from "../../../interface/data.js"
  * it does not have an effect on the normal data flow
  * so use this function if you want an error checking on top of the errors that are the result of the data conversion
  */
-export default function assert<
+export default function <
     Return_Type extends p_di.Value,
     Error extends p_di.Value
 >(
