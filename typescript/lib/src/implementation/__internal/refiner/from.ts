@@ -4,11 +4,21 @@ import { type Abort } from "../../../interface/__internal/Abort.js"
 import * as lit from "../sync/literal.js"
 import { Dictionary_Class } from "../sync/primitives/Dictionary.js"
 
+/**
+ * Wraps a dictionary and provides entry lookup and transformation methods.
+ */
 export const dictionary = <T extends p_di.Value>(
     dict: p_di.Dictionary<T>,
 ) => {
     return {
 
+        /**
+         * Retrieves the entry with the given id.
+         * Calls `abort.no_such_entry` if no entry with that id exists.
+         * @param id the id of the entry to retrieve
+         * @param abort callbacks invoked on error; `no_such_entry` is called when the id is not found
+         * @returns the value of the entry
+         */
         get_entry(
             id: string,
             abort: {
@@ -25,6 +35,11 @@ export const dictionary = <T extends p_di.Value>(
             return abort.no_such_entry(null)
         },
 
+        /**
+         * Retrieves the entry with the given id if it exists, otherwise returns a not-set optional.
+         * @param id the id of the entry to retrieve
+         * @returns a set optional containing the entry value, or not-set if the id is not found
+         */
         get_possible_entry(
             id: string,
         ): p_di.Optional_Value<T> {
@@ -38,6 +53,11 @@ export const dictionary = <T extends p_di.Value>(
             return lit.not_set()
         },
 
+        /**
+         * Converts the values of the dictionary to a new type using the provided assign_entry function.
+         * @param assign_entry function to convert each entry; receives the current value and the entry id
+         * @returns a new dictionary with the same ids and the converted values
+         */
         map: <New_Type extends p_di.Value>(
             assign_entry: (
                 value: T,
@@ -59,6 +79,21 @@ export const dictionary = <T extends p_di.Value>(
             return temp_d_map(assign_entry)
         },
 
+        /**
+         * Maps each entry to a resolved value, supporting cross-entry lookups during resolution.
+         *
+         * The `acyclic_lookup` allows looking up other entries that should not have any direct or indirect
+         * dependency on the current entry; they are resolved on the spot if not yet resolved.
+         * A `cycle_detected` abort is triggered if a cycle is found.
+         *
+         * The `cyclic_lookup` allows referencing entries that may depend on the current entry.
+         * It returns a handle whose `get_circular_dependent` must not be called until all entries
+         * in the dictionary have been fully resolved; accessing it too early triggers the
+         * `accessing_cyclic_sibling_before_it_is_resolved` abort.
+         *
+         * @param assign_entry function called for each entry with its value, id, and both lookup handles
+         * @returns a new dictionary containing the resolved values
+         */
         resolve: <Resolved extends p_di.Value>(
             assign_entry: (
                 value: T,
@@ -193,11 +228,23 @@ export const dictionary = <T extends p_di.Value>(
     }
 }
 
+/**
+ * Wraps a list and provides conversion and transformation methods.
+ */
 export const list = <T extends p_di.Value>(
     list: p_di.List<T>,
 ) => {
     return {
 
+        /**
+         * Converts the list to a dictionary using the provided id and value functions.
+         * first asks for the id of an item, then for the value of that item.
+         * Calls `abort.duplicate_id` if two items produce the same id.
+         * @param get_id function to derive the dictionary key from each item
+         * @param get_value function to derive the dictionary value from each item
+         * @param abort callbacks invoked on error; `duplicate_id` is called with the conflicting id
+         * @returns a new dictionary built from the list items
+         */
         convert_to_dictionary: <NT extends p_di.Value>(
             get_id: (
                 item: T
@@ -220,6 +267,11 @@ export const list = <T extends p_di.Value>(
             return lit.dictionary(temp)
         },
 
+        /**
+         * Converts the items in the list to a new type using the provided assign_item function.
+         * @param assign_item function to convert each item to a new value
+         * @returns a new list containing the converted values
+         */
         map: <New_Type extends p_di.Value>(
             assign_item: (
                 item: T,
@@ -231,6 +283,14 @@ export const list = <T extends p_di.Value>(
             }))
         },
 
+        /**
+         * Maps the items in the list to a new type while maintaining a state that is updated with each item.
+         * @param initial_state the initial value of the state before processing any items
+         * @param assign_item function to convert each item using the current state
+         * @param update_state function to produce the next state from the converted item and the current state
+         * @param wrapup function called once with the final converted list and the final state to produce the result
+         * @returns the result produced by `wrapup`
+         */
         map_with_state: <
             Target_Item extends p_di.Value,
             State,
@@ -265,11 +325,20 @@ export const list = <T extends p_di.Value>(
     }
 }
 
+/**
+ * Wraps an optional value and provides methods to handle both the set and not-set cases.
+ */
 export const optional = <T extends p_di.Value>(
     optional_value: p_di.Optional_Value<T>,
 ) => {
     return {
 
+        /**
+         * Calls `if_set` with the wrapped value if it is set, otherwise calls `if_not_set`.
+         * @param if_set function to call with the value when it is set
+         * @param if_not_set function to call when the value is not set
+         * @returns the result of whichever function was called
+         */
         decide: <RT extends p_di.Value>(
             if_set: ($: T) => RT,
             if_not_set: () => RT
@@ -280,6 +349,12 @@ export const optional = <T extends p_di.Value>(
                 : if_set(raw[0])
         },
 
+        /**
+         * Transforms the wrapped value using the provided function if it is set.
+         * If the value is not set, returns a not-set optional.
+         * @param assign_set_value function to transform the value
+         * @returns a new optional containing the transformed value, or not-set if the original was not set
+         */
         map: <New_Type extends p_di.Value>(
             assign_set_value: (
                 value: T
@@ -294,13 +369,19 @@ export const optional = <T extends p_di.Value>(
     }
 }
 
-
-
+/**
+ * Wraps a state value and provides a method to produce a result from it.
+ */
 export const state = <State extends p_di.State>(
     state: State,
 ) => {
     return {
 
+        /**
+         * Passes the state to the provided function and returns the result.
+         * @param assign function to produce a result from the state
+         * @returns the result produced by `assign`
+         */
         decide: <RT extends p_di.Value>(
             assign: (output: State) => RT
         ): RT => {
@@ -310,11 +391,20 @@ export const state = <State extends p_di.State>(
     }
 }
 
+/**
+ * Wraps a string value and provides a method to convert it into a state.
+ */
 export const text = (
     string: string,
 ) => {
     return {
 
+        /**
+         * Converts the string into a state value using the provided function and context.
+         * @param context additional context passed to `assign_state`
+         * @param assign_state function that receives the context and the string and returns the state
+         * @returns the state produced by `assign_state`
+         */
         to_state: <
             State extends p_di.State,
             Context extends p_di.Value,
