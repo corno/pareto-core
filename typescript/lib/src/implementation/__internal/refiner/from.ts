@@ -80,6 +80,28 @@ export const dictionary = <T extends p_di.Value>(
         },
 
         /**
+         * gives the entries in the dictionary a new id.
+         * if a duplicate id is found, the duplicate_id function is called to get the target dictionary
+         * typically, you will use this function in a way where you can guarantee that there will be no duplicate ids, and the duplicate_id function will never be called,
+         * so you typically will have a p_unreachable_code_path() call
+         */
+        re_id: (
+            get_id: ($: T, id: string) => string,
+            on_duplicate_id: ($: T, id: string) => never, //maybe it makes more sense to have this return a new id and test that one for uniqueness...
+        ): p_di.Dictionary<T> => {
+            const temp: { [id: string]: T } = {}
+            dict.__get_raw().forEach(([id, value]) => {
+                const new_id = get_id(value, id)
+                if (temp[new_id] !== undefined) {
+                    return on_duplicate_id(value, id)
+                } else {
+                    temp[new_id] = value
+                }
+            })
+            return lit.dictionary(temp)
+        },
+
+        /**
          * Maps each entry to a resolved value, supporting cross-entry lookups during resolution.
          *
          * The `acyclic_lookup` allows looking up other entries that should not have any direct or indirect

@@ -150,7 +150,7 @@ export const dictionary = <T extends p_di.Value>(
          * the entries of each group are then aggregated into a desired result using the provided aggregate function.
          * @param get_group_id Function to determine the group id for each entry.
          * @param aggregate Function to aggregate the entries of each group.
-         * @returns A dictionary where the keys are group ids and the values are the aggregated results.
+         * @returns A dictionary where the id's are group id's and the values are the aggregated results.
          */
         group: <RT extends p_di.Value>(
             get_group_id: (
@@ -284,36 +284,6 @@ export const dictionary = <T extends p_di.Value>(
             () => if_multiple(dict),
             if_none,
         ),
-
-        /**
-         * gives the entries in the dictionary a new id.
-         * if a duplicate id is found, the duplicate_id function is called to get the target dictionary
-         * typically, you will use this function in a way where you can guarantee that there will be no duplicate ids, and the duplicate_id function will never be called,
-         * so you typically will have a p_unreachable_code_path() call
-         */
-        re_id: (
-            get_id: ($: T, key: string) => string,
-            duplicate_id: (id: string) => p_di.Dictionary<T>, //maybe it makes more sense to have this return a new id and test that one for uniqueness...
-        ): p_di.Dictionary<T> => {
-            const temp: { [id: string]: T } = {}
-            let duplicate_key: string | null = null
-            dict.__get_raw().forEach(([id, value]) => {
-                if (duplicate_key !== null) {
-                    return
-                }
-                const new_id = get_id(value, id)
-                if (temp[new_id] !== undefined) {
-                    duplicate_key = new_id
-                } else {
-                    temp[new_id] = value
-                }
-            })
-            if (duplicate_key !== null) {
-                return duplicate_id(duplicate_key)
-            } else {
-                return lit.dictionary(temp)
-            }
-        },
 
         /**
          * use this function to map the values of the dictionary to a new type, while giving access to the siblings of this entry during the mapping process.
@@ -555,7 +525,7 @@ export const list = <T extends p_di.Value>(
          * the items of each group are then aggregated into a desired result using the provided aggregate function.
          * @param get_id function to determine the group id for each item
          * @param aggregate function to aggregate the items of each group into a result value
-         * @returns a dictionary where the keys are group ids and the values are the aggregated results
+         * @returns a dictionary where the id's are group id's and the values are the aggregated results
          */
         group: <RT extends p_di.Value>(
             get_id: (
