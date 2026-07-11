@@ -64,6 +64,21 @@ export function list<
     return new List_Class(data)
 }
 
+export function optionals_list<
+    T extends p_di.Value
+>(
+    source: readonly p_di.Optional_Value<T>[]
+): p_di.List<T> {
+    const data: T[] = []
+    source.forEach(($) => {
+        const raw = $.__get_raw()
+        if (raw !== null) {
+            data.push(raw[0])
+        }
+    })
+    return new List_Class(data)
+}
+
 export const segmented_list = <T extends p_di.Value>(
     lists: (p_di.List<T>)[]
 ): p_di.List<T> => {
