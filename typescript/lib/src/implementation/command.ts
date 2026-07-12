@@ -13,3 +13,6 @@ import command from "./__internal/command/command_implementation.js"
 export {
     command,
 }
+
+export * from "../interface/__internal/command/Command_Interface.js"
+export * from "../interface/__internal/command/Command_Implementation.js"
