@@ -34,3 +34,19 @@ export const text_from_list_of_characters = ($: List_Of_Characters): string => {
     }
     return out
 }
+
+export const list_of_characters_from_text = ($: string): List_Of_Characters => {
+    const raw: number[] = []
+    for (let i = 0; i < $.length; i++) {
+        raw.push($.charCodeAt(i))
+    }
+    return { raw }
+}
+
+export const list_of_characters_from_list = <T extends Value>(
+    list: import("../interface/__internal/schema/List.js").List<T>,
+    assign_character: (item: T) => number,
+): List_Of_Characters => {
+    const raw = list.__get_raw().map(($) => assign_character($))
+    return { raw }
+}
