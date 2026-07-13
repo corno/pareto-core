@@ -5,21 +5,35 @@ export * from "./__internal/sync/data_switch.js"
 export * as from from "./__internal/transformer/from.js"
 
 export * as literal from "./__internal/sync/literal.js"
-import { type Phrase } from "../temp/fountain_pen/prose.js"
+import { type Phrase, type Paragraph } from "../temp/fountain_pen/prose.js"
 
-export type Serializer<
+export type Phrase_Serializer<
     Input extends Value,
 > = (
     $: Input,
 ) => Phrase
 
-export type Serializer_With_Parameter<
+export type Phrase_Serializer_With_Parameter<
     Input extends Value,
     Parameter extends Value,
 > = (
     $: Input,
     $p: Parameter,
 ) => Phrase
+
+export type Paragraph_Serializer<
+    Input extends Value,
+> = (
+    $: Input,
+) => Paragraph
+
+export type Paragraph_Serializer_With_Parameter<
+    Input extends Value,
+    Parameter extends Value,
+> = (
+    $: Input,
+    $p: Parameter,
+) => Paragraph
 
 
 // export const text_from_list_of_characters = ($: List_Of_Characters): string => {

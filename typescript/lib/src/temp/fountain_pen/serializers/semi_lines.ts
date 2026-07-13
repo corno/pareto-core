@@ -6,13 +6,6 @@ import p_list_from_text from '../../../implementation/refiner/specials/list_from
 import type * as s_in from "../private_schemas/semi_lines.js"
 import type * as s_parameters from "../private_schemas/semi_lines_serialize.js"
 
-namespace declarations {
-    export type Lines = p_.Serializer_With_Parameter<
-        s_in.Lines,
-        s_parameters.Parameters
-    >
-}
-
 //dependencies
 import * as t_fountain_pen_semi_lines_to_lines from "../transformers/semi_lines/_lines.js"
 
