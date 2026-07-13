@@ -64,7 +64,7 @@ export type Paragraph_Serializer_With_Parameter<
 //     return { raw }
 // }
 
-export const phrase_to_text = ($: Phrase, indentation: string, newline: string): string => {
+export const text_from_phrase = ($: Phrase, indentation: string, newline: string): string => {
     return p_text_from_list(
         fp_serialize.Phrase(
             $,
