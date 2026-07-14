@@ -76,3 +76,16 @@ export const text_from_phrase = ($: Phrase, indentation: string, newline: string
         ($) => $
     )
 }
+
+export const text_from_paragraph = ($: Paragraph, indentation: string, newline: string): string => {
+    return p_text_from_list(
+        fp_serialize.Paragraph(
+            $,
+            {
+                'newline': newline,
+                'indentation': indentation,
+            }
+        ),
+        ($) => $
+    )
+}
