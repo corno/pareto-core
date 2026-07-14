@@ -8,15 +8,23 @@ export type Option<T extends p_di.Value> = readonly [string, T]
 /**
  * @deprecated use 'option' instead
  */
-export function ss<T extends p_di.Value, RT extends Query_Result<any, any>>(
+export function ss<
+    T extends p_di.Value,
+    Output extends p_di.Value,
+    Error extends p_di.Value,
+>(
     option: Option<T>,
-    $c: ($: T) => RT): RT {
+    $c: ($: T) => Query_Result<Output, Error>): Query_Result<Output, Error> {
     return $c(option[1])
 }
 
-export function option<T extends p_di.Value, RT extends Query_Result<any, any>>(
+export function option<
+    T extends p_di.Value,
+    Output extends p_di.Value,
+    Error extends p_di.Value,
+>(
     option: Option<T>,
-    $c: ($: T) => RT): RT {
+    $c: ($: T) => Query_Result<Output, Error>): Query_Result<Output, Error> {
     return $c(option[1])
 }
 
@@ -24,15 +32,21 @@ export function option<T extends p_di.Value, RT extends Query_Result<any, any>>(
  * 
  * @deprecated use exhaustive instead
  */
-export function au<RT extends Query_Result<any, any>>(
+export function au<
+    Output extends p_di.Value,
+    Error extends p_di.Value,
+>(
     _x: never
-): RT {
+): Query_Result<Output, Error> {
     throw new Error("unreachable")
 }
 
-export function exhaustive<RT extends Query_Result<any, any>>(
+export function exhaustive<
+    Output extends p_di.Value,
+    Error extends p_di.Value,
+>(
     _x: never
-): RT {
+): Query_Result<Output, Error> {
     throw new Error("unreachable")
 }
 
@@ -40,11 +54,12 @@ export namespace decide {
 
     export const state = <
         T extends p_di.State,
-        RT extends Query_Result<any, any>
+        Output extends p_di.Value,
+        Error extends p_di.Value,
     >(
         state: T,
-        assign: (output: T) => RT
-    ): RT => {
+        assign: (output: T) => Query_Result<Output, Error>
+    ): Query_Result<Output, Error> => {
         return assign(state)
     }
 
