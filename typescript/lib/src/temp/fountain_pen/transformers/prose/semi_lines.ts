@@ -110,6 +110,11 @@ const Phrase = (
 
     },
 ): Summary => {
+    if (typeof $ === 'string') {
+        return p_.literal.list<Action>([
+            ['append', $]
+        ])
+    }
     return p_.from.state($).decide(
         ($): Summary => {
             switch ($[0]) {

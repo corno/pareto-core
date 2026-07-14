@@ -214,6 +214,7 @@ namespace Phrase_ {
 }
 
 type Phrase_ = 
+    string
     | readonly ['value', Phrase_.value]
     | readonly ['indent', Phrase_.indent]
     | readonly ['composed', Phrase_.composed]
