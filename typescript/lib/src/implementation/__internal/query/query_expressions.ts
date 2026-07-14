@@ -55,21 +55,19 @@ export function dictionary<
 
 export function direct_result<
     Result extends p_di.Value,
-    Error extends p_di.Value
 >(
     result: Result,
-): Query_Result<Result, Error> {
+): Query_Result<Result, never> {
     return query_result((on_success, on_error) => {
         on_success(result)
     })
 }
 
 export function direct_error<
-    T extends p_di.Value,
-    E extends p_di.Value
+    E extends p_di.Value,
 >(
     $: E
-): Query_Result<T, E> {
+): Query_Result<never, E> {
     return query_result((on_value, on_error) => {
         on_error($)
     })
