@@ -10,4 +10,4 @@ import * as t_to_list_of_strings from "../transformers/rich_phrase/list_of_strin
 
 export const Phrase = ($: s_in.Phrase): string => p_.text_from_phrase(['composed', t_to_list_of_strings.Phrase(
     $
-)])
+).__get_raw()])
