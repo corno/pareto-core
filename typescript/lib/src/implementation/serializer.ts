@@ -26,24 +26,26 @@ export type Serializer_With_Parameter<
 ) => string
 
 
-export const text_from_phrase = (
-    $: Phrase
-): string => {
-    if (typeof $ === 'string') {
-        return $ // return the string directly
-    }
-
-    switch ($[0]) {
-        case 'value': return $[1] // return the string directly
-        case 'composed': return $[1].map(($) => text_from_phrase($)).join("")
-        case 'nothing': return ""
-        default: return data_switch.exhaustive($[0])
-    }
-}
 export namespace ph {
     export const composed = (
         phrases: Phrase[]
-    ): string => phrases.map(($) => text_from_phrase($)).join("")
+    ): string => phrases.map(($) => {
+        const text_from_phrase = (
+            $: Phrase
+        ): string => {
+            if (typeof $ === 'string') {
+                return $ // return the string directly
+            }
+
+            switch ($[0]) {
+                case 'value': return $[1] // return the string directly
+                case 'composed': return $[1].map(($) => text_from_phrase($)).join("")
+                case 'nothing': return ""
+                default: return data_switch.exhaustive($[0])
+            }
+        }
+        return text_from_phrase($)
+    }).join("")
     export const list = (
         list: List<string>
     ): string => list.__get_raw().join("")
