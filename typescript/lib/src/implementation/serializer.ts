@@ -44,6 +44,9 @@ export namespace ph {
     export const composed = (
         phrases: Phrase[]
     ): string => phrases.map(($) => text_from_phrase($)).join("")
+    export const list = (
+        list: List<string>
+    ): string => list.__get_raw().join("")
 
     export const literal = (
         value: string
