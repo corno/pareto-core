@@ -11,13 +11,13 @@ import * as data_switch from "./__internal/sync/data_switch.js"
 
 import p_text_from_list from "./transformer/specials/text_from_list.js"
 
-export type Phrase_Serializer<
+export type Serializer<
     Input extends Value,
 > = (
     $: Input,
 ) => string
 
-export type Phrase_Serializer_With_Parameter<
+export type Serializer_With_Parameter<
     Input extends Value,
     Parameter extends Value,
 > = (
