@@ -43,16 +43,16 @@ export const text_from_phrase = (
 export namespace ph {
     export const composed = (
         phrases: Phrase[]
-    ): Phrase => ['composed', phrases]
+    ): string => phrases.map(($) => text_from_phrase($)).join("")
 
     export const literal = (
         value: string
-    ): Phrase => ['value', value]
+    ): string => value
 
     export const list_of_characters = (
         list: List<number>
-    ): Phrase => ['value', p_text_from_list(
+    ): string => p_text_from_list(
         list,
         ($) => $,
-    )]
+    )
 }
