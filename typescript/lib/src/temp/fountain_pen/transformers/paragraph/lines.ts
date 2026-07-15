@@ -2,7 +2,7 @@ import * as p_ from '../../../../implementation/transformer.js'
 import type * as p_i from '../../../../interface/transformer.js'
 
 //schemas
-import type * as s_in from "../../prose.js"
+import type * as s_in from "../../paragraph.js"
 import type * as s_out from "../../private_schemas/lines.js"
 
 namespace declarations {

@@ -6,7 +6,7 @@ import p_text_from_list from '../../../../implementation/transformer/specials/te
 import p_variables from '../../../../implementation/transformer/specials/variables.js'
 
 //schemas
-import type * as s_in from "../../prose.js"
+import type * as s_in from "../../paragraph.js"
 
 import type * as s_out from "../../private_schemas/semi_lines.js"
 namespace declarations {

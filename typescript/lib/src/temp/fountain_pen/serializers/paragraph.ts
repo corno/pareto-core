@@ -2,11 +2,11 @@ import * as p_ from '../../../implementation/serializer.js'
 import * as p_schema from '../../../interface/schema.js'
 
 //schemas
-import type * as s_in from "../prose.js"
+import type * as s_in from "../paragraph.js"
 import type * as s_parameters from "../serialize_prose.js"
 
 //dependencies
-import * as t_fountain_pen_block_to_semi_lines from "../transformers/prose/semi_lines.js"
+import * as t_fountain_pen_block_to_semi_lines from "../transformers/paragraph/semi_lines.js"
 import * as t_semi_lines_to_list_of_characters from "./semi_lines.js"
 
 
