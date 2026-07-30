@@ -104,6 +104,34 @@ export const dictionary = <T extends p_di.Value>(
         },
 
         /**
+         * differs from 'flatten' in that it does not require a new id to be computed,
+         * and instead uses the child id directly. This child id has to be globally unique
+         */
+        flatten2: <New_Type extends p_di.Value>(
+            get_child_dictionary: (
+                value: T,
+                id: string
+            ) => p_di.Dictionary<New_Type>,
+            abort: {
+                duplicate_id: Abort<string>
+            }
+        ) => {
+            const out: { [id: string]: New_Type } = {}
+
+            dict.__get_raw().forEach(([id, value]) => {
+                const child_dictionary = get_child_dictionary(value, id)
+                child_dictionary.__get_raw().forEach(([child_id, child_value]) => {
+                    if (out[child_id] !== undefined) {
+                        abort.duplicate_id(child_id)
+                    }
+                    out[child_id] = child_value
+                })
+            })
+            return lit.dictionary(out)
+        },
+
+
+        /**
          * flattens the dictionary into a list, where each entry in the dictionary is converted to a list of items using the provided assign_item function,
          */
         flatten_to_list: <NT extends p_di.Value>(
