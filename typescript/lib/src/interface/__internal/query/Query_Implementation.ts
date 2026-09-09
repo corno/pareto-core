@@ -1,5 +1,5 @@
 
-import * as p_di from "../../data.js"
+import * as p_di from "../../../schema.js"
 import { type Query_Interface } from "./Query_Interface.js"
 
 export type Query_Implementation<

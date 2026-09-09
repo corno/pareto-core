@@ -1,6 +1,6 @@
-import * as p_ from '../../../../implementation/transformer.js'
-import p_text_from_list from '../../../../implementation/transformer/specials/text_from_list.js'
-import p_list_from_text from '../../../../implementation/refiner/specials/list_from_text.js'
+import * as p_ from '../../../../transformer.js'
+import p_text_from_list from '../../../../transformer/specials/text_from_list.js'
+import p_list_from_text from '../../../../refiner/specials/list_from_text.js'
 
 import type * as s_in from "../../private_schemas/semi_lines.js"
 import type * as s_out from "../../private_schemas/lines.js"

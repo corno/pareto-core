@@ -1,4 +1,4 @@
-import { type Abort } from "../Abort.js"
+import { type Abort } from "../../../__internal/Abort.js"
 import { type Optional_Value } from "./Optional_Value.js"
 import { type Value } from "./Value.js"
 

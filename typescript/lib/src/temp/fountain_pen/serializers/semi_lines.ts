@@ -1,6 +1,6 @@
-import * as p_ from "../../../implementation/serializer.js"
-import type * as p_di from '../../../interface/schema.js'
-import p_list_from_text from '../../../implementation/refiner/specials/list_from_text.js'
+import * as p_ from "../../../serializer.js"
+import type * as p_di from '../../../schema.js'
+import p_list_from_text from '../../../refiner/specials/list_from_text.js'
 
 //schemas
 import type * as s_in from "../private_schemas/semi_lines.js"

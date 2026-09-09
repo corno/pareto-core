@@ -1,4 +1,4 @@
-import * as p_di from "../../data.js"
+import * as p_di from "../../../schema.js"
 import * as p_ti from "../../transformer.js"
 import { type Command_Promise } from "./Command_Promise.js"
 

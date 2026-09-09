@@ -1,6 +1,6 @@
 
-import * as p_i from '../../../interface/__internal/Abort.js'
-import * as p_di from '../../../interface/schema.js'
+import * as p_i from '../../../__internal/Abort.js'
+import * as p_di from '../../../schema.js'
 
 export namespace Lines_ {
     

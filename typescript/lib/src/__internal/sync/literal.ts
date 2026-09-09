@@ -1,0 +1,129 @@
+import * as p_di from "../../schema.js"
+
+import { type Dictionary_As_Array, Dictionary_Class, type ID_Value_Pair } from "./primitives/Dictionary.js"
+import { List_Class } from "./primitives/List.js"
+import { Set_Optional_Value, Not_Set_Optional_Value } from "./primitives/Optional.js"
+
+export function dictionary<T extends p_di.Value>(
+    source: { readonly [id: string]: T }
+): p_di.Dictionary<T> {
+
+    function create_dictionary_as_array<X extends p_di.Value>(
+        source: { readonly [id: string]: X }
+    ): Dictionary_As_Array<X> {
+        const imp: ID_Value_Pair<X>[] = []
+        Object.keys(source).forEach((id) => {
+            imp.push([id, source[id]!])
+        })
+        return imp
+    }
+
+    return new Dictionary_Class(
+        create_dictionary_as_array(source)
+    )
+}
+
+export function optionals_dictionary<T extends p_di.Value>(
+    source: { readonly [id: string]: p_di.Optional_Value<T> }
+): p_di.Dictionary<T> {
+
+    function create_dictionary_as_array<X extends p_di.Value>(
+        source: { readonly [id: string]: p_di.Optional_Value<X> }
+    ): Dictionary_As_Array<X> {
+        const imp: ID_Value_Pair<X>[] = []
+        Object.keys(source).forEach((id) => {
+            const raw = source[id]!.__get_raw()
+            if (raw !== null) {
+                imp.push([id, raw[0]])
+            }
+        })
+        return imp
+    }
+
+    return new Dictionary_Class(
+        create_dictionary_as_array(source)
+    )
+}
+
+
+export function list<
+    T extends p_di.Value
+>(
+    source: readonly T[]
+): p_di.List<T> {
+    if (!(source instanceof Array)) {
+        throw new Error("invalid input in 'list_literal'")
+    }
+    const data = source.slice() //create a copy
+    /**
+     * this is an implementation, not public by design
+     * If you feel the need to rename this class, don't rename it to 'Array',
+     * it will break the 'instanceOf Array' test
+     */
+
+    return new List_Class(data)
+}
+
+export function optionals_list<
+    T extends p_di.Value
+>(
+    source: readonly p_di.Optional_Value<T>[]
+): p_di.List<T> {
+    const data: T[] = []
+    source.forEach(($) => {
+        const raw = $.__get_raw()
+        if (raw !== null) {
+            data.push(raw[0])
+        }
+    })
+    return new List_Class(data)
+}
+
+export const segmented_list = <T extends p_di.Value>(
+    lists: (p_di.List<T>)[]
+): p_di.List<T> => {
+    const out: T[] = []
+    lists.forEach(($) => {
+        out.push(...$.__get_raw())
+
+    })
+    return new List_Class(out)
+}
+
+export const chain = <T extends p_di.Value>(
+    list: (p_di.List<T>),
+    tail_element: T,
+): p_di.List<T> => {
+    const out: T[] = []
+    out.push(...list.__get_raw())
+    out.push(tail_element)
+    return new List_Class(out)
+}
+
+export const set = <T extends p_di.Value>(
+    value: T
+): p_di.Optional_Value<T> => {
+    return new Set_Optional_Value(value)
+}
+
+export const not_set = <T extends p_di.Value>(
+): p_di.Optional_Value<T> => {
+    return new Not_Set_Optional_Value<T>()
+}
+
+/**
+ * first the properties can be resolved to variables, then the variables can be
+ * used to construct the group object. This allows for properties to refer to each other, as long as there are no circular references.
+ */
+export const group_resolve = <Resolved extends p_di.Group>(
+    assign: (
+    ) => Resolved,
+): Resolved => assign()
+
+export const nothing = (): symbol => {
+    return Symbol()
+}
+
+export const group_empty = (): symbol => {
+    return Symbol()
+}

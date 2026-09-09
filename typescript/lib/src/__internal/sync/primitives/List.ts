@@ -1,0 +1,37 @@
+import * as p_di from "../../../schema.js"
+import * as optional from "./Optional.js"
+import { type Abort } from "../../Abort.js"
+
+export class List_Class<T extends p_di.Value> implements p_di.List<T> {
+    private data: readonly T[]
+    constructor(data: readonly T[]) {
+        this.data = data
+    }
+
+    readonly __list = true
+
+    __deprecated_get_possible_item_at(index: number) {
+        if (index < 0 || index >= this.data.length) {
+            return new optional.Not_Set_Optional_Value<T>()
+        }
+        return new optional.Set_Optional_Value(this.data[index]!)
+    }
+
+    __deprecated_get_item_at(
+        index: number,
+        abort: {
+            out_of_bounds: Abort<null>
+        },
+    ) {
+        if (index < 0 || index >= this.data.length) {
+            return abort.out_of_bounds(null)
+        }
+        return this.data[index]!
+    }
+
+    __get_raw(): readonly T[] {
+        return this.data
+    }
+
+
+}

@@ -1,5 +1,5 @@
 
-import * as p_di from '../../../interface/schema.js'
+import * as p_di from '../../../schema.js'
 
 export namespace Lines_ {
     

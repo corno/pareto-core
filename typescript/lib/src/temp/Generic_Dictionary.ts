@@ -1,5 +1,5 @@
 
-import * as p_di from "../interface/data.js"
+import * as p_di from "../schema.js"
 
 export interface Generic_Dictionary<T> {
 
