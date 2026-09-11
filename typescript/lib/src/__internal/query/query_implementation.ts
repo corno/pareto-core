@@ -3,7 +3,7 @@ import * as p_di from "../../schema.js"
 import { type Query_Interface } from "../../interface/__internal/query/Query_Interface.js"
 import { type Query_Implementation } from "../../interface/__internal/query/Query_Implementation.js"
 import { type Query_Result } from "../../interface/__internal/query/Query_Result.js"
-import { Super_Query_Result_Class } from "../../query/super_query_result.js"
+import { Super_Query_Result_Class } from "./super_query_result.js"
 
 import query_result from "./query_result.js"
 

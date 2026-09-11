@@ -832,6 +832,26 @@ export const list = <T extends p_di.Value>(
         },
 
         /**
+         * reduces the list to an arbitrary value by iteratively applying the update_state function to each item and the current state, starting from the initial_state.
+         * @param initial_state the initial numeric state
+         * @param update_state function to update the state based on each item
+         * @returns the final numeric state after processing all items
+         */
+        reduce_to_any_value: <Value extends p_di.Value>(
+            initial_state: Value,
+            update_state: (
+                value: T,
+                current: Value
+            ) => Value,
+        ): Value => {
+            let current_state = initial_state
+            list.__get_raw().forEach(($) => {
+                current_state = update_state($, current_state)
+            })
+            return current_state
+        },
+
+        /**
          * reduces the list to a boolean value by iteratively applying the update_state function to each item and the current state, starting from the initial_state.
          * @param initial_state the initial boolean state
          * @param update_state function to update the state based on each item

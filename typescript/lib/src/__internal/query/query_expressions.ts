@@ -8,7 +8,7 @@ import { type Abort } from "../Abort.js"
 import { type Query_Result } from "../../interface/__internal/query/Query_Result.js"
 import create_refinement_context from "../sync/create_refinement_context.js"
 
-export function dictionary<
+export function deprecated_dictionary<
     Entry extends p_di.Value,
     Result extends p_di.Value,
     Error extends p_di.Value,
@@ -53,7 +53,7 @@ export function dictionary<
     })
 }
 
-export function direct_result<
+export function deprecated_direct_result<
     Result extends p_di.Value,
 >(
     result: Result,
@@ -63,7 +63,7 @@ export function direct_result<
     })
 }
 
-export function direct_error<
+export function deprecated_direct_error<
     E extends p_di.Value,
 >(
     $: E

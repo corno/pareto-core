@@ -116,6 +116,17 @@ export const dictionary = <T extends p_di.Value>(
             }
         },
 
+        prepend_id: (
+            prefix: string
+        ): p_di.Dictionary<T> => {
+            const temp: { [id: string]: T } = {}
+            dict.__get_raw().forEach(([id, value]) => {
+                const new_id = `${prefix}${id}`
+                temp[new_id] = value
+            })
+            return lit.dictionary(temp)
+        },
+
         /**
          * gives the entries in the dictionary a new id.
          * if a duplicate id is found, the duplicate_id function is called to get the target dictionary
@@ -509,11 +520,15 @@ export const text = (
          */
         to_state: <
             State extends p_di.State,
-            Context extends p_di.Value,
         >(
-            context: Context,
-            assign_state: ($: Context, text: string) => State
-        ) => assign_state(context, string)
+            assign_state: (text: string) => State
+        ) => assign_state(string),
+
+        deprecated_to_any_value: <
+            Any_Value extends p_di.Value,
+        >(
+            assign_state: (text: string) => Any_Value
+        ) => assign_state(string)
 
     }
 }
