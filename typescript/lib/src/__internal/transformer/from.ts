@@ -88,7 +88,8 @@ export const dictionary = <T extends p_di.Value>(
                 duplicate_id: Abort<string>
             }
         ) => {
-            const out: { [id: string]: New_Type } = {}
+            // plain object literal avoided: an id like 'constructor' would collide with Object.prototype
+            const out: { [id: string]: New_Type } = Object.create(null)
 
             dict.__get_raw().forEach(([id, value]) => {
                 const child_dictionary = get_child_dictionary(value)
@@ -116,7 +117,8 @@ export const dictionary = <T extends p_di.Value>(
                 duplicate_id: Abort<string>
             }
         ) => {
-            const out: { [id: string]: New_Type } = {}
+            // plain object literal avoided: an id like 'constructor' would collide with Object.prototype
+            const out: { [id: string]: New_Type } = Object.create(null)
 
             dict.__get_raw().forEach(([id, value]) => {
                 const child_dictionary = get_child_dictionary(value, id)
@@ -187,7 +189,8 @@ export const dictionary = <T extends p_di.Value>(
             ) => string,
             aggregate: ($: p_di.Dictionary<T>, group_id: string) => RT
         ): p_di.Dictionary<RT> => {
-            const temp: { [id: string]: [string, T][] } = {}
+            // plain object literals avoided: a group id like 'constructor' would collide with Object.prototype
+            const temp: { [id: string]: [string, T][] } = Object.create(null)
             dict.__get_raw().forEach(([id, value]) => {
                 const group_id = get_group_id(value, id)
                 if (temp[group_id] === undefined) {
@@ -195,7 +198,7 @@ export const dictionary = <T extends p_di.Value>(
                 }
                 temp[group_id].push([id, value])
             })
-            const temp2: { [id: string]: RT } = {}
+            const temp2: { [id: string]: RT } = Object.create(null)
             Object.keys(temp).forEach((group_id) => {
                 temp2[group_id] = aggregate(new Dictionary_Class(temp[group_id]!), group_id)
             })
@@ -220,7 +223,8 @@ export const dictionary = <T extends p_di.Value>(
                 id: string
             ) => Result,
         ) => {
-            const out: { [id: string]: Result } = {}
+            // plain object literal avoided: an id like 'constructor' would collide with Object.prototype
+            const out: { [id: string]: Result } = Object.create(null)
             dict.__get_raw().forEach(([id, value]) => {
                 out[id] = assign_entry(
                     value,
@@ -335,9 +339,10 @@ export const dictionary = <T extends p_di.Value>(
             ) => Resolved,
         ): p_di.Dictionary<Resolved> => {
             const source = dict
-            const out: { [id: string]: Resolved } = {}
+            // plain object literals avoided: an id like 'constructor' would collide with Object.prototype
+            const out: { [id: string]: Resolved } = Object.create(null)
 
-            const entries_started: { [id: string]: null } = {}
+            const entries_started: { [id: string]: null } = Object.create(null)
 
             type Cyclic_Reference = {
                 'id': string,
@@ -561,7 +566,8 @@ export const list = <T extends p_di.Value>(
             ) => string,
             aggregate: ($: p_di.List<T>, group_id: string) => RT
         ): p_di.Dictionary<RT> => {
-            const temp: { [id: string]: T[] } = {}
+            // plain object literals avoided: an id like 'constructor' would collide with Object.prototype
+            const temp: { [id: string]: T[] } = Object.create(null)
             list.__get_raw().forEach(($) => {
                 const id = get_id($)
                 if (temp[id] === undefined) {
@@ -569,7 +575,7 @@ export const list = <T extends p_di.Value>(
                 }
                 temp[id].push($)
             })
-            const temp2: { [id: string]: RT } = {}
+            const temp2: { [id: string]: RT } = Object.create(null)
             Object.keys(temp).forEach((id) => {
                 temp2[id] = aggregate(lit.list(temp[id]!), id)
             })

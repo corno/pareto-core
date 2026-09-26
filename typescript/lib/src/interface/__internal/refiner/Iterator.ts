@@ -9,12 +9,12 @@ export interface Iterator<
     build_list: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: () => List_Item,
-        on_no_progression: Abort<null>,
+        on_no_progression: Abort<Item>,
     }) => p_di.List<List_Item>,
     build_list_with_segments: <List_Item extends p_di.Value>($: {
         has_more_items: ($: Item) => boolean,
         handle: () => p_di.List<List_Item>,
-        on_no_progression: Abort<null>,
+        on_no_progression: Abort<Item>,
     }) => p_di.List<List_Item>,
 
     consume: <T extends p_di.Value>(

@@ -4,3 +4,11 @@ export * as from from "./__internal/refiner/from.js"
 export * as literal from "./__internal/sync/literal.js"
 
 export * from "./interface/refiner.js"
+
+
+export function change_context<T, R>(
+    $: T,
+    callback: (context: T) => R,
+): R {
+    return callback($)
+}

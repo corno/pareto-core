@@ -40,7 +40,7 @@ export default function <
             build_list: <List_Item extends p_di.Value>($x: {
                 has_more_items: ($: Item) => boolean,
                 handle: () => List_Item,
-                on_no_progression: Abort<null>,
+                on_no_progression: Abort<Item>,
             }): p_di.List<List_Item> => {
                 const raw: List_Item[] = []
 
@@ -54,7 +54,7 @@ export default function <
                         const position_before = position
                         const result = $x.handle()
                         if (position === position_before) {
-                            return $x.on_no_progression(null)
+                            return $x.on_no_progression(next_element[0])
                         }
                         raw.push(result)
                     }
@@ -65,7 +65,7 @@ export default function <
             build_list_with_segments: <List_Item extends p_di.Value>($x: {
                 has_more_items: ($: Item) => boolean,
                 handle: () => p_di.List<List_Item>,
-                on_no_progression: Abort<null>,
+                on_no_progression: Abort<Item>,
             }): p_di.List<List_Item> => {
                 const raw: List_Item[] = []
 
@@ -79,7 +79,7 @@ export default function <
                         const position_before = position
                         const result = $x.handle()
                         if (position === position_before) {
-                            return $x.on_no_progression(null)
+                            return $x.on_no_progression(next_element[0])
                         }
                         raw.push(...result.__get_raw())
                     }
