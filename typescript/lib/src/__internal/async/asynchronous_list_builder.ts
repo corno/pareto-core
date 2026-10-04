@@ -20,7 +20,7 @@ export default function <
             items.push(item)
         },
         'add list': (list: p_di.List<Item>) => {
-            items.push(...list.__get_raw())
+            list.__get_raw().forEach(($) => { items.push($) })
         },
 
         'get list': () => {

@@ -1,5 +1,5 @@
 import * as p_di from "../../schema.js"
-import * as lit from "../../__internal/sync/literal.js"
+import * as lit from "../../__internal/sync/initialize.js"
 import { type Abort } from "../../__internal/Abort.js"
 import { type Iterator } from "../../interface/__internal/refiner/Iterator.js"
 import { type Raw_Optional_Value } from "../../__internal/Raw_Optional_Value.js"
@@ -81,7 +81,7 @@ export default function <
                         if (position === position_before) {
                             return $x.on_no_progression(next_element[0])
                         }
-                        raw.push(...result.__get_raw())
+                        result.__get_raw().forEach(($) => { raw.push($) })
                     }
                 }
                 return lit.list(raw)

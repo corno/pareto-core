@@ -84,7 +84,7 @@ export function segmented_list<T extends p_di.Value>(
 ): p_di.List<T> {
     const out: T[] = []
     lists.forEach(($) => {
-        out.push(...$.__get_raw())
+        $.__get_raw().forEach(($) => { out.push($) })
 
     })
     return new List_Class(out)
@@ -95,7 +95,7 @@ export function chain <T extends p_di.Value>(
     tail_element: T,
 ): p_di.List<T> {
     const out: T[] = []
-    out.push(...list.__get_raw())
+    list.__get_raw().forEach(($) => { out.push($) })
     out.push(tail_element)
     return new List_Class(out)
 }

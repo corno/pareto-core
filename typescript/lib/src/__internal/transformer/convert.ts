@@ -2,7 +2,7 @@ import * as p_di from "../../schema.js"
 import * as p_ti from "../../interface/transformer.js"
 import { Dictionary_Class } from "../sync/primitives/Dictionary.js"
 import { type Abort } from "../Abort.js"
-import * as lit from "../sync/literal.js"
+import * as lit from "../sync/initialize.js"
 
 /**
  * Wraps a boolean value, providing a `decide` method that branches into one of two callbacks based on the value.

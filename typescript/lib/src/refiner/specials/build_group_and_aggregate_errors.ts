@@ -1,6 +1,6 @@
 import * as p_di from "../../schema.js"
 import { type Abort } from "../../__internal/Abort.js"
-import * as lit from "../../__internal/sync/literal.js"
+import * as lit from "../../__internal/sync/initialize.js"
 
 type RefinerResult<R> =
     R extends (abort: Abort<any>) => infer Result

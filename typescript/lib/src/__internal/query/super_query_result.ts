@@ -6,7 +6,7 @@ import { type Query_Result } from "../../interface/__internal/query/Query_Result
 
 import create_asynchronous_dictionary_builder from "../async/asynchronous_dictionary_builder.js"
 import create_asynchronous_processes_monitor from "../async/create_asynchronous_processes_monitor.js"
-import * as lit from "../sync/literal.js"
+import * as lit from "../sync/initialize.js"
 
 export type Query_Callback<
     Output extends p_di.Value,

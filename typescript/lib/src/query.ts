@@ -1,5 +1,7 @@
 
-export * as literal from "./__internal/sync/literal.js"
+
+export * as literal from "./__internal/sync/initialize.js"
+export * as initialize from "./__internal/sync/initialize.js"
 export * as e_deprecated from "./__internal/query/query_expressions.js"
 export * from "./__internal/query/query_implementation.js"
 export * from "./__internal/query/query_result.js"

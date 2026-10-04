@@ -3,9 +3,12 @@ import { type List } from "./interface/__internal/schema/List.js"
 
 export * from "./__internal/sync/data_switch.js"
 
-export * as from from "./__internal/transformer/from.js"
+export * as from from "./__internal/transformer/convert.js"
+export * as convert from "./__internal/transformer/convert.js"
 
-export * as literal from "./__internal/sync/literal.js"
+
+export * as literal from "./__internal/sync/initialize.js"
+export * as initialize from "./__internal/sync/initialize.js"
 import { type Phrase } from "./temp/fountain_pen/phrase.js"
 import * as data_switch from "./__internal/sync/data_switch.js"
 

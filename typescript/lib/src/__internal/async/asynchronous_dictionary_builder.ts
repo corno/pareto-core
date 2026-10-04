@@ -1,12 +1,12 @@
 import * as p_di from "../../schema.js"
-import * as lit from "../sync/literal.js"
+import * as lit from "../sync/initialize.js"
 export type Asynchronous_Dictionary_Builder<Entry extends p_di.Value> = {
     'add entry': (id: string, entry: Entry) => undefined,
     'get dictionary': () => p_di.Dictionary<Entry>,
 }
 
 export default function <Entry extends p_di.Value>(): Asynchronous_Dictionary_Builder<Entry> {
-    const entries: { [id: string]: Entry } = {}
+    const entries: { [id: string]: Entry } = Object.create(null)
 
     return {
         'add entry': (id: string, entry: Entry) => {

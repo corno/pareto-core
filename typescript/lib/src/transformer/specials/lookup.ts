@@ -1,8 +1,8 @@
 import * as p_i from "../../interface/transformer.js"
 import * as p_di from "../../schema.js"
 
-import * as lit from "../../__internal/sync/literal.js"
-import * as from from "../../__internal/transformer/from.js"
+import * as lit from "../../__internal/sync/initialize.js"
+import * as convert from "../../__internal/transformer/convert.js"
 
 export namespace acyclic {
 
@@ -14,7 +14,7 @@ export namespace acyclic {
     export const from_resolved_dictionary = <T extends p_di.Value>(
         dict: p_di.Dictionary<T>,
     ): p_i.lookup.Acyclic<T> => ({
-        get_entry: (id, exception) => from.dictionary(dict).get_possible_entry(
+        get_entry: (id, exception) => convert.dictionary(dict).get_possible_entry(
             id,
             ($) => lit.set($),
             () => lit.not_set(),
@@ -53,7 +53,7 @@ export namespace stack {
     ): p_i.lookup.Stack<T> => {
         return ({
             get_entry: (id, exception) => {
-                return from.optional(
+                return convert.optional(
                     item.get_entry(
                     id,
                     exception,
@@ -68,14 +68,14 @@ export namespace stack {
             },
             get_entry_depth: (id, exception) => {
 
-                return from.optional(
+                return convert.optional(
                     item.get_entry(
                     id,
                     exception,
                     )
                 ).decide(
                     ($) => lit.set(0),
-                    () => from.optional(
+                    () => convert.optional(
                         stack.get_entry_depth(
                         id,
                         exception,

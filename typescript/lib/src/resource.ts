@@ -11,7 +11,9 @@ import p_command_promise from "./__internal/command/command_promise.js"
 import { type Query_Interface } from "./interface/__internal/query/Query_Interface.js"
 import { type Command_Interface } from "./interface/__internal/command/Command_Interface.js"
 
-export * as literal from "./__internal/sync/literal.js"
+
+export * as literal from "./__internal/sync/initialize.js"
+export * as initialize from "./__internal/sync/initialize.js"
 
 export const query = <
     Result extends p_id.Value,

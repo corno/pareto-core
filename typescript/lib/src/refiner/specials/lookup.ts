@@ -1,6 +1,6 @@
 import * as p_di from "../../schema.js"
 import * as p_i from "../../interface/refiner.js"
-import * as from from "../../__internal/refiner/from.js"
+import * as convert from "../../__internal/refiner/convert.js"
 
 export namespace acyclic {
 
@@ -13,7 +13,7 @@ export namespace acyclic {
     export const from_resolved_dictionary = <T extends p_di.Value>(
         dict: p_di.Dictionary<T>,
     ): p_i.lookup.Acyclic<T> => ({
-        get_entry: (id, abort) => from.dictionary(dict).get_entry(
+        get_entry: (id, abort) => convert.dictionary(dict).get_entry(
             id,
             {
                 no_such_entry: () => abort.no_such_entry(null)

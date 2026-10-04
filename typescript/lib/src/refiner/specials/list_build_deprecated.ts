@@ -17,7 +17,7 @@ export default function <T extends p_di.Value>(
             temp.push($)
         },
         'add list': ($) => {
-            temp.push(...$.__get_raw())
+            $.__get_raw().forEach(($) => { temp.push($) })
         }
     })
     return new List_Class(temp)

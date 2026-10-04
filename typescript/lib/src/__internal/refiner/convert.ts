@@ -1,7 +1,7 @@
 import * as p_di from "../../schema.js"
 import * as p_ri from "../../interface/refiner.js"
 import { type Abort } from "../Abort.js"
-import * as lit from "../sync/literal.js"
+import * as lit from "../sync/initialize.js"
 import { Dictionary_Class } from "../sync/primitives/Dictionary.js"
 
 /**
@@ -119,7 +119,7 @@ export const dictionary = <T extends p_di.Value>(
         prepend_id: (
             prefix: string
         ): p_di.Dictionary<T> => {
-            const temp: { [id: string]: T } = {}
+            const temp: { [id: string]: T } = Object.create(null)
             dict.__get_raw().forEach(([id, value]) => {
                 const new_id = `${prefix}${id}`
                 temp[new_id] = value
@@ -137,7 +137,7 @@ export const dictionary = <T extends p_di.Value>(
             get_id: ($: T, id: string) => string,
             on_duplicate_id: ($: T, id: string) => never, //maybe it makes more sense to have this return a new id and test that one for uniqueness...
         ): p_di.Dictionary<T> => {
-            const temp: { [id: string]: T } = {}
+            const temp: { [id: string]: T } = Object.create(null)
             dict.__get_raw().forEach(([id, value]) => {
                 const new_id = get_id(value, id)
                 if (temp[new_id] !== undefined) {
@@ -173,9 +173,9 @@ export const dictionary = <T extends p_di.Value>(
             ) => Resolved,
         ): p_di.Dictionary<Resolved> => {
             const source = dict
-            const out: { [id: string]: Resolved } = {}
+            const out: { [id: string]: Resolved } = Object.create(null)
 
-            const entries_started: { [id: string]: null } = {}
+            const entries_started: { [id: string]: null } = Object.create(null)
 
             type Cyclic_Reference = {
                 'id': string,
@@ -326,7 +326,7 @@ export const list = <T extends p_di.Value>(
                 duplicate_id: Abort<string>
             }
         ): p_di.Dictionary<NT> => {
-            const temp: { [id: string]: NT } = {}
+            const temp: { [id: string]: NT } = Object.create(null)
             list.__get_raw().forEach(($) => {
                 const id = get_id($)
                 if (temp[id] !== undefined) {

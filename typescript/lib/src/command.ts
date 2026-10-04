@@ -1,6 +1,8 @@
 
 
-export * as literal from "./__internal/sync/literal.js"
+
+export * as literal from "./__internal/sync/initialize.js"
+export * as initialize from "./__internal/sync/initialize.js"
 
 export * from "./__internal/command/Command_Implementation.js"
 export * as s from "./__internal/command/command_statements.js"

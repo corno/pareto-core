@@ -11,7 +11,7 @@ import create_refinement_context from "../sync/create_refinement_context.js"
 import create_asynchronous_dictionary_builder from "../async/asynchronous_dictionary_builder.js"
 import create_asynchronous_processes_monitor from "../async/create_asynchronous_processes_monitor.js"
 import { type Command_Promise } from "../../interface/__internal/command/Command_Promise.js"
-import * as lit from "../sync/literal.js"
+import * as lit from "../sync/initialize.js"
 
 export function execute<
     Error extends p_di.Value,
