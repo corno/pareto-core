@@ -1,3 +1,4 @@
+import unreachable_code_path from "../../transformer/specials/unreachable_code_path.js"
 import * as p_di from "../../schema.js"
 
 export type Option<T extends p_di.Value> = readonly [string, T]
@@ -24,5 +25,5 @@ export function option<T extends p_di.Value, RT extends p_di.Value>(
 export function exhaustive<RT>(
     _x: never
 ): RT {
-    throw new Error("unreachable")
+    return unreachable_code_path("exhaustive: a state option that the type system excludes")
 }

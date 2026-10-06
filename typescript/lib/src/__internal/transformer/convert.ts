@@ -1,3 +1,4 @@
+import unreachable_code_path from "../../transformer/specials/unreachable_code_path.js"
 import * as p_di from "../../schema.js"
 import * as p_ti from "../../interface/transformer.js"
 import { Dictionary_Class } from "../sync/primitives/Dictionary.js"
@@ -974,7 +975,7 @@ export const number = (
 
                 default:
                     const _exhaustiveCheck: never = round
-                    throw new Error(`Unexpected rounding mode: ${round}`)
+                    return unreachable_code_path(`Unexpected rounding mode: ${round}`)
             }
         },
 

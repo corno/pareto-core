@@ -1,3 +1,4 @@
+import unreachable_code_path from "../../transformer/specials/unreachable_code_path.js"
 
 export type I_Async_Monitor = {
     readonly report_process_started: () => undefined
@@ -37,7 +38,7 @@ export default function (
 
             if (running_processes_counter === 0) {
                 if (on_all_finished_has_been_called === true) {
-                    throw new Error("CORE: already ended")
+                    unreachable_code_path("CORE: already ended")
                 }
                 on_all_finished_has_been_called = true
                 parameters.on_all_finished()
@@ -47,14 +48,14 @@ export default function (
     parameters.monitoring_phase({
         'report_process_started': () => {
             if (on_all_finished_has_been_called) {
-                throw new Error("CORE: async call done after context is ready")
+                unreachable_code_path("CORE: async call done after context is ready")
             }
             running_processes_counter += 1
 
         },
         'report_process_finished': () => {
             if (running_processes_counter === 0) {
-                throw new Error("CORE: decrement while counter is 0")
+                unreachable_code_path("CORE: decrement while counter is 0")
             }
             running_processes_counter -= 1
             checkStatus()

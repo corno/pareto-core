@@ -1,3 +1,4 @@
+import unreachable_code_path from "../../transformer/specials/unreachable_code_path.js"
 import * as p_di from "../../schema.js"
 import { type Command_Promise } from "../../interface/__internal/command/Command_Promise.js"
 
@@ -22,7 +23,7 @@ export function exhaustive<
 >(
     _x: never
 ): Command_Block<Error> {
-    throw new Error("unreachable")
+    return unreachable_code_path("exhaustive: a state option that the type system excludes")
 }
 
 export namespace decide {

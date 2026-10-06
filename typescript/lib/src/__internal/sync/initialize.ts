@@ -1,3 +1,4 @@
+import unreachable_code_path from "../../transformer/specials/unreachable_code_path.js"
 import * as p_di from "../../schema.js"
 
 import { type Dictionary_As_Array, Dictionary_Class, type ID_Value_Pair } from "./primitives/Dictionary.js"
@@ -52,7 +53,7 @@ export function list<
     source: readonly T[]
 ): p_di.List<T> {
     if (!(source instanceof Array)) {
-        throw new Error("invalid input in 'list_literal'")
+        unreachable_code_path("invalid input in 'list_literal'")
     }
     const data = source.slice() //create a copy
     /**
