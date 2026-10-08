@@ -23,6 +23,19 @@ export type Refiner_With_Parameter<
     $p: Parameter,
 ) => Result
 
+export type Refiner_With_Lookups_And_Parameter<
+    Result extends p_di.Value,
+    Error extends p_di.Value,
+    Input extends p_di.Value,
+    Lookups,
+    Parameter extends p_di.Value
+> = (
+    context: Input,
+    abort: Abort<Error>,
+    lookups: Lookups,
+    parameters: Parameter,
+) => Result
+
 export type Refiner_Without_Error<
     Result extends p_di.Value,
     Input extends p_di.Value
