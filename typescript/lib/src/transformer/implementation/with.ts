@@ -247,14 +247,14 @@ export const navigate_list_to_segments = <
 >(
     list: p_di.List<T>,
     initial: Cursor,
-    segment: (item: T, cursor: Cursor, index: number) => p_di.List<New_Type>,
-    next: (item: T, cursor: Cursor, index: number) => Cursor,
+    segment: (item: T, cursor: Cursor) => p_di.List<New_Type>,
+    next: (item: T, cursor: Cursor) => Cursor,
 ): p_di.List<New_Type> => {
     let cursor = initial
     const out: New_Type[] = []
-    list.__get_raw().forEach((item, index) => {
-        const result = segment(item, cursor, index)
-        cursor = next(item, cursor, index)
+    list.__get_raw().forEach((item) => {
+        const result = segment(item, cursor)
+        cursor = next(item, cursor)
         result.__get_raw().forEach(($) => {
             out.push($)
         })
@@ -269,14 +269,14 @@ export const resolve_list = <
 >(
     list: p_di.List<T>,
     initial: Cursor,
-    assign_item: (item: T, cursor: Cursor, index: number) => Result,
-    next: (result: Result, cursor: Cursor, index: number) => Cursor,
+    assign_item: (item: T, cursor: Cursor) => Result,
+    next: (result: Result, source_item: T, cursor: Cursor) => Cursor,
 ): p_di.List<Result> => {
     let cursor = initial
     return lit.list(
-        list.__get_raw().map((item, index) => {
-            const result = assign_item(item, cursor, index)
-            cursor = next(result, cursor, index)
+        list.__get_raw().map((item) => {
+            const result = assign_item(item, cursor)
+            cursor = next(result, item, cursor)
             return result
         }),
     )
