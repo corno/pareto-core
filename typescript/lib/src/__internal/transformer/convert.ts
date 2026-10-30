@@ -4,6 +4,7 @@ import * as p_ti from "../../interface/transformer.js"
 import { Dictionary_Class } from "../sync/primitives/Dictionary.js"
 import { type Abort } from "../Abort.js"
 import * as lit from "../sync/initialize.js"
+import { resolve_list } from "../sync/resolve_list.js"
 
 /**
  * Wraps a boolean value, providing a `decide` method that branches into one of two callbacks based on the value.
@@ -634,6 +635,17 @@ export const list = <T extends p_di.Value>(
         },
 
         /**
+         * Resolves items in order, passing the preceding resolved result (unset for the first item).
+         * Returns every resolved result, not just the final result.
+         */
+        resolve: <Result extends p_di.Value>(
+            assign_item: (
+                item: T,
+                preceding: p_di.Optional_Value<Result>,
+            ) => Result,
+        ): p_di.List<Result> => resolve_list(list, assign_item),
+
+        /**
          * filters and converts items in 1 go, using the provided assign_optional_item function.
          * if the function returns a not set value, it will be excluded from the new list.
          * if the function returns a set value, it will be included in the new list.
@@ -918,6 +930,50 @@ export const number = (
     number: number,
 ) => {
     return {
+        serialize: (
+            serializer: p_ti.Transformer<number, string>,
+        ): string => serializer(number),
+
+        /**
+         * Builds a list by repeatedly creating an element from the current number.
+         * The initial number is passed to `add_element`; if it returns a set value,
+         * that value is appended and `update_number` is called to produce the number
+         * for the next iteration. Iteration stops when `add_element` returns an
+         * unset value.
+         *
+         * To ensure this process terminates, `update_number` must return a number
+         * strictly less than its input for every emitted element. If it returns an
+         * equal or greater number, `number_did_not_decrease` is called.
+         * 
+         * this function is useful for serializing numbers into a list of characters
+         *
+         * @param add_element Creates an optional list item from the current number.
+         *                    Returning an unset value ends the iteration.
+         * @param update_number Produces the next number after an item is emitted.
+         * @param number_did_not_decrease Aborts if the next number is not smaller.
+         * @returns The list of items produced before `add_element` returns unset.
+         */
+        convert_to_list: <T extends p_di.Value>(
+            add_element: ($: number) => p_di.Optional_Value<T>,
+            update_number: ($: number) => number,
+            number_did_not_decrease: Abort<null>
+        ): p_di.List<T> => {
+            const result: T[] = []
+            let current_number = number
+            while (true) {
+                const element = add_element(current_number).__get_raw()
+                if (element === null) {
+                    break
+                }
+                result.push(element[0])
+                const new_number = update_number(current_number)
+                if (new_number >= current_number) {
+                    return number_did_not_decrease(null)
+                }
+                current_number = new_number
+            }
+            return lit.list(result)
+        },
 
         /**
          * Performs integer division of two numbers with configurable rounding behavior.
@@ -1071,7 +1127,34 @@ export const text = (
     string: string,
 ) => {
     return {
+        serialize: (
+            serializer: p_ti.Transformer<string, string>,
+        ): string => serializer(string),
 
-
+        escape: (
+            mappings: p_di.List<{ readonly character: number, readonly emit: string }>,
+            abort: {
+                invalid_character: Abort<number>,
+                duplicate_character: Abort<number>,
+            },
+        ): string => {
+            const replacements = new Map<number, string>()
+            for (const mapping of mappings.__get_raw()) {
+                const code = mapping.character
+                if (!Number.isInteger(code) || code < 0 || code > 0xffff) {
+                    return abort.invalid_character(code)
+                }
+                if (replacements.has(code)) {
+                    return abort.duplicate_character(code)
+                }
+                replacements.set(code, mapping.emit)
+            }
+            const result: string[] = []
+            for (let index = 0; index < string.length; index++) {
+                const code = string.charCodeAt(index)
+                result.push(replacements.get(code) ?? string.charAt(index))
+            }
+            return result.join("")
+        },
     }
 }

@@ -2,6 +2,7 @@ import * as p_di from "../../schema.js"
 import * as p_ri from "../../interface/refiner.js"
 import { type Abort } from "../Abort.js"
 import * as lit from "../sync/initialize.js"
+import { resolve_list } from "../sync/resolve_list.js"
 import { Dictionary_Class } from "../sync/primitives/Dictionary.js"
 
 /**
@@ -352,6 +353,17 @@ export const list = <T extends p_di.Value>(
                 return assign_item(entry)
             }))
         },
+
+        /**
+         * Resolves items in order, passing the preceding resolved result (unset for the first item).
+         * Returns every resolved result, not just the final result.
+         */
+        resolve: <Result extends p_di.Value>(
+            assign_item: (
+                item: T,
+                preceding: p_di.Optional_Value<Result>,
+            ) => Result,
+        ): p_di.List<Result> => resolve_list(list, assign_item),
 
         map_and_aggregate_error: <
             New_Type extends p_di.Value,
