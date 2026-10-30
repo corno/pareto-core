@@ -370,6 +370,9 @@ export function call_with_value<
     return transform(source, ...arguments_)
 }
 
+type State_Option<State, Name extends string> =
+    State extends readonly [Name, p_di.Value] ? State : never
+
 export function expect_state_option<
     State extends p_di.State,
     Name extends State[0],
@@ -378,13 +381,13 @@ export function expect_state_option<
     state: State,
     expected: Name,
     if_expected: (
-        value: Extract<State, readonly [Name, p_di.Value]>[1],
+        value: State_Option<State, Name>[1],
     ) => Result,
     if_unexpected: (name: State[0]) => Result,
 ): Result {
     function is_expected(
         value: State,
-    ): value is Extract<State, readonly [Name, p_di.Value]> {
+    ): value is State_Option<State, Name> {
         return value[0] === expected
     }
     return is_expected(state) ? if_expected(state[1]) : if_unexpected(state[0])
