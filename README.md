@@ -3,6 +3,16 @@ this is one of the packages of the [Exupery language](https://github.com/corno/e
 this package is solely meant to be used by exupery-core-* packages.
 It contains common types and functions that can be used by those packages
 
+### Dictionary key affixes
+
+`pareto-core/transformer/implementation` exposes
+`with.prepend_dictionary_keys(dictionary, prefix)` and
+`with.append_dictionary_keys(dictionary, suffix)`.
+They preserve entry values and iteration order, leave the input unchanged, and
+apply the same affix to every key. Empty affixes preserve keys; empty dictionaries
+remain empty. Since adding a fixed prefix or suffix is injective, unique input
+keys stay unique and no duplicate-key handler is required.
+
 ### Sequential list resolution
 
 Both `pareto-core/transformer` and `pareto-core/refiner` expose
