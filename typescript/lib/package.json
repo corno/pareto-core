@@ -1,6 +1,6 @@
 {
   "name": "pareto-core",
-  "version": "0.1.331",
+  "version": "0.1.332",
   "license": "Apache-2.0",
   "author": "Corno",
   "description": "the core language constructs for the Pareto programming language (in TypeScript)",

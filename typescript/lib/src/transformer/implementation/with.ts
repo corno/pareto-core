@@ -4,6 +4,20 @@ import { type Abort } from "../../__internal/Abort.js"
 import { Dictionary_Class } from "../../__internal/sync/primitives/Dictionary.js"
 import * as lit from "./initialize.js"
 
+export const prepend_dictionary_keys = <T extends p_di.Value>(
+    dict: p_di.Dictionary<T>,
+    prefix: string,
+): p_di.Dictionary<T> => new Dictionary_Class<T>(
+    dict.__get_raw().map(([id, value]) => [prefix + id, value]),
+)
+
+export const append_dictionary_keys = <T extends p_di.Value>(
+    dict: p_di.Dictionary<T>,
+    suffix: string,
+): p_di.Dictionary<T> => new Dictionary_Class<T>(
+    dict.__get_raw().map(([id, value]) => [id + suffix, value]),
+)
+
 export const map_dictionary = <
     T extends p_di.Value,
     New_Type extends p_di.Value,
